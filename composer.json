@@ -1,0 +1,20 @@
+{
+  "name": "denosyscore/database",
+  "description": "Database ORM, query builder, migrations, and seeding",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^8.2",
+    "ext-pdo": "*",
+    "denosyscore/contracts": "^0.1",
+    "denosyscore/container": "^0.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "CFXP\\Core\\": "src/"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  }
+}
