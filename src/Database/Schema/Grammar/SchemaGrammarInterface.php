@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Schema\Grammar;
+namespace Denosys\Database\Schema\Grammar;
 
-use CFXP\Core\Database\Schema\Blueprint;
+use Denosys\Database\Schema\Blueprint;
 
 /**
  * Contract for schema grammar implementations.

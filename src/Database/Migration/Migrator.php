@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Migration;
+namespace Denosys\Database\Migration;
 
-use CFXP\Core\Database\Connection\Connection;
-use CFXP\Core\Database\Schema\SchemaBuilder;
+use Denosys\Database\Connection\Connection;
+use Denosys\Database\Schema\SchemaBuilder;
 use Throwable;
 
 /**

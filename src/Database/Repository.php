@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database;
+namespace Denosys\Database;
 
-use CFXP\Core\Database\Connection\Connection;
-use CFXP\Core\Database\Connection\ConnectionManager;
-use CFXP\Core\Database\Query\Builder;
+use Denosys\Database\Connection\Connection;
+use Denosys\Database\Connection\ConnectionManager;
+use Denosys\Database\Query\Builder;
 
 abstract class Repository
 {
@@ -90,7 +90,7 @@ abstract class Repository
      * Get records matching the given criteria.
       * @param array<string, mixed> $criteria
       * @param array<string, string> $orderBy
-      * @return array<\CFXP\Core\Database\Model>
+      * @return array<\Denosys\Database\Model>
      */
     public function findBy(array $criteria, ?array $orderBy = null, ?int $limit = null, ?int $offset = null): array
     {

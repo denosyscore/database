@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Schema;
+namespace Denosys\Database\Schema;
 
 /**
  * Represents an index definition in a table blueprint.

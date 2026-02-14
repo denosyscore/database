@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Schema;
+namespace Denosys\Database\Schema;
 
 use Closure;
-use CFXP\Core\Database\Connection\Connection;
-use CFXP\Core\Database\Schema\Grammar\SchemaGrammarInterface;
+use Denosys\Database\Connection\Connection;
+use Denosys\Database\Schema\Grammar\SchemaGrammarInterface;
 
 /**
  * Entry point for schema operations.

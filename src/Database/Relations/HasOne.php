@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Relations;
+namespace Denosys\Database\Relations;
 
-use CFXP\Core\Database\Model;
-use CFXP\Core\Database\ModelBuilder;
-use CFXP\Core\Support\Collection;
+use Denosys\Database\Model;
+use Denosys\Database\ModelBuilder;
+use Denosys\Support\Collection;
 
 class HasOne extends Relation
 {
@@ -41,7 +41,7 @@ class HasOne extends Relation
 
     /**
      * {@inheritdoc}
-      * @param array<\CFXP\Core\Database\Model> $models
+      * @param array<\Denosys\Database\Model> $models
      */
     public function addEagerConstraints(array $models): void
     {
@@ -54,8 +54,8 @@ class HasOne extends Relation
     /**
      * {@inheritdoc}
      *
-     * @param array<\CFXP\Core\Database\Model> $models
-     * @return array<\CFXP\Core\Database\Model>
+     * @param array<\Denosys\Database\Model> $models
+     * @return array<\Denosys\Database\Model>
      */
     public function initRelation(array $models, string $relation): array
     {
@@ -68,8 +68,8 @@ class HasOne extends Relation
 
     /**
      * {@inheritdoc}
-      * @param array<\CFXP\Core\Database\Model> $models
-      * @return array<\CFXP\Core\Database\Model>
+      * @param array<\Denosys\Database\Model> $models
+      * @return array<\Denosys\Database\Model>
      */
     public function match(array $models, Collection $results, string $relation): array
     {
@@ -79,8 +79,8 @@ class HasOne extends Relation
     /**
      * Match the results for a one-to-one relationship.
      *
-     * @param array<\CFXP\Core\Database\Model> $models
-     * @return array<\CFXP\Core\Database\Model>
+     * @param array<\Denosys\Database\Model> $models
+     * @return array<\Denosys\Database\Model>
      */
     protected function matchOne(array $models, Collection $results, string $relation): array
     {
@@ -100,7 +100,7 @@ class HasOne extends Relation
     /**
      * Build model dictionary keyed by foreign key.
      *
-     * @return array<mixed, \CFXP\Core\Database\Model>
+     * @return array<mixed, \Denosys\Database\Model>
      */
     protected function buildDictionary(Collection $results): array
     {
@@ -115,7 +115,7 @@ class HasOne extends Relation
 
     /**
      * Get the keys for an array of models.
-      * @param array<\CFXP\Core\Database\Model> $models
+      * @param array<\Denosys\Database\Model> $models
       * @return array<string>
      */
     protected function getKeys(array $models, string $key): array

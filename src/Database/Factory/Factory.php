@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Factory;
+namespace Denosys\Database\Factory;
 
 use Faker\Factory as FakerFactory;
 use Faker\Generator as Faker;

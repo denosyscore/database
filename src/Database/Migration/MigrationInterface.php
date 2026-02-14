@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Migration;
+namespace Denosys\Database\Migration;
 
-use CFXP\Core\Database\Schema\SchemaBuilder;
+use Denosys\Database\Schema\SchemaBuilder;
 
 /**
  * Contract for database migrations.

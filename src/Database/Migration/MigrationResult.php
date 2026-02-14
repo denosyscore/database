@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Migration;
+namespace Denosys\Database\Migration;
 
 /**
  * Value object representing the result of a migration operation.

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Relations;
+namespace Denosys\Database\Relations;
 
-use CFXP\Core\Database\Model;
-use CFXP\Core\Database\ModelBuilder;
-use CFXP\Core\Support\Collection;
+use Denosys\Database\Model;
+use Denosys\Database\ModelBuilder;
+use Denosys\Support\Collection;
 
 /**
  * @mixin ModelBuilder
@@ -69,23 +69,23 @@ abstract class Relation
 
     /**
      * Set the constraints for an eager load of the relation.
-      * @param array<\CFXP\Core\Database\Model> $models
+      * @param array<\Denosys\Database\Model> $models
      */
     abstract public function addEagerConstraints(array $models): void;
 
     /**
      * Initialize the relation on a set of models.
      *
-     * @param array<\CFXP\Core\Database\Model> $models
-     * @return array<\CFXP\Core\Database\Model>
+     * @param array<\Denosys\Database\Model> $models
+     * @return array<\Denosys\Database\Model>
      */
     abstract public function initRelation(array $models, string $relation): array;
 
     /**
      * Match the eagerly loaded results to their parents.
      *
-     * @param array<\CFXP\Core\Database\Model> $models
-     * @return array<\CFXP\Core\Database\Model>
+     * @param array<\Denosys\Database\Model> $models
+     * @return array<\Denosys\Database\Model>
      */
     abstract public function match(array $models, Collection $results, string $relation): array;
 
@@ -121,7 +121,7 @@ abstract class Relation
     /**
      * Get the keys for an array of models.
      *
-     * @param array<\CFXP\Core\Database\Model> $models
+     * @param array<\Denosys\Database\Model> $models
      * @return array<mixed>
      */
     protected function getKeys(array $models, string $key): array
@@ -148,7 +148,7 @@ abstract class Relation
     /**
      * Eager load the relation for multiple models at once.
      * Used for auto-eager loading to batch load relations.
-      * @param array<\CFXP\Core\Database\Model> $models
+      * @param array<\Denosys\Database\Model> $models
      */
     public function eagerLoadRelations(array $models): void
     {

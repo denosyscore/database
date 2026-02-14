@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Migration;
+namespace Denosys\Database\Migration;
 
-use CFXP\Core\Container\ContainerInterface;
-use CFXP\Core\Database\Connection\Connection;
-use CFXP\Core\Database\Schema\SchemaBuilder;
-use CFXP\Core\Database\Schema\Grammar\MySqlSchemaGrammar;
-use CFXP\Core\Database\Schema\Grammar\PostgresSchemaGrammar;
-use CFXP\Core\Database\Schema\Grammar\SqliteSchemaGrammar;
-use CFXP\Core\Database\Schema\Grammar\SchemaGrammarInterface;
-use CFXP\Core\ServiceProviderInterface;
+use Denosys\Container\ContainerInterface;
+use Denosys\Database\Connection\Connection;
+use Denosys\Database\Schema\SchemaBuilder;
+use Denosys\Database\Schema\Grammar\MySqlSchemaGrammar;
+use Denosys\Database\Schema\Grammar\PostgresSchemaGrammar;
+use Denosys\Database\Schema\Grammar\SqliteSchemaGrammar;
+use Denosys\Database\Schema\Grammar\SchemaGrammarInterface;
+use Denosys\Contracts\ServiceProviderInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**

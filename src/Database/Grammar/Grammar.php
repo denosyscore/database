@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Grammar;
+namespace Denosys\Database\Grammar;
 
-use CFXP\Core\Database\Contracts\GrammarInterface;
+use Denosys\Database\Contracts\GrammarInterface;
 
 abstract class Grammar implements GrammarInterface
 {

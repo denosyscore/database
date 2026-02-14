@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Exceptions;
+namespace Denosys\Database\Exceptions;
 
 use RuntimeException;
 

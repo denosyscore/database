@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database;
+namespace Denosys\Database;
 
-use CFXP\Core\Database\Query\Builder;
+use Denosys\Database\Query\Builder;
 
 class ModelBuilder extends Builder
 {
@@ -76,9 +76,9 @@ class ModelBuilder extends Builder
     /**
      * Execute the query as a "select" statement.
      *
-     * @return array<object>|\CFXP\Core\Support\Collection<\CFXP\Core\Database\Model>
+     * @return array<object>|\Denosys\Support\Collection<\Denosys\Database\Model>
      */
-    public function get(): array|\CFXP\Core\Support\Collection
+    public function get(): array|\Denosys\Support\Collection
     {
         $results = parent::get();
 
@@ -107,14 +107,14 @@ class ModelBuilder extends Builder
             $models = $this->eagerLoadRelations($models);
         }
 
-        return new \CFXP\Core\Support\Collection($models);
+        return new \Denosys\Support\Collection($models);
     }
 
     /**
      * Eager load the relationships for the models.
      *
-     * @param array<\CFXP\Core\Database\Model> $models
-     * @return array<\CFXP\Core\Database\Model>
+     * @param array<\Denosys\Database\Model> $models
+     * @return array<\Denosys\Database\Model>
      */
     protected function eagerLoadRelations(array $models): array
     {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database;
+namespace Denosys\Database;
 
-use CFXP\Core\Database\Connection\Connection;
-use CFXP\Core\Database\Connection\ConnectionManager;
-use CFXP\Core\Database\Query\Builder;
-use CFXP\Core\Database\Query\Expression;
+use Denosys\Database\Connection\Connection;
+use Denosys\Database\Connection\ConnectionManager;
+use Denosys\Database\Query\Builder;
+use Denosys\Database\Query\Expression;
 
 /**
  * Database facade for convenient static access.

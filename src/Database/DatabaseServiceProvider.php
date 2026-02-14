@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database;
+namespace Denosys\Database;
 
-use CFXP\Core\Container\ContainerInterface;
-use CFXP\Core\ServiceProviderInterface;
-use CFXP\Core\Config\ConfigurationInterface;
-use CFXP\Core\Database\Connection\Connection;
+use Denosys\Container\ContainerInterface;
+use Denosys\Contracts\ServiceProviderInterface;
+use Denosys\Config\ConfigurationInterface;
+use Denosys\Database\Connection\Connection;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use CFXP\Core\Database\Connection\ConnectionFactory;
-use CFXP\Core\Database\Connection\ConnectionManager;
+use Denosys\Database\Connection\ConnectionFactory;
+use Denosys\Database\Connection\ConnectionManager;
 
 class DatabaseServiceProvider implements ServiceProviderInterface
 {

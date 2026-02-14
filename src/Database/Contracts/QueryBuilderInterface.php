@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Contracts;
+namespace Denosys\Database\Contracts;
 
 interface QueryBuilderInterface
 {

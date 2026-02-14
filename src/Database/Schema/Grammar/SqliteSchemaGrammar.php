@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Schema\Grammar;
+namespace Denosys\Database\Schema\Grammar;
 
-use CFXP\Core\Database\Schema\Blueprint;
-use CFXP\Core\Database\Schema\Column;
-use CFXP\Core\Database\Schema\IndexType;
+use Denosys\Database\Schema\Blueprint;
+use Denosys\Database\Schema\Column;
+use Denosys\Database\Schema\IndexType;
 
 /**
  * SQLite-specific schema grammar.

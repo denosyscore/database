@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Schema\Grammar;
+namespace Denosys\Database\Schema\Grammar;
 
-use CFXP\Core\Database\Schema\Column;
-use CFXP\Core\Database\Schema\ColumnType;
-use CFXP\Core\Database\Schema\IndexDefinition;
-use CFXP\Core\Database\Schema\IndexType;
-use CFXP\Core\Database\Schema\ForeignKeyDefinition;
+use Denosys\Database\Schema\Column;
+use Denosys\Database\Schema\ColumnType;
+use Denosys\Database\Schema\IndexDefinition;
+use Denosys\Database\Schema\IndexType;
+use Denosys\Database\Schema\ForeignKeyDefinition;
 
 /**
  * Trait providing common schema grammar functionality.

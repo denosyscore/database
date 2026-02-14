@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Seeding;
+namespace Denosys\Database\Seeding;
 
 /**
  * Abstract base class for database seeders.

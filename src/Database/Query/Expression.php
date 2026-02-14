@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Query;
+namespace Denosys\Database\Query;
 
 use Stringable;
 

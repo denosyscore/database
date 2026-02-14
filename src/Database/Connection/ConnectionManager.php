@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Connection;
+namespace Denosys\Database\Connection;
 
-use CFXP\Core\Database\Query\Builder;
-use CFXP\Core\Exceptions\DatabaseException;
+use Denosys\Database\Query\Builder;
+use Denosys\Database\Exceptions\DatabaseException;
 
 class ConnectionManager
 {

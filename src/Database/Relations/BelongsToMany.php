@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Relations;
+namespace Denosys\Database\Relations;
 
-use CFXP\Core\Database\Model;
-use CFXP\Core\Database\ModelBuilder;
-use CFXP\Core\Support\Collection;
+use Denosys\Database\Model;
+use Denosys\Database\ModelBuilder;
+use Denosys\Support\Collection;
 
 class BelongsToMany extends Relation
 {
@@ -74,7 +74,7 @@ class BelongsToMany extends Relation
 
     /**
      * Set the constraints for an eager load of the relation.
-      * @param array<\CFXP\Core\Database\Model> $models
+      * @param array<\Denosys\Database\Model> $models
      */
     public function addEagerConstraints(array $models): void
     {
@@ -89,8 +89,8 @@ class BelongsToMany extends Relation
     /**
      * Initialize the relation on a set of models.
      *
-     * @param array<\CFXP\Core\Database\Model> $models
-     * @return array<\CFXP\Core\Database\Model>
+     * @param array<\Denosys\Database\Model> $models
+     * @return array<\Denosys\Database\Model>
      */
     public function initRelation(array $models, string $relation): array
     {
@@ -103,8 +103,8 @@ class BelongsToMany extends Relation
 
     /**
      * Match the eagerly loaded results to their parents.
-      * @param array<\CFXP\Core\Database\Model> $models
-      * @return array<\CFXP\Core\Database\Model>
+      * @param array<\Denosys\Database\Model> $models
+      * @return array<\Denosys\Database\Model>
      */
     public function match(array $models, Collection $results, string $relation): array
     {
@@ -124,7 +124,7 @@ class BelongsToMany extends Relation
     /**
      * Build model dictionary keyed by the relation's foreign key.
      *
-     * @return array<mixed, array<\CFXP\Core\Database\Model>>
+     * @return array<mixed, array<\Denosys\Database\Model>>
      */
     protected function buildDictionary(Collection $results): array
     {

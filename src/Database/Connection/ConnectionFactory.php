@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Connection;
+namespace Denosys\Database\Connection;
 
 use PDO;
-use CFXP\Core\Database\Contracts\GrammarInterface;
-use CFXP\Core\Database\Grammar\MySqlGrammar;
-use CFXP\Core\Database\Grammar\PostgresGrammar;
-use CFXP\Core\Database\Grammar\SqliteGrammar;
-use CFXP\Core\Exceptions\DatabaseException;
+use Denosys\Database\Contracts\GrammarInterface;
+use Denosys\Database\Grammar\MySqlGrammar;
+use Denosys\Database\Grammar\PostgresGrammar;
+use Denosys\Database\Grammar\SqliteGrammar;
+use Denosys\Database\Exceptions\DatabaseException;
 
 class ConnectionFactory
 {
     /**
      * Mapping of driver names to grammar classes.
-      * @var array<string, class-string<\CFXP\Core\Database\Contracts\GrammarInterface>>
+      * @var array<string, class-string<\Denosys\Database\Contracts\GrammarInterface>>
      */
     protected array $grammars = [
         'mysql' => MySqlGrammar::class,

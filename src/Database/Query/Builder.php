@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Query;
+namespace Denosys\Database\Query;
 
 use Closure;
-use CFXP\Core\Database\Connection\Connection;
-use CFXP\Core\Database\Contracts\GrammarInterface;
-use CFXP\Core\Database\Contracts\QueryBuilderInterface;
+use Denosys\Database\Connection\Connection;
+use Denosys\Database\Contracts\GrammarInterface;
+use Denosys\Database\Contracts\QueryBuilderInterface;
 
 /**
  * @phpstan-consistent-constructor

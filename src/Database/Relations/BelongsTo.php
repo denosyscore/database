@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Relations;
+namespace Denosys\Database\Relations;
 
-use CFXP\Core\Database\Model;
-use CFXP\Core\Database\ModelBuilder;
-use CFXP\Core\Support\Collection;
+use Denosys\Database\Model;
+use Denosys\Database\ModelBuilder;
+use Denosys\Support\Collection;
 
 class BelongsTo extends Relation
 {
@@ -41,7 +41,7 @@ class BelongsTo extends Relation
 
     /**
      * {@inheritdoc}
-      * @param array<\CFXP\Core\Database\Model> $models
+      * @param array<\Denosys\Database\Model> $models
      */
     public function addEagerConstraints(array $models): void
     {
@@ -56,7 +56,7 @@ class BelongsTo extends Relation
      */
     /**
      * @return array<string>
-      * @param array<\CFXP\Core\Database\Model> $models
+      * @param array<\Denosys\Database\Model> $models
      */
 protected function getEagerModelKeys(array $models): array
     {
@@ -67,8 +67,8 @@ protected function getEagerModelKeys(array $models): array
 
     /**
      * {@inheritdoc}
-      * @param array<\CFXP\Core\Database\Model> $models
-      * @return array<\CFXP\Core\Database\Model>
+      * @param array<\Denosys\Database\Model> $models
+      * @return array<\Denosys\Database\Model>
      */
     public function initRelation(array $models, string $relation): array
     {
@@ -81,8 +81,8 @@ protected function getEagerModelKeys(array $models): array
 
     /**
      * {@inheritdoc}
-      * @param array<\CFXP\Core\Database\Model> $models
-      * @return array<\CFXP\Core\Database\Model>
+      * @param array<\Denosys\Database\Model> $models
+      * @return array<\Denosys\Database\Model>
      */
     public function match(array $models, Collection $results, string $relation): array
     {

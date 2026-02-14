@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Schema;
+namespace Denosys\Database\Schema;
 
 /**
  * Strongly-typed column type definitions.

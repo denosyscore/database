@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Grammar;
+namespace Denosys\Database\Grammar;
 
 class MySqlGrammar extends Grammar
 {

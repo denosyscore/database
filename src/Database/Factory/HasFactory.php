@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Factory;
+namespace Denosys\Database\Factory;
 
 /**
  * Trait for models to enable factory access.

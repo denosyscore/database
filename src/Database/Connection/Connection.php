@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database\Connection;
+namespace Denosys\Database\Connection;
 
 use PDO;
 use PDOStatement;
 use PDOException;
 use Closure;
-use CFXP\Core\Database\Contracts\ConnectionInterface;
-use CFXP\Core\Database\Contracts\GrammarInterface;
-use CFXP\Core\Database\Query\Builder;
-use CFXP\Core\Exceptions\DatabaseException;
+use Denosys\Database\Contracts\ConnectionInterface;
+use Denosys\Database\Contracts\GrammarInterface;
+use Denosys\Database\Query\Builder;
+use Denosys\Database\Exceptions\DatabaseException;
 
 class Connection implements ConnectionInterface
 {

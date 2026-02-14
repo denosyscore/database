@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CFXP\Core\Database;
+namespace Denosys\Database;
 
-use CFXP\Core\Database\Connection\Connection;
-use CFXP\Core\Database\Connection\ConnectionManager;
-use CFXP\Core\Database\Query\Builder;
+use Denosys\Database\Connection\Connection;
+use Denosys\Database\Connection\ConnectionManager;
+use Denosys\Database\Query\Builder;
 
 /**
  * @phpstan-consistent-constructor
@@ -370,7 +370,7 @@ abstract class Model
     /**
      * Fill the model with an array of attributes.
      * 
-     * @throws \CFXP\Core\Database\Exceptions\MassAssignmentException
+     * @throws \Denosys\Database\Exceptions\MassAssignmentException
       * @param array<string, mixed> $attributes
      */
     public function fill(array $attributes): static
