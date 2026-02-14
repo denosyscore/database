@@ -11,7 +11,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Denosys\\\\Database\\\\": "src/Database/"
+      "Denosys\\Database\\": "src/Database/"
     }
   },
   "config": {
