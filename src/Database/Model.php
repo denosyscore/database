@@ -892,7 +892,7 @@ abstract class Model
         $relation = $this->$method();
 
         if (!$relation instanceof Relations\Relation) {
-            throw new \LogicException("Relationship method must return an object of type CfXP\Core\Database\Relations\Relation");
+            throw new \LogicException("Relationship method must return an object of type Denosys\Database\Relations\Relation");
         }
 
         $results = $relation->getResults();
