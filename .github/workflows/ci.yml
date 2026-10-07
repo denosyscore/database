@@ -18,6 +18,7 @@ jobs:
         with:
           php-version: '8.2'
           coverage: none
+          extensions: pdo_sqlite
 
       - name: Validate composer.json
         run: composer validate --strict
@@ -35,3 +36,6 @@ jobs:
           else
             echo "No src/ directory to lint."
           fi
+
+      - name: Database regression tests
+        run: composer test
