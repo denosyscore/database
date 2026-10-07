@@ -56,6 +56,11 @@ unchanged. Out-of-range pages clamp to the last page. An empty result reports
 page 1 of 1, `from` and `to` as 0, and an empty collection. Page and page size
 must be positive; request-level upper bounds remain the caller's policy.
 
+## Repository pagination
+
+`Repository::paginate()` reports empty results as page 1 of 1, with `from`
+and `to` both 0. Its existing response array shape is unchanged.
+
 ## Development
 
 composer validate --strict
