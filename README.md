@@ -72,6 +72,11 @@ SQLite table creation emits declared foreign keys, including configured
 `ON DELETE` and `ON UPDATE` actions. Existing SQLite tables do not acquire
 new constraints automatically; rebuild those tables in an explicit migration.
 
+## SQLite column discovery
+
+On SQLite, `SchemaBuilder::getColumns()` and `hasColumn()` report existing
+columns through the same public API used for other supported drivers.
+
 ## Connection errors
 
 Connection setup failures and unsupported drivers raise

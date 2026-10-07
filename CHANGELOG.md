@@ -24,3 +24,5 @@
   SQLite can log migrations successfully.
 - Emit declared foreign keys when creating SQLite tables, preserving referential
   actions such as cascading deletes.
+- Correct SQLite column discovery so guarded schema changes recognize existing
+  columns.
