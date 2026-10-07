@@ -9,10 +9,16 @@
     "denosyscore/contracts": "^0.2",
     "denosyscore/container": "^0.2"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^10.5"
+  },
   "autoload": {
     "psr-4": {
       "Denosys\\Database\\": "src/Database/"
     }
+  },
+  "scripts": {
+    "test": "phpunit"
   },
   "config": {
     "sort-packages": true
