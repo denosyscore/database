@@ -146,8 +146,8 @@ public function getRan(): array
     public function log(string $migration, string $checksum, int $batch): void
     {
         $this->connection->insert(
-            "INSERT INTO {$this->getTable()} (migration, checksum, batch, executed_at) VALUES (?, ?, ?, NOW())",
-            [$migration, $checksum, $batch]
+            "INSERT INTO {$this->getTable()} (migration, checksum, batch, executed_at) VALUES (?, ?, ?, ?)",
+            [$migration, $checksum, $batch, gmdate('Y-m-d H:i:s')]
         );
     }
 
