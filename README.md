@@ -34,6 +34,13 @@ final class User extends \Denosys\Database\Model
 }
 ```
 
+## PDO connection options
+
+Pass driver options under `options` in the connection configuration. Numeric
+PDO attribute identifiers are preserved, so caller options override matching
+defaults. For MySQL, the configured charset/collation init command and `ssl`
+settings take precedence over conflicting entries in `options`.
+
 ## Development
 
 composer validate --strict
@@ -44,6 +51,7 @@ composer test
 ## CI Workflows
 
 - CI: Composer validation, model metadata static analysis, PHP syntax lint,
-  and model-query tests on supported PHP versions for push and pull requests.
+  and database regression tests on supported PHP versions for push and pull
+  requests.
 - Release: GitHub release publication on semantic version tags.
 - Dependabot: weekly Composer dependency update checks.

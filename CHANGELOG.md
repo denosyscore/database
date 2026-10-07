@@ -8,3 +8,7 @@
 - Require the package that provides `Denosys\Support\Collection`, fixing
   hydrated model queries and eager-loaded relation collections in clean
   installations.
+- Preserve numeric PDO attribute identifiers when combining default,
+  caller-supplied, MySQL init-command, and SSL options.
+- Resolve MySQL-specific PDO constants without deprecation notices on PHP 8.5
+  while retaining PHP 8.2 compatibility.
