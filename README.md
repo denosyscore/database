@@ -14,6 +14,10 @@ composer require denosyscore/database
 
 - src/Database/*
 
+SQLite table creation emits declared foreign keys, including configured
+`ON DELETE` and `ON UPDATE` actions. Existing SQLite tables do not acquire
+new constraints automatically; rebuild those tables in an explicit migration.
+
 Connection setup failures and unsupported drivers raise
 `Denosys\Database\Exceptions\DatabaseException`. When a PDO connection fails,
 the original `PDOException` is available from `getPrevious()`.
