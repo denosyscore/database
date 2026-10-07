@@ -14,6 +14,9 @@ composer require denosyscore/database
 
 - src/Database/*
 
+On SQLite, `SchemaBuilder::getColumns()` and `hasColumn()` report existing
+columns through the same public API used for other supported drivers.
+
 Connection setup failures and unsupported drivers raise
 `Denosys\Database\Exceptions\DatabaseException`. When a PDO connection fails,
 the original `PDOException` is available from `getPrevious()`.
