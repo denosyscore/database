@@ -14,7 +14,7 @@ final class SqliteForeignKeyTest extends TestCase
     #[RequiresPhpExtension('pdo_sqlite')]
     public function testDeclaredForeignKeyIsCreatedAndCascadesOnDelete(): void
     {
-        $connection = new ConnectionFactory()->make([
+        $connection = (new ConnectionFactory())->make([
             'driver' => 'sqlite',
             'database' => ':memory:',
         ]);
