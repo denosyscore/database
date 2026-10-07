@@ -14,7 +14,7 @@ final class SqliteColumnDiscoveryTest extends TestCase
     #[RequiresPhpExtension('pdo_sqlite')]
     public function testColumnNamesAndPresenceAreReportedFromSqlite(): void
     {
-        $connection = new ConnectionFactory()->make([
+        $connection = (new ConnectionFactory())->make([
             'driver' => 'sqlite',
             'database' => ':memory:',
         ]);
