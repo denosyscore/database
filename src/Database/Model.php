@@ -40,11 +40,7 @@ abstract class Model
      */
     protected bool $incrementing = true;
 
-    /**
-     * The attributes that are mass assignable.
-     */
-    /** @var array<string, mixed> */
-
+    /** @var list<string> Attribute names that are mass assignable. */
     protected array $fillable = [];
 
     /**
@@ -53,11 +49,7 @@ abstract class Model
      */
     protected array $guarded = ['*'];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     */
-    /** @var array<string, mixed> */
-
+    /** @var list<string> Attribute names hidden during serialization. */
     protected array $hidden = [];
 
     /**
