@@ -66,6 +66,12 @@ and `to` both 0. Its existing response array shape is unchanged.
 Migration execution timestamps are stored in UTC using a bound value so the
 migration repository works with SQLite, MySQL, and PostgreSQL.
 
+## SQLite foreign keys
+
+SQLite table creation emits declared foreign keys, including configured
+`ON DELETE` and `ON UPDATE` actions. Existing SQLite tables do not acquire
+new constraints automatically; rebuild those tables in an explicit migration.
+
 ## Connection errors
 
 Connection setup failures and unsupported drivers raise
