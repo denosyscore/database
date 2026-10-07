@@ -14,7 +14,7 @@ final class SqliteMigrationRepositoryTest extends TestCase
     #[RequiresPhpExtension('pdo_sqlite')]
     public function testLogsAndReadsMigrationExecutionTimeOnSqlite(): void
     {
-        $connection = new ConnectionFactory()->make([
+        $connection = (new ConnectionFactory())->make([
             'driver' => 'sqlite',
             'database' => ':memory:',
         ]);
