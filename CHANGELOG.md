@@ -18,3 +18,5 @@
   caller-supplied, MySQL init-command, and SSL options.
 - Resolve MySQL-specific PDO constants without deprecation notices on PHP 8.5
   while retaining PHP 8.2 compatibility.
+- Add the referenced `DatabaseException` type so unsupported-driver and PDO
+  connection-failure paths throw the intended exception.

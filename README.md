@@ -61,6 +61,12 @@ must be positive; request-level upper bounds remain the caller's policy.
 `Repository::paginate()` reports empty results as page 1 of 1, with `from`
 and `to` both 0. Its existing response array shape is unchanged.
 
+## Connection errors
+
+Connection setup failures and unsupported drivers raise
+`Denosys\Database\Exceptions\DatabaseException`. When a PDO connection fails,
+the original `PDOException` is available from `getPrevious()`.
+
 ## Development
 
 composer validate --strict

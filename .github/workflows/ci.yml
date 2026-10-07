@@ -22,7 +22,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-          extensions: pdo_mysql, pdo_sqlite
+          extensions: pdo_mysql, pdo_pgsql, pdo_sqlite
 
       - name: Validate composer.json
         run: composer validate --strict
@@ -32,7 +32,6 @@ jobs:
 
       - name: Check model metadata types
         run: composer analyse
-
       - name: PHP syntax check
         run: |
           if [ -d src ]; then
