@@ -14,14 +14,14 @@ final class DatabaseExceptionTest extends TestCase
         $this->expectException(DatabaseException::class);
         $this->expectExceptionMessage('Unsupported database driver');
 
-        new ConnectionFactory()->make(['driver' => 'unsupported']);
+        (new ConnectionFactory())->make(['driver' => 'unsupported']);
     }
 
     #[RequiresPhpExtension('pdo_pgsql')]
     public function testConnectionFailurePreservesThePdoCause(): void
     {
         try {
-            new ConnectionFactory()->make([
+            (new ConnectionFactory())->make([
                 'driver' => 'pgsql',
                 'host' => '127.0.0.1',
                 'port' => 1,
