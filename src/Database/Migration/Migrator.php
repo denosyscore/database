@@ -36,7 +36,10 @@ class Migrator
      */
     public function run(): MigrationResult
     {
-        $this->ensureRepositoryExists();
+        $this->pretendLog = [];
+        if (!$this->pretend) {
+            $this->ensureRepositoryExists();
+        }
         
         $result = new MigrationResult();
         $pending = $this->getPendingMigrations();
@@ -45,15 +48,17 @@ class Migrator
             return $result;
         }
 
-        $batch = $this->repository->getNextBatchNumber();
+        $batch = $this->pretend ? 0 : $this->repository->getNextBatchNumber();
 
         foreach ($pending as $name => $migration) {
             $startTime = microtime(true);
             
             try {
                 $this->runMigration($migration, 'up');
-                $checksum = $this->getChecksum($name);
-                $this->repository->log($name, $checksum, $batch);
+                if (!$this->pretend) {
+                    $checksum = $this->getChecksum($name);
+                    $this->repository->log($name, $checksum, $batch);
+                }
                 $result->addMigration($name, microtime(true) - $startTime);
             } catch (Throwable $e) {
                 $result->addFailedMigration($name, microtime(true) - $startTime, $e->getMessage());
@@ -69,7 +74,14 @@ class Migrator
      */
     public function rollback(int $steps = 1): MigrationResult
     {
-        $this->ensureRepositoryExists();
+        $this->pretendLog = [];
+        if ($this->pretend && !$this->repository->repositoryExists()) {
+            return new MigrationResult();
+        }
+
+        if (!$this->pretend) {
+            $this->ensureRepositoryExists();
+        }
         
         $result = new MigrationResult();
         $migrations = $this->repository->getMigrationsForSteps($steps);
@@ -84,7 +96,9 @@ class Migrator
             try {
                 $migration = $this->loadMigration($name);
                 $this->runMigration($migration, 'down');
-                $this->repository->delete($name);
+                if (!$this->pretend) {
+                    $this->repository->delete($name);
+                }
                 $result->addMigration($name, microtime(true) - $startTime);
             } catch (Throwable $e) {
                 $result->addFailedMigration($name, microtime(true) - $startTime, $e->getMessage());
@@ -100,6 +114,10 @@ class Migrator
      */
     public function reset(): MigrationResult
     {
+        if (!$this->repository->repositoryExists()) {
+            return new MigrationResult();
+        }
+
         $ran = $this->repository->getRan();
         $steps = count(array_unique(array_column($ran, 'batch')));
         return $this->rollback($steps);
@@ -110,6 +128,17 @@ class Migrator
      */
     public function fresh(): MigrationResult
     {
+        if ($this->pretend) {
+            $this->pretendLog = ['Would drop all tables'];
+            $result = new MigrationResult();
+            foreach ($this->getAllMigrations() as $name => $migration) {
+                $this->runMigration($migration, 'up');
+                $result->addMigration($name, 0.0);
+            }
+
+            return $result;
+        }
+
         $this->schema->dropAllTables();
         return $this->run();
     }
@@ -149,7 +178,9 @@ class Migrator
     public function getPendingMigrations(): array
     {
         $all = $this->getMigrationFiles();
-        $ran = array_keys($this->repository->getRan());
+        $ran = $this->repository->repositoryExists()
+            ? array_keys($this->repository->getRan())
+            : [];
         
         $pending = [];
         foreach ($all as $name => $path) {
@@ -159,6 +190,17 @@ class Migrator
         }
 
         return $this->sortByDependencies($pending);
+    }
+
+    /** @return array<string, MigrationInterface> */
+    private function getAllMigrations(): array
+    {
+        $migrations = [];
+        foreach ($this->getMigrationFiles() as $name => $path) {
+            $migrations[$name] = $this->loadMigration($name);
+        }
+
+        return $this->sortByDependencies($migrations);
     }
 
     /**
