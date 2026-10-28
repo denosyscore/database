@@ -25,6 +25,9 @@ jobs:
       - name: Install development dependencies
         run: composer install --no-interaction --prefer-dist
 
+      - name: Run migration regression tests
+        run: composer test
+
       - name: Check model metadata types
         run: composer analyse
 
