@@ -33,15 +33,32 @@ unchanged. Out-of-range pages clamp to the last page. An empty result reports
 page 1 of 1, `from` and `to` as 0, and an empty collection. Page and page size
 must be positive; request-level upper bounds remain the caller's policy.
 
+## Model attribute metadata
+
+Model subclasses declare `$fillable` and `$hidden` as lists of attribute names,
+not maps. The lists control mass assignment and serialization respectively.
+
+```php
+final class User extends \Denosys\Database\Model
+{
+    /** @var list<string> */
+    protected array $fillable = ['name', 'email'];
+
+    /** @var list<string> */
+    protected array $hidden = ['password'];
+}
+```
+
 ## Development
 
 composer validate --strict
 find src -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 composer test
+composer analyse
 
 ## CI Workflows
 
-- CI: Composer validation, PHP syntax lint, and model-query tests on supported
-  PHP versions for push and pull requests.
+- CI: Composer validation, model metadata static analysis, PHP syntax lint,
+  and model-query tests on supported PHP versions for push and pull requests.
 - Release: GitHub release publication on semantic version tags.
 - Dependabot: weekly Composer dependency update checks.
