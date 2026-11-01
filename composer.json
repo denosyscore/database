@@ -10,7 +10,8 @@
     "denosyscore/container": "^0.2"
   },
   "require-dev": {
-    "phpunit/phpunit": "^10.5"
+    "phpunit/phpunit": "^10.5",
+    "phpstan/phpstan": "^2.2"
   },
   "autoload": {
     "psr-4": {
@@ -18,6 +19,7 @@
     }
   },
   "scripts": {
+    "analyse": "phpstan analyse --no-progress",
     "test": "phpunit"
   },
   "config": {

@@ -27,8 +27,11 @@ jobs:
       - name: Validate composer.json
         run: composer validate --strict
 
-      - name: Install dependencies
+      - name: Install development dependencies
         run: composer install --no-interaction --prefer-dist
+
+      - name: Check model metadata types
+        run: composer analyse
 
       - name: PHP syntax check
         run: |
