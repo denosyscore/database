@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## Unreleased (proposed 0.3.0)
+
+- Add model and relation pagination with hydrated items, consistent empty-set
+  metadata, and clone-based counting that preserves the caller's query.
 
 - Require the package that provides `Denosys\Support\Collection`, fixing
   hydrated model queries and eager-loaded relation collections in clean
