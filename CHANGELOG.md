@@ -5,6 +5,14 @@
 - Keep migration pretend mode read-only across run, rollback, reset, and
   fresh. Previewed migrations remain pending for a later real run. This is a
   backward-compatible safety correction and patch release candidate.
+- Add the referenced `DatabaseException` type so unsupported-driver and PDO
+  connection-failure paths throw the intended exception.
+- Correct SQLite column discovery so guarded schema changes recognize existing
+  columns.
+- Emit declared foreign keys when creating SQLite tables, preserving referential
+  actions such as cascading deletes.
+- Record migration execution time without a driver-specific SQL function, so
+  SQLite can log migrations successfully.
 - Require the package that provides `Denosys\Support\Collection`, fixing
   hydrated model queries and eager-loaded relation collections in clean
   installations.
