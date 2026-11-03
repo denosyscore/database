@@ -18,6 +18,13 @@ eager-loaded relations. Database consumers do not need to define that class.
 
 - src/Database/*
 
+## PDO connection options
+
+Pass driver options under `options` in the connection configuration. Numeric
+PDO attribute identifiers are preserved, so caller options override matching
+defaults. For MySQL, the configured charset/collation init command and `ssl`
+settings take precedence over conflicting entries in `options`.
+
 On SQLite, `SchemaBuilder::getColumns()` and `hasColumn()` report existing
 columns through the same public API used for other supported drivers.
 
