@@ -58,6 +58,10 @@ public function compileCreate(Blueprint $blueprint): array
                 $explicitPrimaryKeys
             )) . ')';
         }
+
+        foreach ($blueprint->getForeignKeys() as $foreignKey) {
+            $columns[] = $this->compileForeignKey($foreignKey);
+        }
         
         // Build CREATE TABLE statement
         $sql = $blueprint->isTemporary() ? 'CREATE TEMPORARY TABLE ' : 'CREATE TABLE ';

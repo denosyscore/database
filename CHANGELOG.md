@@ -6,6 +6,8 @@
   connection-failure paths throw the intended exception.
 - Correct SQLite column discovery so guarded schema changes recognize existing
   columns.
+- Emit declared foreign keys when creating SQLite tables, preserving referential
+  actions such as cascading deletes.
 - Record migration execution time without a driver-specific SQL function, so
   SQLite can log migrations successfully.
 - Require the package that provides `Denosys\Support\Collection`, fixing

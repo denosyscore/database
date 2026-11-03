@@ -21,6 +21,10 @@ eager-loaded relations. Database consumers do not need to define that class.
 On SQLite, `SchemaBuilder::getColumns()` and `hasColumn()` report existing
 columns through the same public API used for other supported drivers.
 
+SQLite table creation emits declared foreign keys, including configured
+`ON DELETE` and `ON UPDATE` actions. Existing SQLite tables do not acquire
+new constraints automatically; rebuild those tables in an explicit migration.
+
 Migration execution timestamps are stored in UTC using a bound value so the
 migration repository works with SQLite, MySQL, and PostgreSQL.
 
