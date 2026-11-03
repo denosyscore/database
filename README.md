@@ -10,6 +10,10 @@ Initial extraction snapshot from denosyscore monorepo as of 2026-02-14.
 
 composer require denosyscore/database
 
+This installs `denosyscore/support`, which provides the
+`Denosys\Support\Collection` returned by hydrated model queries and used by
+eager-loaded relations. Database consumers do not need to define that class.
+
 ## Included Modules
 
 - src/Database/*
@@ -43,12 +47,12 @@ pretend mode off before the real operation.
 
 composer validate --strict
 find src -type f -name '*.php' -print0 | xargs -0 -n1 php -l
-composer analyse
 composer test
+composer analyse
 
 ## CI Workflows
 
-- CI: Composer validation, migration regression tests, model metadata static
-  analysis, and PHP syntax lint on push and pull requests.
+- CI: Composer validation, model metadata static analysis, PHP syntax lint,
+  and migration and model-query tests on supported PHP versions for push and pull requests.
 - Release: GitHub release publication on semantic version tags.
 - Dependabot: weekly Composer dependency update checks.
