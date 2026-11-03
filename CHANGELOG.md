@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Keep migration pretend mode read-only across run, rollback, reset, and
+  fresh. Previewed migrations remain pending for a later real run. This is a
+  backward-compatible safety correction and patch release candidate.
 - Make repository pagination metadata consistent for empty result sets.
 - Preserve numeric PDO attribute identifiers when combining default,
   caller-supplied, MySQL init-command, and SSL options.

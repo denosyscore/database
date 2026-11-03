@@ -55,6 +55,15 @@ final class User extends \Denosys\Database\Model
 }
 ```
 
+## Migration preview
+
+`Migrator::pretend()->run()` lists pending migrations without creating the
+migration repository, applying schema changes, or recording history. The
+`MigrationResult` contains planned migration names, and `getPretendLog()`
+contains descriptive `Would up` entries; it does not contain compiled SQL.
+Pretend mode also keeps rollback, reset, and fresh operations read-only. Turn
+pretend mode off before the real operation.
+
 ## Repository pagination
 
 `Repository::paginate()` reports empty results as page 1 of 1, with `from`
