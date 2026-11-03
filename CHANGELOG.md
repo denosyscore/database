@@ -1,6 +1,11 @@
 # Changelog
 
-## Unreleased (proposed 0.4.0)
+## Unreleased (proposed 0.4.1)
+
+- Declare SQLite primary keys for non-incrementing columns marked with
+  `Column::primary()`, so primary-key upserts work on newly created tables.
+
+## 0.4.0
 
 - Add read-only index metadata inspection on `SchemaBuilder` for MySQL, SQLite,
   and PostgreSQL. Results include index names, ordered columns, uniqueness,
