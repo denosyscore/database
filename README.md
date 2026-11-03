@@ -82,3 +82,10 @@ composer analyse
   and database regression tests on supported PHP versions for push and pull requests.
 - Release: GitHub release publication on semantic version tags.
 - Dependabot: weekly Composer dependency update checks.
+
+## Releases
+
+After CI passes on `main`, create an annotated semantic version tag from that
+reviewed commit and push the tag. The Release workflow publishes a GitHub
+Release. Confirm the matching version is available in the Composer package
+index before updating dependent package constraints.
