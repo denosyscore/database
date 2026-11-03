@@ -220,7 +220,7 @@ public function compileCreate(Blueprint $blueprint): array
      */
     public function compileGetColumns(string $table): string
     {
-        return "PRAGMA table_info({$this->wrapTable($table)})";
+        return "SELECT name AS column_name FROM pragma_table_info('{$this->escapeString($table)}')";
     }
 
     /**

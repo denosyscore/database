@@ -4,6 +4,8 @@
 
 - Add the referenced `DatabaseException` type so unsupported-driver and PDO
   connection-failure paths throw the intended exception.
+- Correct SQLite column discovery so guarded schema changes recognize existing
+  columns.
 - Emit declared foreign keys when creating SQLite tables, preserving referential
   actions such as cascading deletes.
 - Record migration execution time without a driver-specific SQL function, so
