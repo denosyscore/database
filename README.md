@@ -18,6 +18,13 @@ eager-loaded relations. Database consumers do not need to define that class.
 
 - src/Database/*
 
+Migration execution timestamps are stored in UTC using a bound value so the
+migration repository works with SQLite, MySQL, and PostgreSQL.
+
+Connection setup failures and unsupported drivers raise
+`Denosys\Database\Exceptions\DatabaseException`. When a PDO connection fails,
+the original `PDOException` is available from `getPrevious()`.
+
 ## Model attribute metadata
 
 Model subclasses declare `$fillable` and `$hidden` as lists of attribute names,
@@ -44,6 +51,6 @@ composer analyse
 ## CI Workflows
 
 - CI: Composer validation, model metadata static analysis, PHP syntax lint,
-  and model-query tests on supported PHP versions for push and pull requests.
+  and database regression tests on supported PHP versions for push and pull requests.
 - Release: GitHub release publication on semantic version tags.
 - Dependabot: weekly Composer dependency update checks.
