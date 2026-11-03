@@ -35,4 +35,34 @@ final class IndexMetadataTest extends TestCase
         ], $schema->getIndexes('accounts'));
         self::assertSame([], $schema->getIndexes('missing'));
     }
+
+    #[RequiresPhpExtension('pdo_sqlite')]
+    public function testNonIncrementingColumnPrimaryKeySupportsUpsert(): void
+    {
+        $connection = (new ConnectionFactory())->make([
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+        ]);
+        $schema = new SchemaBuilder($connection, new SqliteSchemaGrammar());
+        $schema->create('sessions', static function (Blueprint $table): void {
+            $table->string('id', 128)->primary();
+            $table->text('payload');
+        });
+
+        self::assertSame(
+            [['name' => 'PRIMARY', 'columns' => ['id'], 'unique' => true, 'primary' => true]],
+            $schema->getIndexes('sessions'),
+        );
+        self::assertTrue($connection->table('sessions')->upsert(
+            ['id' => 'session-1', 'payload' => 'first'],
+            ['id'],
+            ['payload'],
+        ));
+        self::assertTrue($connection->table('sessions')->upsert(
+            ['id' => 'session-1', 'payload' => 'second'],
+            ['id'],
+            ['payload'],
+        ));
+        self::assertSame('second', $connection->table('sessions')->where('id', '=', 'session-1')->first()->payload);
+    }
 }

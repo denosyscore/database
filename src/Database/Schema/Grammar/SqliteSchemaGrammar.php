@@ -43,7 +43,7 @@ public function compileCreate(Blueprint $blueprint): array
             $columns[] = $columnDef;
         }
         
-        // Add composite primary key if not inline
+        // SQLite must declare non-incrementing column primary keys at table level.
         $explicitPrimaryKeys = [];
         foreach ($blueprint->getIndexes() as $index) {
             if ($index->getType() === IndexType::Primary) {
@@ -52,7 +52,15 @@ public function compileCreate(Blueprint $blueprint): array
             }
         }
         
-        if (!empty($explicitPrimaryKeys) && $primaryKey === null) {
+        if ($explicitPrimaryKeys === []) {
+            foreach ($blueprint->getColumns() as $column) {
+                if ($column->isPrimary() && !$column->isAutoIncrement()) {
+                    $explicitPrimaryKeys[] = $column->getName();
+                }
+            }
+        }
+
+        if ($explicitPrimaryKeys !== [] && $primaryKey === null) {
             $columns[] = 'PRIMARY KEY (' . implode(', ', array_map(
                 fn($col) => $this->wrapColumn($col),
                 $explicitPrimaryKeys
@@ -284,9 +292,6 @@ public function compileCreate(Blueprint $blueprint): array
                 $sql .= ' DEFAULT ' . $this->compileDefaultValue($column->getDefault());
             }
             
-            if ($column->isUnique() && $column->isPrimary()) {
-                $sql .= ' PRIMARY KEY';
-            }
         }
         
         return $sql;
