@@ -1,6 +1,12 @@
 # Changelog
 
-## Unreleased (proposed 0.3.0)
+## Unreleased (proposed 0.4.0)
+
+- Add read-only index metadata inspection on `SchemaBuilder` for MySQL, SQLite,
+  and PostgreSQL. Results include index names, ordered columns, uniqueness,
+  and primary-key status so schema migrations can inspect existing indexes.
+
+## 0.3.0
 
 - Add model and relation pagination with hydrated items, consistent empty-set
   metadata, and clone-based counting that preserves the caller's query.

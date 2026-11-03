@@ -6,7 +6,10 @@ namespace Denosys\Database\Schema;
 
 use Closure;
 use Denosys\Database\Connection\Connection;
+use Denosys\Database\Exceptions\DatabaseException;
 use Denosys\Database\Schema\Grammar\SchemaGrammarInterface;
+use LogicException;
+use PDOException;
 
 /**
  * Entry point for schema operations.
@@ -129,6 +132,151 @@ class SchemaBuilder
         }
         
         return true;
+    }
+
+    /**
+     * Inspect existing indexes, including their ordered columns and uniqueness.
+     * Expression index positions have a null column name.
+     *
+     * @return list<array{name: string, columns: list<string|null>, unique: bool, primary: bool}>
+     */
+    public function getIndexes(string $table): array
+    {
+        return match ($this->connection->getDriverName()) {
+            'sqlite' => $this->getSqliteIndexes($table),
+            'mysql' => $this->getMySqlIndexes($table),
+            'pgsql' => $this->getPostgresIndexes($table),
+            default => throw new LogicException('Index inspection is not supported for this driver.'),
+        };
+    }
+
+    /** @return list<array{name: string, columns: list<string|null>, unique: bool, primary: bool}> */
+    private function getPostgresIndexes(string $table): array
+    {
+        $sql = <<<'SQL'
+SELECT index_relation.relname AS name,
+       CASE WHEN index_catalog.indisunique THEN 1 ELSE 0 END AS is_unique,
+       CASE WHEN index_catalog.indisprimary THEN 1 ELSE 0 END AS is_primary,
+       key_column.ordinality AS position,
+       attribute.attname AS column_name
+FROM pg_class table_relation
+JOIN pg_index index_catalog ON index_catalog.indrelid = table_relation.oid
+JOIN pg_class index_relation ON index_relation.oid = index_catalog.indexrelid
+LEFT JOIN LATERAL unnest(index_catalog.indkey) WITH ORDINALITY AS key_column(attribute_number, ordinality)
+    ON key_column.ordinality <= index_catalog.indnkeyatts
+LEFT JOIN pg_attribute attribute
+    ON attribute.attrelid = table_relation.oid AND attribute.attnum = key_column.attribute_number
+WHERE table_relation.oid = to_regclass(?)
+ORDER BY index_relation.relname, key_column.ordinality
+SQL;
+
+        $indexes = [];
+        foreach ($this->connection->select($sql, [$table]) as $row) {
+            $name = (string) $row->name;
+            if (!isset($indexes[$name])) {
+                $indexes[$name] = [
+                    'name' => $name,
+                    'columns' => [],
+                    'unique' => (int) $row->is_unique === 1,
+                    'primary' => (int) $row->is_primary === 1,
+                ];
+            }
+            if ($row->position !== null) {
+                $indexes[$name]['columns'][(int) $row->position] = $row->column_name === null
+                    ? null
+                    : (string) $row->column_name;
+            }
+        }
+
+        ksort($indexes);
+        foreach ($indexes as &$index) {
+            ksort($index['columns']);
+            $index['columns'] = array_values($index['columns']);
+        }
+        unset($index);
+
+        return array_values($indexes);
+    }
+
+    /** @return list<array{name: string, columns: list<string|null>, unique: bool, primary: bool}> */
+    private function getMySqlIndexes(string $table): array
+    {
+        $quotedTable = '`' . str_replace('`', '``', $table) . '`';
+        $indexes = [];
+        try {
+            $rows = $this->connection->select("SHOW INDEX FROM {$quotedTable}");
+        } catch (DatabaseException $exception) {
+            $cause = $exception->getPrevious();
+            if ($cause instanceof PDOException && (int) ($cause->errorInfo[1] ?? 0) === 1146) {
+                return [];
+            }
+            throw $exception;
+        }
+
+        foreach ($rows as $row) {
+            $name = (string) $row->Key_name;
+            if (!isset($indexes[$name])) {
+                $indexes[$name] = [
+                    'name' => $name,
+                    'columns' => [],
+                    'unique' => (int) $row->Non_unique === 0,
+                    'primary' => $name === 'PRIMARY',
+                ];
+            }
+            $indexes[$name]['columns'][(int) $row->Seq_in_index] = $row->Column_name === null
+                ? null
+                : (string) $row->Column_name;
+        }
+
+        ksort($indexes);
+        foreach ($indexes as &$index) {
+            ksort($index['columns']);
+            $index['columns'] = array_values($index['columns']);
+        }
+        unset($index);
+
+        return array_values($indexes);
+    }
+
+    /** @return list<array{name: string, columns: list<string|null>, unique: bool, primary: bool}> */
+    private function getSqliteIndexes(string $table): array
+    {
+        $quotedTable = '"' . str_replace('"', '""', $table) . '"';
+        $indexes = [];
+        $primaryColumns = [];
+
+        foreach ($this->connection->select("PRAGMA table_info({$quotedTable})") as $column) {
+            if ((int) $column->pk > 0) {
+                $primaryColumns[(int) $column->pk] = (string) $column->name;
+            }
+        }
+        if ($primaryColumns !== []) {
+            ksort($primaryColumns);
+            $indexes[] = ['name' => 'PRIMARY', 'columns' => array_values($primaryColumns), 'unique' => true, 'primary' => true];
+        }
+
+        foreach ($this->connection->select("PRAGMA index_list({$quotedTable})") as $index) {
+            if ($index->origin === 'pk') {
+                continue;
+            }
+
+            $name = (string) $index->name;
+            $quotedName = '"' . str_replace('"', '""', $name) . '"';
+            $columns = [];
+            foreach ($this->connection->select("PRAGMA index_info({$quotedName})") as $column) {
+                $columns[(int) $column->seqno] = $column->name === null ? null : (string) $column->name;
+            }
+            ksort($columns);
+            $indexes[] = [
+                'name' => $name,
+                'columns' => array_values($columns),
+                'unique' => (bool) $index->unique,
+                'primary' => false,
+            ];
+        }
+
+        usort($indexes, static fn(array $a, array $b): int => strcmp($a['name'], $b['name']));
+        return $indexes;
     }
 
     /**

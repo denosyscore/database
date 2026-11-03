@@ -43,6 +43,13 @@ settings take precedence over conflicting entries in `options`.
 On SQLite, `SchemaBuilder::getColumns()` and `hasColumn()` report existing
 columns through the same public API used for other supported drivers.
 
+`SchemaBuilder::getIndexes($table)` returns indexes in name order for MySQL,
+SQLite, and PostgreSQL. Each entry has `name`, `columns` (in key order),
+`unique`, and `primary` fields. Expression index positions have a `null`
+column name. A missing table returns an empty list. Inspect existing indexes
+before replacing one, and check for duplicate values before adding a unique
+constraint.
+
 SQLite table creation emits declared foreign keys, including configured
 `ON DELETE` and `ON UPDATE` actions. Existing SQLite tables do not acquire
 new constraints automatically; rebuild those tables in an explicit migration.
