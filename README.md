@@ -25,6 +25,20 @@ PDO attribute identifiers are preserved, so caller options override matching
 defaults. For MySQL, the configured charset/collation init command and `ssl`
 settings take precedence over conflicting entries in `options`.
 
+On SQLite, `SchemaBuilder::getColumns()` and `hasColumn()` report existing
+columns through the same public API used for other supported drivers.
+
+SQLite table creation emits declared foreign keys, including configured
+`ON DELETE` and `ON UPDATE` actions. Existing SQLite tables do not acquire
+new constraints automatically; rebuild those tables in an explicit migration.
+
+Migration execution timestamps are stored in UTC using a bound value so the
+migration repository works with SQLite, MySQL, and PostgreSQL.
+
+Connection setup failures and unsupported drivers raise
+`Denosys\Database\Exceptions\DatabaseException`. When a PDO connection fails,
+the original `PDOException` is available from `getPrevious()`.
+
 ## Model attribute metadata
 
 Model subclasses declare `$fillable` and `$hidden` as lists of attribute names,
