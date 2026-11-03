@@ -5,6 +5,11 @@
 - Keep migration pretend mode read-only across run, rollback, reset, and
   fresh. Previewed migrations remain pending for a later real run. This is a
   backward-compatible safety correction and patch release candidate.
+- Make repository pagination metadata consistent for empty result sets.
+- Preserve numeric PDO attribute identifiers when combining default,
+  caller-supplied, MySQL init-command, and SSL options.
+- Resolve MySQL-specific PDO constants without deprecation notices on PHP 8.5
+  while retaining PHP 8.2 compatibility.
 - Add the referenced `DatabaseException` type so unsupported-driver and PDO
   connection-failure paths throw the intended exception.
 - Correct SQLite column discovery so guarded schema changes recognize existing

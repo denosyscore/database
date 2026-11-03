@@ -81,10 +81,7 @@ class ConnectionFactory
 
         $dsn = "mysql:host={$host};port={$port};dbname={$database};charset={$charset}";
 
-        $options = $this->getDefaultOptions($config);
-        $options[PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES '{$charset}' COLLATE '{$collation}'";
-
-        $options = array_merge($options, $this->getMySqlSslOptions($config));
+        $options = $this->getMySqlOptions($config, $charset, $collation);
 
         if (isset($config['unix_socket']) && !empty($config['unix_socket'])) {
             $dsn = "mysql:unix_socket={$config['unix_socket']};dbname={$database};charset={$charset}";
@@ -98,13 +95,27 @@ class ConnectionFactory
     }
 
     /**
-     * Get MySQL SSL/TLS PDO options from config.
+     * Compose MySQL PDO options without renumbering attribute identifiers.
+     *
+     * @param array<string, mixed> $config
+     * @return array<int, mixed>
      */
+    protected function getMySqlOptions(array $config, string $charset, string $collation): array
+    {
+        return array_replace(
+            $this->getDefaultOptions($config),
+            [$this->mysqlAttribute('INIT_COMMAND') => "SET NAMES '{$charset}' COLLATE '{$collation}'"],
+            $this->getMySqlSslOptions($config),
+        );
+    }
+
     /**
-     * @return array<string, mixed>
-      * @param array<string, mixed> $config
+     * Get MySQL SSL/TLS PDO options from config.
+     *
+     * @return array<int, mixed>
+     * @param array<string, mixed> $config
      */
-protected function getMySqlSslOptions(array $config): array
+    protected function getMySqlSslOptions(array $config): array
     {
         $options = [];
 
@@ -116,28 +127,38 @@ protected function getMySqlSslOptions(array $config): array
 
         if ($ssl === true) {
             // Simple SSL: enable with server cert verification
-            $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
+            $options[$this->mysqlAttribute('SSL_VERIFY_SERVER_CERT')] = true;
         } elseif (is_array($ssl)) {
             // Detailed SSL config
             if (isset($ssl['ca'])) {
-                $options[PDO::MYSQL_ATTR_SSL_CA] = $ssl['ca'];
+                $options[$this->mysqlAttribute('SSL_CA')] = $ssl['ca'];
             }
             if (isset($ssl['cert'])) {
-                $options[PDO::MYSQL_ATTR_SSL_CERT] = $ssl['cert'];
+                $options[$this->mysqlAttribute('SSL_CERT')] = $ssl['cert'];
             }
             if (isset($ssl['key'])) {
-                $options[PDO::MYSQL_ATTR_SSL_KEY] = $ssl['key'];
+                $options[$this->mysqlAttribute('SSL_KEY')] = $ssl['key'];
             }
             if (isset($ssl['capath'])) {
-                $options[PDO::MYSQL_ATTR_SSL_CAPATH] = $ssl['capath'];
+                $options[$this->mysqlAttribute('SSL_CAPATH')] = $ssl['capath'];
             }
             if (isset($ssl['cipher'])) {
-                $options[PDO::MYSQL_ATTR_SSL_CIPHER] = $ssl['cipher'];
+                $options[$this->mysqlAttribute('SSL_CIPHER')] = $ssl['cipher'];
             }
-            $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = $ssl['verify'] ?? true;
+            $options[$this->mysqlAttribute('SSL_VERIFY_SERVER_CERT')] = $ssl['verify'] ?? true;
         }
 
         return $options;
+    }
+
+    /** Resolve driver-specific constants across PHP 8.2 through 8.5+. */
+    private function mysqlAttribute(string $name): int
+    {
+        if (class_exists(\Pdo\Mysql::class)) {
+            return constant(\Pdo\Mysql::class . '::ATTR_' . $name);
+        }
+
+        return constant(PDO::class . '::MYSQL_ATTR_' . $name);
     }
 
     /**
@@ -238,7 +259,7 @@ protected function getMySqlSslOptions(array $config): array
 
         // Merge with custom options from config
         if (isset($config['options']) && is_array($config['options'])) {
-            $options = array_merge($options, $config['options']);
+            $options = array_replace($options, $config['options']);
         }
 
         return $options;

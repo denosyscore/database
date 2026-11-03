@@ -235,7 +235,7 @@ abstract class Repository
     public function paginate(int $page = 1, int $perPage = 15, array $criteria = [], ?array $orderBy = null): array
     {
         $total = $this->count($criteria);
-        $totalPages = (int) ceil($total / $perPage);
+        $totalPages = max(1, (int) ceil($total / $perPage));
         $page = max(1, min($page, $totalPages));
         $offset = ($page - 1) * $perPage;
 
@@ -248,7 +248,7 @@ abstract class Repository
                 'per_page' => $perPage,
                 'current_page' => $page,
                 'last_page' => $totalPages,
-                'from' => $offset + 1,
+                'from' => $total === 0 ? 0 : $offset + 1,
                 'to' => min($offset + $perPage, $total),
             ],
         ];
