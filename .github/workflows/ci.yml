@@ -22,7 +22,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-          extensions: pdo_pgsql, pdo_sqlite
+          extensions: pdo_mysql, pdo_pgsql, pdo_sqlite
 
       - name: Validate composer.json
         run: composer validate --strict
