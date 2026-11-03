@@ -14,6 +14,9 @@ composer require denosyscore/database
 
 - src/Database/*
 
+Migration execution timestamps are stored in UTC using a bound value so the
+migration repository works with SQLite, MySQL, and PostgreSQL.
+
 Connection setup failures and unsupported drivers raise
 `Denosys\Database\Exceptions\DatabaseException`. When a PDO connection fails,
 the original `PDOException` is available from `getPrevious()`.
