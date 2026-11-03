@@ -58,6 +58,10 @@ public function compileCreate(Blueprint $blueprint): array
                 $explicitPrimaryKeys
             )) . ')';
         }
+
+        foreach ($blueprint->getForeignKeys() as $foreignKey) {
+            $columns[] = $this->compileForeignKey($foreignKey);
+        }
         
         // Build CREATE TABLE statement
         $sql = $blueprint->isTemporary() ? 'CREATE TEMPORARY TABLE ' : 'CREATE TABLE ';
@@ -216,7 +220,7 @@ public function compileCreate(Blueprint $blueprint): array
      */
     public function compileGetColumns(string $table): string
     {
-        return "PRAGMA table_info({$this->wrapTable($table)})";
+        return "SELECT name AS column_name FROM pragma_table_info('{$this->escapeString($table)}')";
     }
 
     /**

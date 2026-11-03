@@ -6,12 +6,12 @@ namespace Denosys\Database;
 
 use Denosys\Database\Connection\Connection;
 use Denosys\Database\Connection\ConnectionManager;
-use Denosys\Database\Query\Builder;
 
 /**
  * @phpstan-consistent-constructor
  * 
  * @method static ModelBuilder where(string $column, mixed $operator = null, mixed $value = null)
+ * @method static ModelBuilder whereRaw(string $sql, array $bindings = [], string $boolean = 'and')
  * @method static ModelBuilder with(string|array<string> $relations)
  * @method static static|null first()
  * @method static ModelBuilder orderBy(string $column, string $direction = 'asc')
@@ -234,7 +234,7 @@ abstract class Model
     /**
      * Get a new query builder for the model.
      */
-    public function newQuery(): ModelBuilder|Builder
+    public function newQuery(): ModelBuilder
     {
         $builder = new ModelBuilder($this->getConnection());
         $builder->setModel($this);
@@ -245,7 +245,7 @@ abstract class Model
     /**
      * Start a new query (static convenience method).
      */
-    public static function query(): ModelBuilder|Builder
+    public static function query(): ModelBuilder
     {
         return (new static())->newQuery();
     }

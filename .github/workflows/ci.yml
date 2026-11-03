@@ -22,13 +22,16 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-          extensions: pdo_sqlite
+          extensions: pdo_mysql, pdo_pgsql, pdo_sqlite
 
       - name: Validate composer.json
         run: composer validate --strict
 
       - name: Install development dependencies
         run: composer install --no-interaction --prefer-dist
+
+      - name: Run migration regression tests
+        run: composer test
 
       - name: Check model metadata types
         run: composer analyse
@@ -41,5 +44,5 @@ jobs:
             echo "No src/ directory to lint."
           fi
 
-      - name: Model collection regression test
+      - name: Database regression tests
         run: composer test

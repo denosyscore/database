@@ -5,6 +5,22 @@
 - Add model and relation pagination with hydrated items, consistent empty-set
   metadata, and clone-based counting that preserves the caller's query.
 
+- Keep migration pretend mode read-only across run, rollback, reset, and
+  fresh. Previewed migrations remain pending for a later real run. This is a
+  backward-compatible safety correction and patch release candidate.
+- Make repository pagination metadata consistent for empty result sets.
+- Preserve numeric PDO attribute identifiers when combining default,
+  caller-supplied, MySQL init-command, and SSL options.
+- Resolve MySQL-specific PDO constants without deprecation notices on PHP 8.5
+  while retaining PHP 8.2 compatibility.
+- Add the referenced `DatabaseException` type so unsupported-driver and PDO
+  connection-failure paths throw the intended exception.
+- Correct SQLite column discovery so guarded schema changes recognize existing
+  columns.
+- Emit declared foreign keys when creating SQLite tables, preserving referential
+  actions such as cascading deletes.
+- Record migration execution time without a driver-specific SQL function, so
+  SQLite can log migrations successfully.
 - Require the package that provides `Denosys\Support\Collection`, fixing
   hydrated model queries and eager-loaded relation collections in clean
   installations.
