@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased
+## Unreleased (proposed 0.3.0)
+
+- Add model and relation pagination with hydrated items, consistent empty-set
+  metadata, and clone-based counting that preserves the caller's query.
 
 - Keep migration pretend mode read-only across run, rollback, reset, and
   fresh. Previewed migrations remain pending for a later real run. This is a

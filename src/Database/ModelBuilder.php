@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Denosys\Database;
 
+use Denosys\Database\Pagination\LengthAwarePaginator;
 use Denosys\Database\Query\Builder;
+use Denosys\Support\Collection;
+use InvalidArgumentException;
 
 class ModelBuilder extends Builder
 {
@@ -29,6 +32,31 @@ class ModelBuilder extends Builder
     public function getModel(): ?Model
     {
         return $this->model;
+    }
+
+    public function paginate(int $page = 1, int $perPage = 15): LengthAwarePaginator
+    {
+        if ($page < 1 || $perPage < 1) {
+            throw new InvalidArgumentException('Page and per-page values must be positive.');
+        }
+
+        $countQuery = clone $this;
+        $countQuery->limitValue = null;
+        $countQuery->offsetValue = null;
+        $countQuery->orders = [];
+        $countQuery->bindings['order'] = [];
+        $total = $countQuery->count();
+        $lastPage = max(1, (int) ceil($total / $perPage));
+        $currentPage = min($page, $lastPage);
+
+        $items = (clone $this)->forPage($currentPage, $perPage)->get();
+
+        return new LengthAwarePaginator(
+            $items instanceof Collection ? $items : new Collection($items),
+            $total,
+            $currentPage,
+            $perPage,
+        );
     }
 
     /**
