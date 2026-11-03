@@ -55,6 +55,11 @@ final class User extends \Denosys\Database\Model
 }
 ```
 
+## Repository pagination
+
+`Repository::paginate()` reports empty results as page 1 of 1, with `from`
+and `to` both 0. Its existing response array shape is unchanged.
+
 ## Development
 
 composer validate --strict

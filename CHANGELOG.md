@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Make repository pagination metadata consistent for empty result sets.
 - Preserve numeric PDO attribute identifiers when combining default,
   caller-supplied, MySQL init-command, and SSL options.
 - Resolve MySQL-specific PDO constants without deprecation notices on PHP 8.5
