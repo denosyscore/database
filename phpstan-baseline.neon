@@ -1,0 +1,1783 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Cannot unset property Denosys\\Database\\Connection\\Connection\:\:\$pdo because it might have hooks in a subclass\.$#'
+			identifier: unset.possiblyHookedProperty
+			count: 1
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Method Denosys\\Database\\Connection\\Connection\:\:delete\(\) should return int but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Method Denosys\\Database\\Connection\\Connection\:\:getDatabaseName\(\) should return string\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Method Denosys\\Database\\Connection\\Connection\:\:getTablePrefix\(\) should return string but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Method Denosys\\Database\\Connection\\Connection\:\:insert\(\) should return int\|string but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Method Denosys\\Database\\Connection\\Connection\:\:select\(\) should return array\<object\> but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Method Denosys\\Database\\Connection\\Connection\:\:statement\(\) should return bool but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Method Denosys\\Database\\Connection\\Connection\:\:unprepared\(\) should return bool but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Method Denosys\\Database\\Connection\\Connection\:\:update\(\) should return int but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Parameter \#1 \$query of method Denosys\\Database\\Connection\\Connection\:\:prepared\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Parameter \#1 \$statement of method PDO\:\:exec\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Parameter \#2 \$bindings of method Denosys\\Database\\Connection\\Connection\:\:bindValues\(\) expects array\<int\|string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/Database/Connection/Connection.php
+
+		-
+			message: '#^Method Denosys\\Database\\Connection\\ConnectionFactory\:\:getDefaultOptions\(\) should return array\<int, mixed\> but returns array\<mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Method Denosys\\Database\\Connection\\ConnectionFactory\:\:mysqlAttribute\(\) should return int but returns mixed\.$#'
+			identifier: return.type
+			count: 2
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Parameter \#1 \$driver of method Denosys\\Database\\Connection\\ConnectionFactory\:\:createGrammar\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Parameter \#1 \$driver of method Denosys\\Database\\Connection\\ConnectionFactory\:\:createPdoConnection\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Parameter \#1 \$filename of function file_exists expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Parameter \#1 \$filename of function touch expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Parameter \#1 \$path of function dirname expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Parameter \#2 \$charset of method Denosys\\Database\\Connection\\ConnectionFactory\:\:getMySqlOptions\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Parameter \#2 \$username of class PDO constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Parameter \#3 \$collation of method Denosys\\Database\\Connection\\ConnectionFactory\:\:getMySqlOptions\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Parameter \#3 \$password of class PDO constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Part \$charset \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Part \$config\[''journal_mode''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Part \$config\[''sslmode''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Part \$config\[''synchronous''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Part \$config\[''timezone''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Part \$config\[''unix_socket''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Part \$database \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 4
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Part \$driver \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Part \$host \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Part \$port \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Part \$schema \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Property Denosys\\Database\\Connection\\ConnectionFactory\:\:\$grammars \(array\<string, class\-string\<Denosys\\Database\\Contracts\\GrammarInterface\>\>\) does not accept array\<string, string\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Connection/ConnectionFactory.php
+
+		-
+			message: '#^Method Denosys\\Database\\Connection\\ConnectionManager\:\:select\(\) should return array\<array\<string, mixed\>\> but returns array\<object\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Connection/ConnectionManager.php
+
+		-
+			message: '#^Method Denosys\\Database\\Database\:\:select\(\) should return array\<int, object\> but returns array\<object\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Database.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Cannot access offset ''connections'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Cannot access offset ''default'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Cannot call method connection\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Cannot call method get\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 5
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Class Denosys\\Config\\ConfigurationInterface not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$factory of class Denosys\\Database\\Connection\\ConnectionManager constructor expects Denosys\\Database\\Connection\\ConnectionFactory\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$manager of static method Denosys\\Database\\Database\:\:setConnectionManager\(\) expects Denosys\\Database\\Connection\\ConnectionManager, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$manager of static method Denosys\\Database\\Model\:\:setConnectionManager\(\) expects Denosys\\Database\\Connection\\ConnectionManager, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Denosys\\Database\\Connection\\ConnectionManager\:\:addConnection\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Denosys\\Database\\Connection\\ConnectionManager\:\:setDefaultConnection\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$config of method Denosys\\Database\\Connection\\ConnectionManager\:\:addConnection\(\) expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/DatabaseServiceProvider.php
+
+		-
+			message: '#^Method Denosys\\Database\\Entity\:\:toJson\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Entity.php
+
+		-
+			message: '#^Parameter \#1 \$attributes of class Denosys\\Database\\Entity constructor expects array\<string, mixed\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Entity.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Exceptions/ModelNotFoundException.php
+
+		-
+			message: '#^Call to static method create\(\) on an unknown class Faker\\Factory\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Database/Factory/Factory.php
+
+		-
+			message: '#^Method Denosys\\Database\\Factory\\Factory\:\:resolveAttributes\(\) should return array\<string, mixed\> but returns array\<mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Factory/Factory.php
+
+		-
+			message: '#^Offset int does not exist on non\-empty\-array\<string, mixed\>\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: src/Database/Factory/Factory.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Factory/Factory.php
+
+		-
+			message: '#^Parameter \$faker of method Denosys\\Database\\Factory\\Factory\:\:__construct\(\) has invalid type Faker\\Generator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Database/Factory/Factory.php
+
+		-
+			message: '#^Parameter \$faker of method Denosys\\Database\\Factory\\Factory\:\:new\(\) has invalid type Faker\\Generator\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Database/Factory/Factory.php
+
+		-
+			message: '#^Property Denosys\\Database\\Factory\\Factory\:\:\$faker \(Faker\\Generator\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Factory/Factory.php
+
+		-
+			message: '#^Property Denosys\\Database\\Factory\\Factory\:\:\$faker has unknown class Faker\\Generator as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Database/Factory/Factory.php
+
+		-
+			message: '#^Property Denosys\\Database\\Factory\\Factory\:\:\$sequence \(array\<string, mixed\>\) does not accept array\<int\<0, max\>\|string, array\<string, mixed\>\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Factory/Factory.php
+
+		-
+			message: '#^Trait Denosys\\Database\\Factory\\HasFactory is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Database/Factory/HasFactory.php
+
+		-
+			message: '#^Binary operation "\." between mixed and '' '' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 2
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 2
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Cannot access offset ''boolean'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Cannot access offset 0 on list\<string\>\|false\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Cannot access offset 0 on non\-empty\-list\<string\>\|false\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Cannot access offset 1 on list\<string\>\|false\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Cannot access offset 1 on non\-empty\-list\<string\>\|false\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Method Denosys\\Database\\Grammar\\Grammar\:\:compileWhere\(\) should return string but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Parameter \#1 \$sql of method Denosys\\Database\\Grammar\\Grammar\:\:concatenateSelect\(\) expects array\<string, string\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Grammar\\Grammar\:\:wrap\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 7
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Parameter \#1 \$values of method Denosys\\Database\\Grammar\\Grammar\:\:parameterize\(\) expects array\<int\|string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Parameter \#1 \$where of method Denosys\\Database\\Grammar\\Grammar\:\:compileWhere\(\) expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Parameter \#1 \$wheres of method Denosys\\Database\\Grammar\\Grammar\:\:compileWheres\(\) expects array\<int\|string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Part \$where\[''type''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Database/Grammar/Grammar.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Grammar\\Grammar\:\:wrap\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Grammar/MySqlGrammar.php
+
+		-
+			message: '#^Parameter \#2 \$columns of method Denosys\\Database\\Grammar\\Grammar\:\:compileInsert\(\) expects array\<string\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Grammar/MySqlGrammar.php
+
+		-
+			message: '#^Default value of the parameter \#3 \$returning \(array\<int, string\>\) of method Denosys\\Database\\Grammar\\PostgresGrammar\:\:compileInsertReturning\(\) is incompatible with type array\<string, mixed\>\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: src/Database/Grammar/PostgresGrammar.php
+
+		-
+			message: '#^Default value of the parameter \#4 \$returning \(array\<int, string\>\) of method Denosys\\Database\\Grammar\\PostgresGrammar\:\:compileUpdateReturning\(\) is incompatible with type array\<string, mixed\>\.$#'
+			identifier: parameter.defaultValue
+			count: 1
+			path: src/Database/Grammar/PostgresGrammar.php
+
+		-
+			message: '#^Offset 0 on array\<string, mixed\> on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/Database/Grammar/PostgresGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Grammar\\Grammar\:\:wrap\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/Database/Grammar/PostgresGrammar.php
+
+		-
+			message: '#^Parameter \#2 \$columns of method Denosys\\Database\\Grammar\\Grammar\:\:compileInsert\(\) expects array\<string\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Grammar/PostgresGrammar.php
+
+		-
+			message: '#^Method Denosys\\Database\\Grammar\\SqliteGrammar\:\:compileTruncateReset\(\) should return array\<string, mixed\> but returns array\<int, string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Grammar/SqliteGrammar.php
+
+		-
+			message: '#^Offset 0 on array\<string, mixed\> on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/Database/Grammar/SqliteGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Grammar\\Grammar\:\:wrap\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/Database/Grammar/SqliteGrammar.php
+
+		-
+			message: '#^Parameter \#2 \$columns of method Denosys\\Database\\Grammar\\Grammar\:\:compileInsert\(\) expects array\<string\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Grammar/SqliteGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$string of function trim expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Migration/Migration.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 2
+			path: src/Database/Migration/MigrationRepository.php
+
+		-
+			message: '#^Method Denosys\\Database\\Migration\\MigrationRepository\:\:getChecksum\(\) should return string\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Migration/MigrationRepository.php
+
+		-
+			message: '#^Method Denosys\\Database\\Migration\\MigrationRepository\:\:getLastBatch\(\) should return array\<string\> but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Migration/MigrationRepository.php
+
+		-
+			message: '#^Method Denosys\\Database\\Migration\\MigrationRepository\:\:getMigrationsForSteps\(\) should return array\<string\> but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Migration/MigrationRepository.php
+
+		-
+			message: '#^Method Denosys\\Database\\Migration\\MigrationRepository\:\:getRan\(\) should return array\<string, mixed\> but returns array\<array\<string, mixed\>\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Migration/MigrationRepository.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: src/Database/Migration/MigrationRepository.php
+
+		-
+			message: '#^Property Denosys\\Database\\Migration\\MigrationResult\:\:\$migrations \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 2
+			path: src/Database/Migration/MigrationResult.php
+
+		-
+			message: '#^Binary operation "\." between mixed and ''/database/migrations'' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Database/Migration/MigrationServiceProvider.php
+
+		-
+			message: '#^Cannot call method getDriverName\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Migration/MigrationServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$connection of class Denosys\\Database\\Migration\\MigrationRepository constructor expects Denosys\\Database\\Connection\\Connection, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Migration/MigrationServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$connection of class Denosys\\Database\\Migration\\Migrator constructor expects Denosys\\Database\\Connection\\Connection, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Migration/MigrationServiceProvider.php
+
+		-
+			message: '#^Parameter \#1 \$connection of class Denosys\\Database\\Schema\\SchemaBuilder constructor expects Denosys\\Database\\Connection\\Connection, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Migration/MigrationServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$grammar of class Denosys\\Database\\Schema\\SchemaBuilder constructor expects Denosys\\Database\\Schema\\Grammar\\SchemaGrammarInterface, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Migration/MigrationServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$schema of class Denosys\\Database\\Migration\\MigrationRepository constructor expects Denosys\\Database\\Schema\\SchemaBuilder, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Migration/MigrationServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$schema of class Denosys\\Database\\Migration\\Migrator constructor expects Denosys\\Database\\Schema\\SchemaBuilder, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Migration/MigrationServiceProvider.php
+
+		-
+			message: '#^Parameter \#3 \$repository of class Denosys\\Database\\Migration\\Migrator constructor expects Denosys\\Database\\Migration\\MigrationRepository, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Migration/MigrationServiceProvider.php
+
+		-
+			message: '#^Argument of an invalid type list\<string\>\|false supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Database/Migration/Migrator.php
+
+		-
+			message: '#^Cannot access offset ''batch'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Database/Migration/Migrator.php
+
+		-
+			message: '#^Cannot access offset ''checksum'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Database/Migration/Migrator.php
+
+		-
+			message: '#^Method Denosys\\Database\\Migration\\Migrator\:\:getChecksum\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Migration/Migrator.php
+
+		-
+			message: '#^Method Denosys\\Database\\Migration\\Migrator\:\:status\(\) should return array\<string, array\{ran\: bool, batch\: int\|null, checksum\: string\|null\}\> but returns array\<string, array\{ran\: bool, batch\: mixed, checksum\: mixed, checksum_valid\: bool\|null\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Migration/Migrator.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_unique expects an array of values castable to string, list given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Migration/Migrator.php
+
+		-
+			message: '#^Right side of && is always false\.$#'
+			identifier: booleanAnd.rightAlwaysFalse
+			count: 2
+			path: src/Database/Migration/Migrator.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$primaryKey\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getForeignKey\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getKeyName\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Call to an undefined method object\:\:newQuery\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: src/Database/Model.php
+
+		-
+			message: '#^Call to static method create\(\) on an unknown class Doctrine\\Inflector\\InflectorFactory\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Cannot call method build\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Cannot call method connection\(\) on Denosys\\Database\\Connection\\ConnectionManager\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Cannot call method eagerLoadRelations\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Cannot call method getResults\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Cannot call method pluralize\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Cannot call method setRelationName\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Cannot call method tableize\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Class Denosys\\Database\\Model has PHPDoc tag @method for method whereRaw\(\) parameter \#2 \$bindings with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Method Denosys\\Database\\Model\:\:find\(\) should return static\(Denosys\\Database\\Model\)\|null but returns Denosys\\Database\\Model\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Method Denosys\\Database\\Model\:\:getCasts\(\) should return array\<string, string\> but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Method Denosys\\Database\\Model\:\:inferTableName\(\) should return string but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Method Denosys\\Database\\Model\:\:toJson\(\) should return string but returns string\|false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#1 \$attributes of method Denosys\\Database\\Model\:\:newFromDatabase\(\) expects array\<string, mixed\>, array given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#1 \$datetime of class DateTimeImmutable constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#1 \$model of method Denosys\\Database\\Model\:\:getForeignKeyFromModel\(\) expects Denosys\\Database\\Model, object given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#1 \$query of class Denosys\\Database\\Relations\\BelongsTo constructor expects Denosys\\Database\\ModelBuilder, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#1 \$query of class Denosys\\Database\\Relations\\BelongsToMany constructor expects Denosys\\Database\\ModelBuilder, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#1 \$query of class Denosys\\Database\\Relations\\HasMany constructor expects Denosys\\Database\\ModelBuilder, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#1 \$query of class Denosys\\Database\\Relations\\HasOne constructor expects Denosys\\Database\\ModelBuilder, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_map expects array, array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#3 \$subject of function str_replace expects array\<string\>\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#4 \$ownerKey of class Denosys\\Database\\Relations\\BelongsTo constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#5 \$relatedPivotKey of class Denosys\\Database\\Relations\\BelongsToMany constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Parameter \#7 \$relatedKey of class Denosys\\Database\\Relations\\BelongsToMany constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Possibly invalid array key type string\|null\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: src/Database/Model.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Database/ModelBuilder.php
+
+		-
+			message: '#^Cannot call method first\(\) on array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\>\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/ModelBuilder.php
+
+		-
+			message: '#^Cannot call method isEmpty\(\) on array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\>\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/ModelBuilder.php
+
+		-
+			message: '#^Method Denosys\\Database\\ModelBuilder\:\:find\(\) should return Denosys\\Database\\Model\|null but returns object\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/ModelBuilder.php
+
+		-
+			message: '#^Method Denosys\\Database\\ModelBuilder\:\:get\(\) should return array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\> but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/ModelBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$attributes of method Denosys\\Database\\Model\:\:newFromDatabase\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/ModelBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$object_or_class of function method_exists expects object\|string, Denosys\\Database\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/ModelBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$value of function count expects array\|Countable, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/ModelBuilder.php
+
+		-
+			message: '#^Parameter \#2 \$results of method Denosys\\Database\\Relations\\Relation\:\:match\(\) expects Denosys\\Support\\Collection, array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/ModelBuilder.php
+
+		-
+			message: '#^Property Denosys\\Database\\ModelBuilder\:\:\$eagerLoad \(array\<string\>\) does not accept array\<mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/ModelBuilder.php
+
+		-
+			message: '#^Method Denosys\\Database\\Pagination\\LengthAwarePaginator\:\:__construct\(\) has parameter \$items with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Database/Pagination/LengthAwarePaginator.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$aggregate\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Call to static method dump\(\) on an unknown class Symfony\\Component\\VarDumper\\VarDumper\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Method Denosys\\Database\\Query\\Builder\:\:avg\(\) should return float\|int\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Method Denosys\\Database\\Query\\Builder\:\:first\(\) should return object\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Method Denosys\\Database\\Query\\Builder\:\:pluck\(\) should return array\<string, mixed\> but returns array\.$#'
+			identifier: return.type
+			count: 2
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Method Denosys\\Database\\Query\\Builder\:\:sum\(\) should return float\|int but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#1 \$orders of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileOrders\(\) expects array\<array\<string, string\>\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileDelete\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileInsert\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileInsertBatch\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileTruncate\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileUpsert\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:wrapTable\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Query\\Builder\:\:table\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Contracts\\GrammarInterface\:\:wrap\(\) expects string, int\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_map expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#2 \$arrays of function array_diff expects an array of values castable to string, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#2 \$columns of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileInsert\(\) expects array\<string\>, list\<int\|string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#2 \$columns of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileUpsert\(\) expects array\<string\>, list\<int\|string\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#2 \$property of function property_exists expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#3 \$conflictColumns of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileUpsert\(\) expects array\<string\>, array\<int\<0, max\>\|string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#3 \$conflictColumns of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileUpsert\(\) expects array\<string\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Parameter \#4 \$updateColumns of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileUpsert\(\) expects array\<string\>, array\<int\<0, max\>\|string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$columns \(array\<string\>\) does not accept array\<mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 2
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$groups \(array\<string, mixed\>\) does not accept array\<int\<0, max\>\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$havings \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$joins \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$orders \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$wheres \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 6
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between int\|string and false will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/Database/Query/Builder.php
+
+		-
+			message: '#^Cannot call method getAttribute\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Relations/BelongsTo.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\BelongsTo\:\:getEagerModelKeys\(\) should return array\<string\> but returns array\<int\<0, max\>, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Relations/BelongsTo.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\BelongsTo\:\:getResults\(\) should return Denosys\\Database\\Model\|null but returns object\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Relations/BelongsTo.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\BelongsTo\:\:match\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Database/Relations/BelongsTo.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_unique expects an array of values castable to string, list\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Relations/BelongsTo.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 3
+			path: src/Database/Relations/BelongsTo.php
+
+		-
+			message: '#^Cannot call method getAttribute\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Relations/BelongsToMany.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\BelongsToMany\:\:buildDictionary\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Database/Relations/BelongsToMany.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\BelongsToMany\:\:buildDictionary\(\) should return array\<array\<Denosys\\Database\\Model\>\> but returns array\<list\<mixed\>\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Relations/BelongsToMany.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\BelongsToMany\:\:match\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Database/Relations/BelongsToMany.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 3
+			path: src/Database/Relations/BelongsToMany.php
+
+		-
+			message: '#^Cannot call method getAttribute\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Relations/HasMany.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:buildDictionary\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Database/Relations/HasMany.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:buildDictionary\(\) should return array\<array\<Denosys\\Database\\Model\>\> but returns array\<list\<mixed\>\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Relations/HasMany.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:getKeys\(\) should return array\<string\> but returns array\<int\<0, max\>, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Relations/HasMany.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:getResults\(\) return type with generic class Denosys\\Support\\Collection does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Database/Relations/HasMany.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:getResults\(\) should return Denosys\\Support\\Collection but returns array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Relations/HasMany.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:match\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Database/Relations/HasMany.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_unique expects an array of values castable to string, list\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Relations/HasMany.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 3
+			path: src/Database/Relations/HasMany.php
+
+		-
+			message: '#^Cannot call method getAttribute\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Relations/HasOne.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:buildDictionary\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Database/Relations/HasOne.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:buildDictionary\(\) should return array\<Denosys\\Database\\Model\> but returns array\<mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Relations/HasOne.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:getKeys\(\) should return array\<string\> but returns array\<int\<0, max\>, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Relations/HasOne.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:getResults\(\) should return Denosys\\Database\\Model\|null but returns object\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Relations/HasOne.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:match\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Database/Relations/HasOne.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:matchOne\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Database/Relations/HasOne.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_unique expects an array of values castable to string, list\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Relations/HasOne.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 3
+			path: src/Database/Relations/HasOne.php
+
+		-
+			message: '#^Method Denosys\\Database\\Relations\\Relation\:\:match\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Database/Relations/Relation.php
+
+		-
+			message: '#^Offset ''function'' on array\{function\: string, line\?\: int, file\?\: string, class\?\: class\-string, type\?\: ''\-\>''\|''\:\:'', args\?\: list\<mixed\>, object\?\: object\} in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.offset
+			count: 1
+			path: src/Database/Relations/Relation.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_unique expects an array of values castable to string, list\<mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Relations/Relation.php
+
+		-
+			message: '#^Parameter \#2 \$results of method Denosys\\Database\\Relations\\Relation\:\:match\(\) expects Denosys\\Support\\Collection, array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Relations/Relation.php
+
+		-
+			message: '#^Property Denosys\\Database\\Relations\\Relation\:\:\$related \(Denosys\\Database\\Model\) does not accept Denosys\\Database\\Model\|null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Relations/Relation.php
+
+		-
+			message: '#^Method Denosys\\Database\\Repository\:\:all\(\) should return array\<object\> but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Repository.php
+
+		-
+			message: '#^Method Denosys\\Database\\Repository\:\:findBy\(\) should return array\<Denosys\\Database\\Model\> but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Repository.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\Blueprint\:\:getDropColumns\(\) should return array\<string\> but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/Blueprint.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\Blueprint\:\:getDropForeignKeys\(\) should return array\<string\> but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/Blueprint.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\Blueprint\:\:getDropIndexes\(\) should return array\<string\> but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/Blueprint.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\Blueprint\:\:getForeignKeys\(\) should return array\<Denosys\\Database\\Schema\\ForeignKeyDefinition\> but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/Blueprint.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\Blueprint\:\:getIndexes\(\) should return array\<Denosys\\Database\\Schema\\IndexDefinition\> but returns array\<string, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/Blueprint.php
+
+		-
+			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$columns \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Schema/Blueprint.php
+
+		-
+			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$dropColumns \(array\<string, mixed\>\) does not accept array\<int\<0, max\>\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Schema/Blueprint.php
+
+		-
+			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$dropForeignKeys \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Schema/Blueprint.php
+
+		-
+			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$dropIndexes \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 2
+			path: src/Database/Schema/Blueprint.php
+
+		-
+			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$foreignKeys \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Schema/Blueprint.php
+
+		-
+			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$indexes \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 4
+			path: src/Database/Schema/Blueprint.php
+
+		-
+			message: '#^Property Denosys\\Database\\Schema\\Column\:\:\$enumValues \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Database/Schema/Column.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\ForeignKeyDefinition\:\:getName\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/ForeignKeyDefinition.php
+
+		-
+			message: '#^Cannot call method getAfter\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method getName\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 5
+			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method hasIndex\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method isChange\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method isPrimary\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method isUnique\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\Grammar\\MySqlSchemaGrammar\:\:compileCreate\(\) should return array\<string, mixed\> but returns array\<int, string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:compileColumn\(\) expects Denosys\\Database\\Schema\\Column, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:wrapColumn\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
+
+		-
+			message: '#^Parameter \#3 \$columns of static method Denosys\\Database\\Schema\\IndexDefinition\:\:defaultName\(\) expects array\<string\>, array\<int, mixed\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method getName\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 5
+			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method hasIndex\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method isPrimary\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method isUnique\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:compileColumn\(\) expects Denosys\\Database\\Schema\\Column, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:wrapColumn\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:escapeString\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
+
+		-
+			message: '#^Parameter \#3 \$columns of static method Denosys\\Database\\Schema\\IndexDefinition\:\:defaultName\(\) expects array\<string\>, array\<int, mixed\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Database/Schema/Grammar/SchemaGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:wrapColumn\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Schema/Grammar/SchemaGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:escapeString\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Schema/Grammar/SchemaGrammar.php
+
+		-
+			message: '#^Cannot call method getName\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 6
+			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method hasIndex\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method isAutoIncrement\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method isChange\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method isPrimary\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
+
+		-
+			message: '#^Cannot call method isUnique\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\Grammar\\SqliteSchemaGrammar\:\:compileCreate\(\) should return array\<string, mixed\> but returns list\<string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:wrapColumn\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
+
+		-
+			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SqliteSchemaGrammar\:\:compileColumn\(\) expects Denosys\\Database\\Schema\\Column, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
+
+		-
+			message: '#^Parameter \#3 \$columns of static method Denosys\\Database\\Schema\\IndexDefinition\:\:defaultName\(\) expects array\<string\>, array\<int, mixed\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\IndexDefinition\:\:getColumns\(\) should return array\<string, mixed\> but returns array\<string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/IndexDefinition.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\IndexDefinition\:\:getName\(\) should return string but returns string\|null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/IndexDefinition.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$Column_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$Key_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$Non_unique\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$Seq_in_index\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$column_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$is_primary\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$is_unique\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 4
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$origin\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$pk\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$position\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$seqno\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$unique\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 9
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 7
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\SchemaBuilder\:\:getColumnType\(\) should return string\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\SchemaBuilder\:\:getColumns\(\) should return array\<string\> but returns array\<mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Method Denosys\\Database\\Schema\\SchemaBuilder\:\:getTables\(\) should return array\<string, mixed\> but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$query of method Denosys\\Database\\Connection\\Connection\:\:statement\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$statements of method Denosys\\Database\\Schema\\SchemaBuilder\:\:executeStatements\(\) expects array\<string, mixed\>, array\<string\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Schema\\SchemaBuilder\:\:drop\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Schema/SchemaBuilder.php
+
+		-
+			message: '#^Instanceof between Denosys\\Database\\Seeding\\SeederInterface and Denosys\\Database\\Seeding\\SeederInterface will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/Database/Seeding/SeederRunner.php
+
+		-
+			message: '#^Method Denosys\\Database\\Seeding\\SeederRunner\:\:getExecuted\(\) should return array\<string, mixed\> but returns list\<string\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Database/Seeding/SeederRunner.php
+
+		-
+			message: '#^Parameter \#1 \$seederClass of method Denosys\\Database\\Seeding\\SeederRunner\:\:resolve\(\) expects class\-string\<Denosys\\Database\\Seeding\\SeederInterface\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Seeding/SeederRunner.php

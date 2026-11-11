@@ -127,3 +127,26 @@ jobs:
 
       - name: Database tests against ${{ matrix.name }}
         run: composer test
+
+  static-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --no-interaction --prefer-dist --no-progress
+
+      # Level max with a frozen baseline: new errors fail, and fixed errors
+      # must be removed from phpstan-baseline.neon.
+      - name: PHPStan
+        run: composer analyse
+
+      - name: Type inference fixtures
+        run: composer analyse:types

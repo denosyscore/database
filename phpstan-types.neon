@@ -1,0 +1,5 @@
+parameters:
+    level: 6
+    paths:
+        - tests/fixtures/ModelMetadataFixture.php
+        - tests/fixtures/ModelQueryTypesFixture.php
