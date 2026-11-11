@@ -2,7 +2,8 @@ name: Standalone install
 
 # Installs this package on its own into an empty project, exactly as a user
 # would, and runs the README quick start (the php block after the
-# `<!-- quickstart -->` marker). It fails when the package needs code it does
+# `<!-- quickstart -->` marker; `<!-- quickstart requires: vendor/pkg -->`
+# also installs packages the README tells users to add). It fails when the package needs code it does
 # not require, or when the documented example no longer works.
 
 on:
@@ -38,17 +39,21 @@ jobs:
           work=$(mktemp -d)
           php -r '
             $readme = file_get_contents($argv[1]);
-            if (!preg_match("/<!-- quickstart -->\s*```php\n(.*?)```/s", $readme, $m)) {
+            if (!preg_match("/<!-- quickstart(?: requires: ([^>]*?))? -->\s*```php\n(.*?)```/s", $readme, $m)) {
                 fwrite(STDERR, "README has no quickstart block.\n");
                 exit(1);
             }
-            file_put_contents($argv[2], $m[1]);
-          ' README.md "$work/quickstart.php"
+            file_put_contents($argv[2], $m[2]);
+            file_put_contents($argv[3], trim($m[1] ?? ""));
+          ' README.md "$work/quickstart.php" "$work/extra.txt"
           jq -n --arg url "$GITHUB_WORKSPACE" --arg name "$name" '{
             repositories: [{type: "path", url: $url, options: {symlink: false, versions: {($name): "dev-main"}}}],
             "minimum-stability": "dev",
             "prefer-stable": true
           }' > "$work/composer.json"
           cd "$work"
-          composer require --no-interaction --no-progress "$name:dev-main"
+          # Packages the README tells users to install alongside this one.
+          extra=()
+          read -r -a extra < extra.txt || true
+          composer require --no-interaction --no-progress "$name:dev-main" ${extra[@]+"${extra[@]}"}
           php quickstart.php
