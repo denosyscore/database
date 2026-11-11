@@ -2,17 +2,61 @@
 
 Database ORM, query builder, migrations, and seeding
 
-## Status
-
-Initial extraction snapshot from denosyscore monorepo as of 2026-02-14.
-
 ## Installation
 
+```bash
 composer require denosyscore/database
+```
 
 This installs `denosyscore/support`, which provides the
 `Denosys\Support\Collection` returned by hydrated model queries and used by
 eager-loaded relations. Database consumers do not need to define that class.
+
+## Quick start
+
+Connect, define a schema, then query with the builder or with Active Record models. SQLite needs only the `pdo_sqlite` extension.
+
+<!-- quickstart -->
+```php
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Denosys\Database\Connection\ConnectionManager;
+use Denosys\Database\Model;
+use Denosys\Database\Schema\Blueprint;
+use Denosys\Database\Schema\Grammar\SqliteSchemaGrammar;
+use Denosys\Database\Schema\SchemaBuilder;
+
+$db = new ConnectionManager();
+$db->addConnection('default', ['driver' => 'sqlite', 'database' => ':memory:']);
+$db->setDefaultConnection('default');
+
+$schema = new SchemaBuilder($db->connection(), new SqliteSchemaGrammar());
+$schema->create('books', function (Blueprint $table): void {
+    $table->id();
+    $table->string('title');
+    $table->integer('year');
+    $table->timestamps();
+});
+
+// Query builder
+$db->table('books')->insert(['title' => 'Dune', 'year' => 1965]);
+$db->table('books')->insert(['title' => 'Neuromancer', 'year' => 1984]);
+echo $db->table('books')->where('year', '>', 1970)->value('title'), "\n";  // Neuromancer
+
+// Active Record
+final class Book extends Model
+{
+    protected string $table = 'books';
+    protected array $fillable = ['title', 'year'];
+}
+
+Model::setConnectionManager($db);
+$book = Book::create(['title' => 'Kindred', 'year' => 1979]);
+echo Book::findOrFail($book->id)->title, "\n";  // Kindred
+echo Book::query()->count(), "\n";              // 3
+```
 
 ## Included Modules
 
