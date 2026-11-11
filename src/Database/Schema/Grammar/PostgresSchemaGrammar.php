@@ -6,6 +6,7 @@ namespace Denosys\Database\Schema\Grammar;
 
 use Denosys\Database\Schema\Blueprint;
 use Denosys\Database\Schema\Column;
+use Denosys\Database\Schema\IndexDefinition;
 use Denosys\Database\Schema\IndexType;
 
 /**
@@ -24,6 +25,14 @@ class PostgresSchemaGrammar extends SchemaGrammar
     /**
      * @return array<string, mixed>
      */
+    /**
+     * PostgreSQL has no UNSIGNED modifier.
+     */
+    protected function supportsUnsignedColumns(): bool
+    {
+        return false;
+    }
+
 public function compileCreate(Blueprint $blueprint): array
     {
         $statements = [];
@@ -46,7 +55,8 @@ public function compileCreate(Blueprint $blueprint): array
         
         // Add indexes as separate statements (PostgreSQL style)
         foreach ($blueprint->getColumns() as $column) {
-            if ($column->isPrimary() && !$column->isAutoIncrement()) {
+            // SERIAL/BIGSERIAL only creates a sequence; the primary key must be declared explicitly.
+            if ($column->isPrimary()) {
                 $statements[] = sprintf(
                     'ALTER TABLE %s ADD PRIMARY KEY (%s)',
                     $this->wrapTable($blueprint->getTable()),
@@ -56,7 +66,7 @@ public function compileCreate(Blueprint $blueprint): array
             if ($column->isUnique()) {
                 $statements[] = sprintf(
                     'CREATE UNIQUE INDEX %s ON %s (%s)',
-                    $this->wrapColumn('uq_' . $column->getName()),
+                    $this->wrapColumn(IndexDefinition::defaultName(IndexType::Unique, $blueprint->getTable(), [$column->getName()])),
                     $this->wrapTable($blueprint->getTable()),
                     $this->wrapColumn($column->getName())
                 );
@@ -64,7 +74,7 @@ public function compileCreate(Blueprint $blueprint): array
             if ($column->hasIndex()) {
                 $statements[] = sprintf(
                     'CREATE INDEX %s ON %s (%s)',
-                    $this->wrapColumn('idx_' . $column->getName()),
+                    $this->wrapColumn(IndexDefinition::defaultName(IndexType::Index, $blueprint->getTable(), [$column->getName()])),
                     $this->wrapTable($blueprint->getTable()),
                     $this->wrapColumn($column->getName())
                 );

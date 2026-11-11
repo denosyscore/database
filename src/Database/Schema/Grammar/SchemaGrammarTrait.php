@@ -48,6 +48,14 @@ trait SchemaGrammarTrait
     // =========================================================================
 
     /**
+     * Whether the database accepts the UNSIGNED column modifier.
+     */
+    protected function supportsUnsignedColumns(): bool
+    {
+        return true;
+    }
+
+    /**
      * Compile a column definition.
      */
     protected function compileColumn(Column $column): string
@@ -55,7 +63,7 @@ trait SchemaGrammarTrait
         $sql = $this->wrapColumn($column->getName());
         $sql .= ' ' . $this->getTypeDefinition($column);
         
-        if ($column->isUnsigned() && $column->getType()->supportsUnsigned()) {
+        if ($column->isUnsigned() && $column->getType()->supportsUnsigned() && $this->supportsUnsignedColumns()) {
             $sql .= ' UNSIGNED';
         }
         

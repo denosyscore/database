@@ -1,6 +1,48 @@
 # Changelog
 
-## Unreleased (proposed 0.4.1)
+## 0.5.0 – 2026-11-11
+
+### Breaking changes
+
+- Reading a model property only loads a relation when a public, argument-free
+  method of that name declares a `Relation` return type. Other methods are
+  never called by property reads (previously `$model->delete` deleted the row).
+- Unknown comparison operators in `where()`, `join()` and `having()` throw
+  `InvalidArgumentException` instead of silently becoming `=`.
+- `where($column, null)` and `where($column, '=', null)` compile to
+  `IS NULL`; `!=` and `<>` with null compile to `IS NOT NULL`; other
+  operators with null throw.
+- `update()` and `delete()` with `limit()`, `offset()` or `orderBy()` throw
+  `LogicException` on drivers that cannot limit writes. MySQL and MariaDB
+  compile `ORDER BY` and `LIMIT`; `offset()` is rejected everywhere. Previously
+  the limit was ignored and every matching row was changed.
+- Default index names include the table: `idx_{table}_{columns}`,
+  `uq_{table}_{columns}`. Index names are per schema in SQLite and
+  PostgreSQL, so `index('email')` on two tables no longer collides.
+  `dropIndex([...])` and `dropUnique([...])` compute the same names. Indexes
+  created with earlier default names must be dropped by name.
+- PostgreSQL `truncate()` no longer adds `CASCADE`, so it cannot empty the
+  tables that reference the truncated one.
+
+### Fixes
+
+- `count()`, `max()`, `min()`, `sum()`, `avg()`, `first()`, `value()`,
+  `pluck()`, `find()` and `exists()` no longer change the builder they are
+  called on. Aggregates ignore `limit()`, `offset()` and `orderBy()` and count
+  grouped queries over their groups.
+- PostgreSQL migrations no longer emit `UNSIGNED`, which PostgreSQL rejects,
+  so `id()`, `foreignId()` and the unsigned column helpers work there.
+- PostgreSQL `id()` and other auto-incrementing primary columns now declare a
+  primary key. `BIGSERIAL` alone created only a sequence, so tables had no
+  primary key and foreign keys to them failed.
+
+### Testing
+
+- CI runs the database suite against MySQL 8.4 and 9, MariaDB 10.11 and 11.4,
+  and PostgreSQL 15 and 17, in addition to SQLite. MySQL 8.0 is no longer
+  tested.
+
+## 0.4.1
 
 - Declare SQLite primary keys for non-incrementing columns marked with
   `Column::primary()`, so primary-key upserts work on newly created tables.

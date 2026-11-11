@@ -856,11 +856,36 @@ abstract class Model
             return $this->relations[$key];
         }
 
-        if (method_exists($this, $key)) {
+        if ($this->isRelationMethod($key)) {
             return $this->getRelationshipFromMethod($key);
         }
 
         return null;
+    }
+
+    /**
+     * Determine whether a property read may load the relation declared by a method.
+     *
+     * Only public, argument-free methods that declare a Relation return type qualify,
+     * so reading a property never invokes an ordinary method such as delete().
+     */
+    protected function isRelationMethod(string $method): bool
+    {
+        if (!method_exists($this, $method)) {
+            return false;
+        }
+
+        $reflection = new \ReflectionMethod($this, $method);
+
+        if (!$reflection->isPublic() || $reflection->isStatic() || $reflection->getNumberOfRequiredParameters() > 0) {
+            return false;
+        }
+
+        $type = $reflection->getReturnType();
+
+        return $type instanceof \ReflectionNamedType
+            && !$type->isBuiltin()
+            && is_a($type->getName(), Relations\Relation::class, true);
     }
 
     /**
