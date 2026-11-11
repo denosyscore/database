@@ -191,10 +191,16 @@ class Builder implements QueryBuilderInterface
             $operator = '=';
         }
 
-        // Validate operator
-        $operator = strtolower($operator);
-        if (!in_array($operator, $this->operators)) {
-            $operator = '=';
+        $operator = $this->normalizeOperator($operator);
+
+        if ($value === null) {
+            return match ($operator) {
+                '=' => $this->whereNull($column, $boolean),
+                '!=', '<>' => $this->whereNull($column, $boolean, true),
+                default => throw new \InvalidArgumentException(
+                    "Cannot compare column [{$column}] with null using [{$operator}]; use whereNull() or whereNotNull()."
+                ),
+            };
         }
 
         $this->wheres[] = [
@@ -345,10 +351,7 @@ class Builder implements QueryBuilderInterface
      */
     public function join(string $table, string $first, string $operator, string $second, string $type = 'inner'): static
     {
-        $operator = strtolower($operator);
-        if (!in_array($operator, $this->operators)) {
-            $operator = '=';
-        }
+        $operator = $this->normalizeOperator($operator);
 
         $this->joins[] = [
             'table' => $table,
@@ -431,6 +434,8 @@ class Builder implements QueryBuilderInterface
      */
     public function having(string $column, string $operator, mixed $value, string $boolean = 'and'): static
     {
+        $operator = $this->normalizeOperator($operator);
+
         $this->havings[] = [
             'column' => $column,
             'operator' => $operator,
@@ -500,7 +505,7 @@ class Builder implements QueryBuilderInterface
      */
     public function first(): ?object
     {
-        return $this->limit(1)->get()[0] ?? null;
+        return (clone $this)->limit(1)->get()[0] ?? null;
     }
 
     /**
@@ -518,7 +523,7 @@ class Builder implements QueryBuilderInterface
      */
     public function find(int|string $id, string $primaryKey = 'id'): ?object
     {
-        return $this->where($primaryKey, '=', $id)->first();
+        return (clone $this)->where($primaryKey, '=', $id)->first();
     }
 
     /**
@@ -540,7 +545,7 @@ class Builder implements QueryBuilderInterface
      */
     public function value(string $column): mixed
     {
-        $result = $this->select($column)->first();
+        $result = (clone $this)->select($column)->first();
 
         return $result?->$column;
     }
@@ -553,7 +558,7 @@ class Builder implements QueryBuilderInterface
      */
 public function pluck(string $column, ?string $key = null): array
     {
-        $results = $this->select($key ? [$key, $column] : [$column])->get();
+        $results = (clone $this)->select($key ? [$key, $column] : [$column])->get();
 
         if ($key === null) {
             return array_map(fn($row) => $row->$column, $results);
@@ -612,9 +617,72 @@ public function pluck(string $column, ?string $key = null): array
      */
     protected function aggregate(string $function, string $column): mixed
     {
-        $result = $this->select("{$function}({$column}) as aggregate")->first();
+        $wrapped = $column === '*' ? '*' : $this->grammar->wrap($column);
+        $expression = "{$function}({$wrapped}) as aggregate";
+
+        $query = clone $this;
+        $query->orders = [];
+        $query->bindings['order'] = [];
+        $query->limitValue = null;
+        $query->offsetValue = null;
+
+        if ($query->groups !== []) {
+            // Aggregate over the grouped rows rather than returning one group's value.
+            $sql = "SELECT {$expression} FROM ({$query->toSql()}) as aggregate_source";
+        } else {
+            $query->columns = [$expression];
+            $sql = $query->toSql();
+        }
+
+        $result = $this->connection->selectOne($sql, $query->getBindings());
 
         return $result?->aggregate;
+    }
+
+    /**
+     * Validate and normalize a comparison operator.
+     */
+    protected function normalizeOperator(mixed $operator): string
+    {
+        $normalized = is_string($operator) ? strtolower(trim($operator)) : null;
+
+        if ($normalized === null || !in_array($normalized, $this->operators, true)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unsupported comparison operator [%s]; use whereIn(), whereNull() or whereRaw() for other comparisons.',
+                is_scalar($operator) ? (string) $operator : get_debug_type($operator),
+            ));
+        }
+
+        return $normalized;
+    }
+
+    /**
+     * Append ORDER BY and LIMIT to an UPDATE or DELETE where the driver supports it.
+     */
+    protected function appendWriteLimit(string $sql, string $statement): string
+    {
+        if ($this->orders === [] && $this->limitValue === null && $this->offsetValue === null) {
+            return $sql;
+        }
+
+        $driver = $this->grammar->getDriverName();
+
+        if ($driver !== 'mysql' || $this->offsetValue !== null) {
+            throw new \LogicException(
+                "{$statement} with limit(), offset() or orderBy() is not supported by the {$driver} driver; "
+                . 'select the primary keys first and use whereIn().'
+            );
+        }
+
+        if ($this->orders !== []) {
+            $sql .= ' ORDER BY ' . $this->grammar->compileOrders($this->orders);
+        }
+
+        if ($this->limitValue !== null) {
+            $sql .= ' LIMIT ' . $this->limitValue;
+        }
+
+        return $sql;
     }
 
     /**
@@ -716,6 +784,8 @@ public function pluck(string $column, ?string $key = null): array
         if (!empty($whereClause)) {
             $sql .= ' WHERE ' . $whereClause;
         }
+
+        $sql = $this->appendWriteLimit($sql, 'UPDATE');
 
         $allBindings = array_merge($bindings, $this->getBindings());
 
@@ -819,7 +889,10 @@ public function pluck(string $column, ?string $key = null): array
     public function delete(): int
     {
         $whereClause = $this->grammar->compileWheres($this->wheres);
-        $sql = $this->grammar->compileDelete($this->table, $whereClause);
+        $sql = $this->appendWriteLimit(
+            $this->grammar->compileDelete($this->table, $whereClause),
+            'DELETE',
+        );
 
         return $this->connection->delete($sql, $this->getBindings());
     }

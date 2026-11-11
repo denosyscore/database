@@ -87,11 +87,12 @@ class PostgresGrammar extends Grammar
 
     /**
      * Compile a truncate statement.
-     * PostgreSQL supports RESTART IDENTITY and CASCADE.
+     * Restarts identity sequences. Never cascades: truncating a parent table must not
+     * silently empty the tables that reference it.
      */
     public function compileTruncate(string $table): string
     {
-        return 'TRUNCATE TABLE ' . $this->wrapTable($table) . ' RESTART IDENTITY CASCADE';
+        return 'TRUNCATE TABLE ' . $this->wrapTable($table) . ' RESTART IDENTITY';
     }
 
     /**

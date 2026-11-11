@@ -6,6 +6,7 @@ namespace Denosys\Database\Schema\Grammar;
 
 use Denosys\Database\Schema\Blueprint;
 use Denosys\Database\Schema\Column;
+use Denosys\Database\Schema\IndexDefinition;
 use Denosys\Database\Schema\IndexType;
 
 /**
@@ -41,9 +42,9 @@ public function compileCreate(Blueprint $blueprint): array
             if ($column->isPrimary()) {
                 $indexes[] = "PRIMARY KEY ({$this->wrapColumn($column->getName())})";
             } elseif ($column->isUnique()) {
-                $indexes[] = "UNIQUE KEY {$this->wrapColumn('uq_' . $column->getName())} ({$this->wrapColumn($column->getName())})";
+                $indexes[] = "UNIQUE KEY {$this->wrapColumn(IndexDefinition::defaultName(IndexType::Unique, $blueprint->getTable(), [$column->getName()]))} ({$this->wrapColumn($column->getName())})";
             } elseif ($column->hasIndex()) {
-                $indexes[] = "KEY {$this->wrapColumn('idx_' . $column->getName())} ({$this->wrapColumn($column->getName())})";
+                $indexes[] = "KEY {$this->wrapColumn(IndexDefinition::defaultName(IndexType::Index, $blueprint->getTable(), [$column->getName()]))} ({$this->wrapColumn($column->getName())})";
             }
         }
         

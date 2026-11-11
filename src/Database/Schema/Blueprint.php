@@ -300,7 +300,7 @@ private array $renameColumns = [];
     public function primary(string|array $columns, ?string $name = null): static
     {
         $columns = is_array($columns) ? $columns : [$columns];
-        $this->indexes[] = new IndexDefinition($columns, IndexType::Primary, $name);
+        $this->indexes[] = new IndexDefinition($columns, IndexType::Primary, $name, $this->table);
         return $this;
     }
 
@@ -311,7 +311,7 @@ private array $renameColumns = [];
     public function unique(string|array $columns, ?string $name = null): static
     {
         $columns = is_array($columns) ? $columns : [$columns];
-        $this->indexes[] = new IndexDefinition($columns, IndexType::Unique, $name);
+        $this->indexes[] = new IndexDefinition($columns, IndexType::Unique, $name, $this->table);
         return $this;
     }
 
@@ -322,7 +322,7 @@ private array $renameColumns = [];
     public function index(string|array $columns, ?string $name = null): static
     {
         $columns = is_array($columns) ? $columns : [$columns];
-        $this->indexes[] = new IndexDefinition($columns, IndexType::Index, $name);
+        $this->indexes[] = new IndexDefinition($columns, IndexType::Index, $name, $this->table);
         return $this;
     }
 
@@ -333,7 +333,7 @@ private array $renameColumns = [];
     public function fulltext(string|array $columns, ?string $name = null): static
     {
         $columns = is_array($columns) ? $columns : [$columns];
-        $this->indexes[] = new IndexDefinition($columns, IndexType::Fulltext, $name);
+        $this->indexes[] = new IndexDefinition($columns, IndexType::Fulltext, $name, $this->table);
         return $this;
     }
 
@@ -388,7 +388,7 @@ private array $renameColumns = [];
     public function dropIndex(string|array $columns): static
     {
         if (is_array($columns)) {
-            $name = 'idx_' . implode('_', $columns);
+            $name = IndexDefinition::defaultName(IndexType::Index, $this->table, $columns);
         } else {
             $name = $columns;
         }
@@ -403,7 +403,7 @@ private array $renameColumns = [];
     public function dropUnique(string|array $columns): static
     {
         if (is_array($columns)) {
-            $name = 'uq_' . implode('_', $columns);
+            $name = IndexDefinition::defaultName(IndexType::Unique, $this->table, $columns);
         } else {
             $name = $columns;
         }

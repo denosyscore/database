@@ -92,7 +92,7 @@ class ModelBuilder extends Builder
         }
 
         // get() already returns hydrated Model instances via the overridden method
-        $results = $this->where($this->model->getKeyName(), '=', $id)->limit(1)->get();
+        $results = (clone $this)->where($this->model->getKeyName(), '=', $id)->limit(1)->get();
 
         if ($results->isEmpty()) {
             return null;
