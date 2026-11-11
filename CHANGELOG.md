@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased (proposed 0.5.0)
+## 0.5.0 – 2026-11-11
 
 ### Breaking changes
 
@@ -42,7 +42,7 @@
   and PostgreSQL 15 and 17, in addition to SQLite. MySQL 8.0 is no longer
   tested.
 
-### Earlier unreleased changes
+## 0.4.1
 
 - Declare SQLite primary keys for non-incrementing columns marked with
   `Column::primary()`, so primary-key upserts work on newly created tables.
