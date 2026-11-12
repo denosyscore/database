@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.11.1 – 2026-11-12
+
+### Fixed
+
+- Requirements on other DenoSys packages are `^0.11`. In 0.11.0 they were
+  still `^0.10`, which for a 0.x version allows only 0.10 releases, so 0.11.0
+  packages resolved their siblings to 0.10 or could not be installed. Use
+  0.11.1 instead of 0.11.0.
+
 ## 0.11.0 – 2026-11-12
 
 - **Breaking:** `Denosys\Database\DatabaseServiceProvider` moved to the framework as `Denosys\Framework\Providers\DatabaseServiceProvider`. Packages no longer ship service providers; the framework wires packages together.
