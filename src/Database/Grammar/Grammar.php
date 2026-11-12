@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Denosys\Database\Grammar;
 
 use Denosys\Database\Contracts\GrammarInterface;
+use Denosys\Database\Query\Builder;
+use Denosys\Database\Query\Expression;
 
 abstract class Grammar implements GrammarInterface
 {
@@ -27,6 +29,7 @@ abstract class Grammar implements GrammarInterface
         'orders',
         'limit',
         'offset',
+        'lock',
     ];
 
     /**
@@ -35,16 +38,23 @@ abstract class Grammar implements GrammarInterface
     abstract public function getDriverName(): string;
 
     /**
-     * {@inheritdoc}
+     * Quote an identifier: "name", "table"."name", "name" as "alias". An
+     * Expression is written as it is.
      */
-    public function wrap(string $value): string
+    public function wrap(string|Expression $value): string
     {
-        // Don't wrap expressions or already wrapped values
-        if ($value === '*' || str_contains($value, '(') || str_contains($value, ' as ')) {
+        if ($value instanceof Expression) {
+            return $value->getValue();
+        }
+
+        if ($value === '*') {
+            return $value;
+        }
+
+        if (stripos($value, ' as ') !== false) {
             return $this->wrapAliasedValue($value);
         }
 
-        // Handle table.column format
         if (str_contains($value, '.')) {
             return $this->wrapSegments(explode('.', $value));
         }
@@ -57,13 +67,9 @@ abstract class Grammar implements GrammarInterface
      */
     protected function wrapAliasedValue(string $value): string
     {
-        // Handle "column as alias" syntax
-        if (stripos($value, ' as ') !== false) {
-            $segments = preg_split('/\s+as\s+/i', $value);
-            return $this->wrap($segments[0]) . ' as ' . $this->wrapValue($segments[1]);
-        }
+        $segments = preg_split('/\s+as\s+/i', $value, 2) ?: [$value];
 
-        return $value;
+        return $this->wrap($segments[0]) . ' as ' . $this->wrapValue($segments[1] ?? '');
     }
 
     /**
@@ -125,7 +131,9 @@ abstract class Grammar implements GrammarInterface
         $sql = [];
 
         foreach ($this->selectComponents as $component) {
-            if (isset($components[$component]) && !empty($components[$component])) {
+            $value = $components[$component] ?? null;
+            // limit(0) is a real limit, so only null, false, '' and [] mean "absent".
+            if ($value !== null && $value !== false && $value !== '' && $value !== []) {
                 $method = 'compile' . ucfirst($component);
                 if (method_exists($this, $method)) {
                     $result = $this->$method($components[$component]);
@@ -184,6 +192,9 @@ abstract class Grammar implements GrammarInterface
 
         if (isset($sql['offset'])) {
             $query .= ' ' . $sql['offset'];
+        }
+        if (isset($sql['lock'])) {
+            $query .= ' ' . $sql['lock'];
         }
 
         return trim($query);
@@ -247,6 +258,11 @@ abstract class Grammar implements GrammarInterface
             'between' => $this->compileWhereBetween($where),
             'raw' => $where['sql'],
             'nested' => '(' . $this->compileWheres($where['query']) . ')',
+            'column' => $this->wrap($this->identifier($where, 'first')) . ' ' . $this->operator($where) . ' ' . $this->wrap($this->identifier($where, 'second')),
+            'inSub' => $this->wrap($this->identifier($where, 'column')) . ' IN (' . $this->subquery($where['query']) . ')',
+            'notInSub' => $this->wrap($this->identifier($where, 'column')) . ' NOT IN (' . $this->subquery($where['query']) . ')',
+            'exists' => 'EXISTS (' . $this->subquery($where['query']) . ')',
+            'notExists' => 'NOT EXISTS (' . $this->subquery($where['query']) . ')',
             default => throw new \InvalidArgumentException("Unknown where type: {$where['type']}"),
         };
     }
@@ -257,7 +273,7 @@ abstract class Grammar implements GrammarInterface
      */
     protected function compileWhereBasic(array $where): string
     {
-        return $this->wrap($where['column']) . ' ' . $where['operator'] . ' ?';
+        return $this->wrap($this->identifier($where, 'column')) . ' ' . $where['operator'] . ' ?';
     }
 
     /**
@@ -266,8 +282,11 @@ abstract class Grammar implements GrammarInterface
      */
     protected function compileWhereIn(array $where): string
     {
-        $placeholders = $this->parameterize($where['values']);
-        return $this->wrap($where['column']) . ' IN (' . $placeholders . ')';
+        if ($where['values'] === []) {
+            return '0 = 1';
+        }
+
+        return $this->wrap($this->identifier($where, 'column')) . ' IN (' . $this->parameterize($where['values']) . ')';
     }
 
     /**
@@ -276,8 +295,11 @@ abstract class Grammar implements GrammarInterface
      */
     protected function compileWhereNotIn(array $where): string
     {
-        $placeholders = $this->parameterize($where['values']);
-        return $this->wrap($where['column']) . ' NOT IN (' . $placeholders . ')';
+        if ($where['values'] === []) {
+            return '1 = 1';
+        }
+
+        return $this->wrap($this->identifier($where, 'column')) . ' NOT IN (' . $this->parameterize($where['values']) . ')';
     }
 
     /**
@@ -286,7 +308,7 @@ abstract class Grammar implements GrammarInterface
      */
     protected function compileWhereNull(array $where): string
     {
-        return $this->wrap($where['column']) . ' IS NULL';
+        return $this->wrap($this->identifier($where, 'column')) . ' IS NULL';
     }
 
     /**
@@ -295,7 +317,7 @@ abstract class Grammar implements GrammarInterface
      */
     protected function compileWhereNotNull(array $where): string
     {
-        return $this->wrap($where['column']) . ' IS NOT NULL';
+        return $this->wrap($this->identifier($where, 'column')) . ' IS NOT NULL';
     }
 
     /**
@@ -305,12 +327,67 @@ abstract class Grammar implements GrammarInterface
     protected function compileWhereBetween(array $where): string
     {
         $not = $where['not'] ? 'NOT ' : '';
-        return $this->wrap($where['column']) . ' ' . $not . 'BETWEEN ? AND ?';
+        return $this->wrap($this->identifier($where, 'column')) . ' ' . $not . 'BETWEEN ? AND ?';
     }
 
     /**
-     * {@inheritdoc}
-      * @param array<array<string, string>> $orders
+     * The identifier a clause stores under $key, checked before it is quoted.
+     *
+     * @param array<string, mixed> $clause
+     */
+    protected function identifier(array $clause, string $key): string|Expression
+    {
+        $value = $clause[$key] ?? null;
+        if (is_string($value) || $value instanceof Expression) {
+            return $value;
+        }
+
+        throw new \InvalidArgumentException("The clause's [{$key}] must be a column name or an Expression.");
+    }
+
+    /**
+     * @param array<string, mixed> $clause
+     */
+    protected function operator(array $clause): string
+    {
+        return is_string($clause['operator'] ?? null)
+            ? $clause['operator']
+            : throw new \InvalidArgumentException('The clause has no operator.');
+    }
+
+    protected function subquery(mixed $query): string
+    {
+        if (!$query instanceof Builder) {
+            throw new \InvalidArgumentException('A subquery must be a query builder.');
+        }
+
+        return $query->toSql();
+    }
+
+    /**
+     * Compile the row lock: 'update' or 'shared'.
+     */
+    protected function compileLock(string $lock): string
+    {
+        return match ($lock) {
+            'update' => $this->compileLockForUpdate(),
+            'shared' => $this->compileSharedLock(),
+            default => throw new \InvalidArgumentException("Unknown lock [{$lock}]."),
+        };
+    }
+
+    public function compileLockForUpdate(): string
+    {
+        return 'FOR UPDATE';
+    }
+
+    public function compileSharedLock(): string
+    {
+        return 'FOR SHARE';
+    }
+
+    /**
+     * @param list<array{column: string|Expression, direction: string}> $orders
      */
     public function compileOrders(array $orders): string
     {
@@ -384,7 +461,7 @@ abstract class Grammar implements GrammarInterface
         $sql = [];
 
         foreach ($havings as $index => $having) {
-            $compiled = $this->wrap($having['column']) . ' ' . $having['operator'] . ' ?';
+            $compiled = $this->wrap($this->identifier($having, 'column')) . ' ' . $this->operator($having) . ' ?';
             
             if ($index === 0) {
                 $sql[] = $compiled;

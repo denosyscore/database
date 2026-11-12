@@ -14,7 +14,7 @@ interface GrammarInterface
     /**
      * Wrap a value in keyword identifiers (e.g., `column` for MySQL, "column" for PostgreSQL).
      */
-    public function wrap(string $value): string;
+    public function wrap(string|\Denosys\Database\Query\Expression $value): string;
 
     /**
      * Wrap a table name in keyword identifiers.
@@ -86,9 +86,7 @@ interface GrammarInterface
     /**
      * Compile the order by clause.
      *
-     * @param array<array<string, string>> $orders
-     * @return string
-      * @param array<array<string, string>> $orders
+     * @param list<array{column: string|\Denosys\Database\Query\Expression, direction: string}> $orders
      */
     public function compileOrders(array $orders): string;
 

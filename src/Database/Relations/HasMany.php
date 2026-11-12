@@ -36,7 +36,7 @@ class HasMany extends Relation
      */
     public function addConstraints(): void
     {
-        $this->query->where($this->foreignKey, '=', $this->parent->getAttribute($this->localKey));
+        $this->query = $this->query->where($this->foreignKey, '=', $this->parent->getAttribute($this->localKey));
     }
 
     /**
@@ -45,7 +45,7 @@ class HasMany extends Relation
      */
     public function addEagerConstraints(array $models): void
     {
-        $this->query->whereIn(
+        $this->query = $this->query->whereIn(
             $this->foreignKey,
             $this->getKeys($models, $this->localKey)
         );

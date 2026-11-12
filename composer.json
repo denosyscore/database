@@ -6,9 +6,9 @@
   "require": {
     "php": "^8.2",
     "ext-pdo": "*",
-    "denosyscore/console": "^0.16",
-    "denosyscore/container": "^0.16",
-    "denosyscore/contracts": "^0.16",
+    "denosyscore/console": "^0.17",
+    "denosyscore/container": "^0.17",
+    "denosyscore/contracts": "^0.17",
     "doctrine/inflector": "^2.1",
     "illuminate/collections": "^12.0 || ^13.0"
   },
@@ -32,7 +32,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-main": "0.16.x-dev"
+      "dev-main": "0.17.x-dev"
     }
   },
   "suggest": {

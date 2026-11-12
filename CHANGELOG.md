@@ -1,5 +1,49 @@
 # Changelog
 
+## 0.17.0 – 2026-11-12
+
+### Changed (breaking)
+
+- Queries are immutable: every method that adds to a query (`where()`,
+  `orderBy()`, `limit()`, `join()`, `select()` and the rest, and
+  `ModelBuilder::with()`) returns a new query and leaves the original
+  unchanged. Code that relied on the old in-place changes, such as
+  `$query->where(...);` on its own line, must use the result:
+  `$query = $query->where(...);`. These methods carry `#[\NoDiscard]`, so
+  PHP 8.5 warns and PHPStan reports `method.resultDiscarded` where a result is
+  dropped.
+- A nested `where()` callback must return the query it receives, for example
+  `fn (Builder $q) => $q->where(...)->orWhere(...)`. A callback that returns
+  nothing throws `LogicException` instead of adding an empty group.
+- Every string passed as a column is quoted as an identifier. A string
+  containing `(` is rejected with `InvalidArgumentException`; write
+  expressions with `Sql::raw()`. `orderBy()` accepts only `asc` and `desc`.
+  `join()` accepts only `inner`, `left`, `right` and `cross`.
+- `lazyById()` and `pluck()` read rows straight from the connection, so on a
+  model query they return rows and values, not models.
+- `Builder::cloneWithout()` is removed.
+
+### Added
+
+- `Sql::raw()` for expressions in `select()`, `orderBy()`, `groupBy()` and
+  `having()`.
+- `whereIn()` and `whereNotIn()` accept a subquery; `whereColumn()`,
+  `whereExists()`, `whereNotExists()`.
+- `lockForUpdate()` and `sharedLock()`.
+- `lazyById()` for walking large tables in key order.
+
+### Fixed
+
+- `whereIn($column, [])` matched every row or failed with a syntax error; it
+  now matches none, and `whereNotIn($column, [])` matches every row.
+- `limit(0)` was ignored and returned every row; it now returns none.
+- `upsert()` on MySQL updated every inserted column instead of the
+  `$updateColumns` given, because they were passed in the wrong position.
+- `value('users.name')` and `pluck('users.name', 'users.id')` returned null:
+  a qualified or aliased column is read by its name in the result row.
+- `join(..., 'cross')` is rejected: the grammar compiles every join with an
+  ON clause, which a cross join cannot have.
+
 ## 0.16.0 – 2026-11-12
 
 - Adds the `migrate`, `migrate:rollback`, `migrate:status`, `migrate:fresh`

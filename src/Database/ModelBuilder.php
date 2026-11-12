@@ -69,15 +69,17 @@ class ModelBuilder extends Builder
      * Set the relationships that should be eager loaded.
       * @param array<string, mixed> $relations
      */
+    #[\NoDiscard('queries are immutable: use the query this returns')]
     public function with(string|array $relations): static
     {
         if (is_string($relations)) {
             $relations = func_get_args();
         }
 
-        $this->eagerLoad = array_merge($this->eagerLoad, $relations);
+        $query = clone $this;
+        $query->eagerLoad = array_merge($query->eagerLoad, $relations);
 
-        return $this;
+        return $query;
     }
 
     /**

@@ -98,26 +98,26 @@ abstract class Repository
 
         foreach ($criteria as $column => $value) {
             if (is_array($value)) {
-                $query->whereIn($column, $value);
+                $query = $query->whereIn($column, $value);
             } elseif ($value === null) {
-                $query->whereNull($column);
+                $query = $query->whereNull($column);
             } else {
-                $query->where($column, '=', $value);
+                $query = $query->where($column, '=', $value);
             }
         }
 
         if ($orderBy !== null) {
             foreach ($orderBy as $column => $direction) {
-                $query->orderBy($column, $direction);
+                $query = $query->orderBy($column, $direction);
             }
         }
 
         if ($limit !== null) {
-            $query->limit($limit);
+            $query = $query->limit($limit);
         }
 
         if ($offset !== null) {
-            $query->offset($offset);
+            $query = $query->offset($offset);
         }
 
         return $query->get();
@@ -144,11 +144,11 @@ abstract class Repository
 
         foreach ($criteria as $column => $value) {
             if (is_array($value)) {
-                $query->whereIn($column, $value);
+                $query = $query->whereIn($column, $value);
             } elseif ($value === null) {
-                $query->whereNull($column);
+                $query = $query->whereNull($column);
             } else {
-                $query->where($column, '=', $value);
+                $query = $query->where($column, '=', $value);
             }
         }
 
@@ -194,7 +194,7 @@ abstract class Repository
         $query = $this->query();
 
         foreach ($criteria as $column => $value) {
-            $query->where($column, '=', $value);
+            $query = $query->where($column, '=', $value);
         }
 
         return $query->update($data);
@@ -219,7 +219,7 @@ abstract class Repository
         $query = $this->query();
 
         foreach ($criteria as $column => $value) {
-            $query->where($column, '=', $value);
+            $query = $query->where($column, '=', $value);
         }
 
         return $query->delete();

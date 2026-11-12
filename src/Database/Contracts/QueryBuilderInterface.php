@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Denosys\Database\Contracts;
 
+/**
+ * An immutable query: every method that adds to it returns a new query.
+ */
 interface QueryBuilderInterface
 {
     /**
@@ -19,18 +22,16 @@ interface QueryBuilderInterface
     /**
      * Set the columns to select.
      *
-     * @param string|array<string> $columns
-      * @param array<string> $columns
+     * @param string|\Denosys\Database\Query\Expression|array<string|\Denosys\Database\Query\Expression> $columns
      */
-    public function select(string|array $columns = ['*']): static;
+    public function select(string|\Denosys\Database\Query\Expression|array $columns = ['*']): static;
 
     /**
      * Add a column to the select clause.
      *
-     * @param string|array<string> $columns
-      * @param array<string> $columns
+     * @param string|\Denosys\Database\Query\Expression|array<string|\Denosys\Database\Query\Expression> $columns
      */
-    public function addSelect(string|array $columns): static;
+    public function addSelect(string|\Denosys\Database\Query\Expression|array $columns): static;
 
     /**
      * Select distinct results.
@@ -40,7 +41,7 @@ interface QueryBuilderInterface
     /**
      * Add a where clause.
      *
-     * @param string|\Closure $column
+     * @param string|(\Closure(static): mixed) $column
      * @param mixed $operator
      * @param mixed $value
      * @param string $boolean
@@ -55,16 +56,16 @@ interface QueryBuilderInterface
     /**
      * Add a "where in" clause.
      *
-     * @param array<int|string, mixed> $values
+     * @param array<int|string, mixed>|\Denosys\Database\Query\Builder $values
      */
-    public function whereIn(string $column, array $values, string $boolean = 'and', bool $not = false): static;
+    public function whereIn(string $column, array|\Denosys\Database\Query\Builder $values, string $boolean = 'and', bool $not = false): static;
 
     /**
      * Add a "where not in" clause.
      *
-     * @param array<int|string, mixed> $values
+     * @param array<int|string, mixed>|\Denosys\Database\Query\Builder $values
      */
-    public function whereNotIn(string $column, array $values, string $boolean = 'and'): static;
+    public function whereNotIn(string $column, array|\Denosys\Database\Query\Builder $values, string $boolean = 'and'): static;
 
     /**
      * Add a "where null" clause.
@@ -109,22 +110,22 @@ interface QueryBuilderInterface
     /**
      * Add an "order by" clause.
      */
-    public function orderBy(string $column, string $direction = 'asc'): static;
+    public function orderBy(string|\Denosys\Database\Query\Expression $column, string $direction = 'asc'): static;
 
     /**
      * Order by descending.
      */
-    public function orderByDesc(string $column): static;
+    public function orderByDesc(string|\Denosys\Database\Query\Expression $column): static;
 
     /**
      * Add a "group by" clause.
      */
-    public function groupBy(string ...$columns): static;
+    public function groupBy(string|\Denosys\Database\Query\Expression ...$columns): static;
 
     /**
      * Add a "having" clause.
      */
-    public function having(string $column, string $operator, mixed $value, string $boolean = 'and'): static;
+    public function having(string|\Denosys\Database\Query\Expression $column, string $operator, mixed $value, string $boolean = 'and'): static;
 
     /**
      * Set the limit.

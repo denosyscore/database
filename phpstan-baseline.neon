@@ -465,7 +465,7 @@ parameters:
 		-
 			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'
 			identifier: binaryOp.invalid
-			count: 2
+			count: 1
 			path: src/Database/Grammar/Grammar.php
 
 		-
@@ -481,19 +481,7 @@ parameters:
 			path: src/Database/Grammar/Grammar.php
 
 		-
-			message: '#^Cannot access offset 0 on non\-empty\-list\<string\>\|false\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Database/Grammar/Grammar.php
-
-		-
 			message: '#^Cannot access offset 1 on list\<string\>\|false\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Database/Grammar/Grammar.php
-
-		-
-			message: '#^Cannot access offset 1 on non\-empty\-list\<string\>\|false\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
 			path: src/Database/Grammar/Grammar.php
@@ -508,12 +496,6 @@ parameters:
 			message: '#^Parameter \#1 \$sql of method Denosys\\Database\\Grammar\\Grammar\:\:concatenateSelect\(\) expects array\<string, string\>, array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Database/Grammar/Grammar.php
-
-		-
-			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Grammar\\Grammar\:\:wrap\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 7
 			path: src/Database/Grammar/Grammar.php
 
 		-
@@ -541,68 +523,8 @@ parameters:
 			path: src/Database/Grammar/Grammar.php
 
 		-
-			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Grammar\\Grammar\:\:wrap\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Database/Grammar/MySqlGrammar.php
-
-		-
-			message: '#^Parameter \#2 \$columns of method Denosys\\Database\\Grammar\\Grammar\:\:compileInsert\(\) expects array\<string\>, array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Grammar/MySqlGrammar.php
-
-		-
-			message: '#^Default value of the parameter \#3 \$returning \(array\<int, string\>\) of method Denosys\\Database\\Grammar\\PostgresGrammar\:\:compileInsertReturning\(\) is incompatible with type array\<string, mixed\>\.$#'
-			identifier: parameter.defaultValue
-			count: 1
-			path: src/Database/Grammar/PostgresGrammar.php
-
-		-
-			message: '#^Default value of the parameter \#4 \$returning \(array\<int, string\>\) of method Denosys\\Database\\Grammar\\PostgresGrammar\:\:compileUpdateReturning\(\) is incompatible with type array\<string, mixed\>\.$#'
-			identifier: parameter.defaultValue
-			count: 1
-			path: src/Database/Grammar/PostgresGrammar.php
-
-		-
-			message: '#^Offset 0 on array\<string, mixed\> on left side of \?\? does not exist\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/Database/Grammar/PostgresGrammar.php
-
-		-
-			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Grammar\\Grammar\:\:wrap\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 5
-			path: src/Database/Grammar/PostgresGrammar.php
-
-		-
-			message: '#^Parameter \#2 \$columns of method Denosys\\Database\\Grammar\\Grammar\:\:compileInsert\(\) expects array\<string\>, array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Grammar/PostgresGrammar.php
-
-		-
 			message: '#^Method Denosys\\Database\\Grammar\\SqliteGrammar\:\:compileTruncateReset\(\) should return array\<string, mixed\> but returns array\<int, string\>\.$#'
 			identifier: return.type
-			count: 1
-			path: src/Database/Grammar/SqliteGrammar.php
-
-		-
-			message: '#^Offset 0 on array\<string, mixed\> on left side of \?\? does not exist\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/Database/Grammar/SqliteGrammar.php
-
-		-
-			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Grammar\\Grammar\:\:wrap\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 3
-			path: src/Database/Grammar/SqliteGrammar.php
-
-		-
-			message: '#^Parameter \#2 \$columns of method Denosys\\Database\\Grammar\\Grammar\:\:compileInsert\(\) expects array\<string\>, array\<string, mixed\> given\.$#'
-			identifier: argument.type
 			count: 1
 			path: src/Database/Grammar/SqliteGrammar.php
 
@@ -943,12 +865,6 @@ parameters:
 			path: src/Database/Query/Builder.php
 
 		-
-			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
-			identifier: foreach.nonIterable
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
 			message: '#^Call to static method dump\(\) on an unknown class Symfony\\Component\\VarDumper\\VarDumper\.$#'
 			identifier: class.notFound
 			count: 2
@@ -967,176 +883,14 @@ parameters:
 			path: src/Database/Query/Builder.php
 
 		-
-			message: '#^Method Denosys\\Database\\Query\\Builder\:\:avg\(\) should return float\|int\|null but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
 			message: '#^Method Denosys\\Database\\Query\\Builder\:\:first\(\) should return object\|null but returns mixed\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Database/Query/Builder.php
 
 		-
-			message: '#^Method Denosys\\Database\\Query\\Builder\:\:pluck\(\) should return array\<string, mixed\> but returns array\.$#'
-			identifier: return.type
-			count: 2
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Method Denosys\\Database\\Query\\Builder\:\:sum\(\) should return float\|int but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#1 \$orders of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileOrders\(\) expects array\<array\<string, string\>\>, array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileDelete\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileInsert\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileInsertBatch\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileTruncate\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileUpsert\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Contracts\\GrammarInterface\:\:wrapTable\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Query\\Builder\:\:table\(\) expects string, string\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Contracts\\GrammarInterface\:\:wrap\(\) expects string, int\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#2 \$array of function array_map expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#2 \$arrays of function array_diff expects an array of values castable to string, array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#2 \$columns of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileInsert\(\) expects array\<string\>, list\<int\|string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#2 \$columns of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileUpsert\(\) expects array\<string\>, list\<int\|string\> given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#2 \$property of function property_exists expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#3 \$conflictColumns of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileUpsert\(\) expects array\<string\>, array\<int\<0, max\>\|string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#3 \$conflictColumns of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileUpsert\(\) expects array\<string\>, array\<string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Parameter \#4 \$updateColumns of method Denosys\\Database\\Contracts\\GrammarInterface\:\:compileUpsert\(\) expects array\<string\>, array\<int\<0, max\>\|string, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: offsetAccess.invalidOffset
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$columns \(array\<string\>\) does not accept array\<mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 2
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$groups \(array\<string, mixed\>\) does not accept array\<int\<0, max\>\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$havings \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$joins \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$orders \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Property Denosys\\Database\\Query\\Builder\:\:\$wheres \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 6
-			path: src/Database/Query/Builder.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between int\|string and false will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: src/Database/Query/Builder.php
 

@@ -24,13 +24,13 @@ class PostgresGrammar extends Grammar
      *
      * @param string $table
      * @param array<string> $columns
-     * @param array<string, mixed> $returning Columns to return
+     * @param array<string> $returning Columns to return
      * @return string
      */
     public function compileInsertReturning(string $table, array $columns, array $returning = ['id']): string
     {
         $insert = $this->compileInsert($table, $columns);
-        $returningClause = implode(', ', array_map(fn($col) => $this->wrap($col), $returning));
+        $returningClause = implode(', ', array_map(fn (string $col): string => $this->wrap($col), $returning));
         
         return $insert . ' RETURNING ' . $returningClause;
     }
@@ -41,13 +41,13 @@ class PostgresGrammar extends Grammar
      * @param string $table
      * @param array<string> $columns
      * @param string $where
-     * @param array<string, mixed> $returning
+     * @param array<string> $returning
      * @return string
      */
     public function compileUpdateReturning(string $table, array $columns, string $where, array $returning = ['*']): string
     {
         $update = $this->compileUpdate($table, $columns, $where);
-        $returningClause = implode(', ', array_map(fn($col) => $this->wrap($col), $returning));
+        $returningClause = implode(', ', array_map(fn (string $col): string => $this->wrap($col), $returning));
         
         return $update . ' RETURNING ' . $returningClause;
     }
@@ -56,9 +56,9 @@ class PostgresGrammar extends Grammar
      * Compile an "upsert" statement (INSERT ... ON CONFLICT).
      *
      * @param string $table
-     * @param array<string, mixed> $insertColumns
-     * @param array<string, mixed> $conflictColumns
-     * @param array<string, mixed> $updateColumns
+     * @param array<string> $insertColumns
+     * @param array<string> $conflictColumns
+     * @param array<string> $updateColumns
      * @return string
      */
     public function compileUpsert(string $table, array $insertColumns, array $conflictColumns = [], array $updateColumns = []): string
@@ -75,10 +75,10 @@ class PostgresGrammar extends Grammar
             $updateColumns = $insertColumns;
         }
         
-        $conflict = implode(', ', array_map(fn($col) => $this->wrap($col), $conflictColumns));
+        $conflict = implode(', ', array_map(fn (string $col): string => $this->wrap($col), $conflictColumns));
         
         $updates = implode(', ', array_map(
-            fn($col) => $this->wrap($col) . ' = EXCLUDED.' . $this->wrap($col),
+            fn (string $col): string => $this->wrap($col) . ' = EXCLUDED.' . $this->wrap($col),
             $updateColumns
         ));
 

@@ -60,6 +60,53 @@ echo Book::findOrFail($book->id)->title, "\n";  // Kindred
 echo Book::query()->count(), "\n";              // 3
 ```
 
+## Query builder
+
+Queries are immutable. Every method that adds to a query returns a new one
+and leaves the original unchanged, so a query can be shared and branched:
+
+```php
+$active = $db->table('users')->where('banned', '=', 0);
+$admins = $active->where('admin', '=', 1);      // $active is unchanged
+$total  = $active->count();                      // never changes $active
+```
+
+Use the returned query: `$query->where(...);` on its own line does nothing.
+PHP 8.5 warns about it at run time and PHPStan reports it
+(`method.resultDiscarded`), because the builder's methods carry
+`#[\NoDiscard]`. A nested group is a callback that returns the query it
+receives:
+
+```php
+$users = $users->where(fn (Builder $q) => $q->where('role', '=', 'admin')->orWhere('owner', '=', 1));
+```
+
+Every string is quoted as an identifier, so a column name can never carry
+SQL. Expressions are marked with `Sql::raw()`, which makes them visible in
+review; never put user input in one, bind it instead:
+
+```php
+use Denosys\Database\Query\Sql;
+
+$teams = $db->table('users')
+    ->select(['team_id', Sql::raw('count(*) as total')])
+    ->groupBy('team_id')
+    ->having(Sql::raw('count(*)'), '>', 5)
+    ->orderBy(Sql::raw('count(*)'), 'desc')
+    ->get();
+```
+
+Also available:
+
+- `whereIn($column, $subquery)` and `whereNotIn()` with a query instead of a
+  list. An empty list matches no rows (`whereNotIn`: every row).
+- `whereColumn('posts.user_id', '=', 'users.id')`, `whereExists($subquery)`
+  and `whereNotExists()`.
+- `lockForUpdate()` and `sharedLock()` inside a transaction. SQLite has no row
+  locks (it serialises writers per database), so they add nothing there.
+- `lazyById(500)` walks every matching row in key order, 500 rows per query,
+  without loading them all.
+
 ## Included Modules
 
 - src/Database/*

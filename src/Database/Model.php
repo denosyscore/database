@@ -316,7 +316,7 @@ abstract class Model
         $query = $instance->newQuery();
 
         foreach ($attributes as $key => $value) {
-            $query->where($key, '=', $value);
+            $query = $query->where($key, '=', $value);
         }
 
         $result = $query->first();

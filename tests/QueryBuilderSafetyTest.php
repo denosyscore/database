@@ -72,19 +72,19 @@ final class QueryBuilderSafetyTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->connection->table('items')->where('id', 'in', [1, 2]);
+        $unused = $this->connection->table('items')->where('id', 'in', [1, 2]);
     }
 
     public function testUnknownJoinAndHavingOperatorsAreRejected(): void
     {
         try {
-            $this->connection->table('items')->join('other', 'items.id', '= other.id OR 1=1 --', 'other.id');
+            $unused = $this->connection->table('items')->join('other', 'items.id', '= other.id OR 1=1 --', 'other.id');
             self::fail('join accepted an unknown operator');
         } catch (InvalidArgumentException) {
         }
 
         $this->expectException(InvalidArgumentException::class);
-        $this->connection->table('items')->groupBy('name')->having('id', '> 0 OR 1=1 --', 1);
+        $unused = $this->connection->table('items')->groupBy('name')->having('id', '> 0 OR 1=1 --', 1);
     }
 
     public function testWhereEqualsNullMatchesNullValues(): void
@@ -99,6 +99,6 @@ final class QueryBuilderSafetyTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->connection->table('items')->where('deleted_at', '>', null);
+        $unused = $this->connection->table('items')->where('deleted_at', '>', null);
     }
 }

@@ -64,7 +64,7 @@ class BelongsToMany extends Relation
         $this->performJoin();
 
         if (static::$constraints) {
-            $this->query->where(
+            $this->query = $this->query->where(
                 $this->table . '.' . $this->foreignPivotKey,
                 '=',
                 $this->parent->getAttribute($this->parentKey)
@@ -80,7 +80,7 @@ class BelongsToMany extends Relation
     {
         $this->performJoin();
 
-        $this->query->whereIn(
+        $this->query = $this->query->whereIn(
             $this->table . '.' . $this->foreignPivotKey,
             $this->getKeys($models, $this->parentKey)
         );
@@ -143,15 +143,15 @@ class BelongsToMany extends Relation
     /**
      * Perform the join clause for the query.
      */
-    protected function performJoin(?ModelBuilder $query = null): void
+    protected function performJoin(): void
     {
-        $query = $query ?: $this->query;
+        $query = $this->query;
 
         // We need to select the related table columns + the pivot key to match results
         $baseTable = $this->related->getTable();
         $keyName = $baseTable . '.' . $this->relatedKey;
 
-        $query->join(
+        $query = $query->join(
             $this->table,
             $keyName,
             '=',
@@ -159,10 +159,12 @@ class BelongsToMany extends Relation
         );
 
         // Select all from related table and the pivot foreign key so we can map it back
-        $query->select([
+        $query = $query->select([
             $baseTable . '.*', 
             $this->table . '.' . $this->foreignPivotKey . ' as pivot_' . $this->foreignPivotKey
         ]);
+
+        $this->query = $query;
     }
 
     /**

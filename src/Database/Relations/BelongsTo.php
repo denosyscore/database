@@ -36,7 +36,7 @@ class BelongsTo extends Relation
      */
     public function addConstraints(): void
     {
-        $this->query->where($this->ownerKey, '=', $this->parent->getAttribute($this->foreignKey));
+        $this->query = $this->query->where($this->ownerKey, '=', $this->parent->getAttribute($this->foreignKey));
     }
 
     /**
@@ -45,7 +45,7 @@ class BelongsTo extends Relation
      */
     public function addEagerConstraints(array $models): void
     {
-        $this->query->whereIn(
+        $this->query = $this->query->whereIn(
             $this->ownerKey,
             $this->getEagerModelKeys($models)
         );

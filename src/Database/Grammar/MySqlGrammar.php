@@ -32,9 +32,9 @@ class MySqlGrammar extends Grammar
      * Compile an "upsert" statement (INSERT ... ON DUPLICATE KEY UPDATE).
      *
      * @param string $table
-     * @param array<string, mixed> $insertColumns
-     * @param array<string, mixed> $conflictColumns Not used in MySQL (uses primary/unique key)
-     * @param array<string, mixed> $updateColumns
+     * @param array<string> $insertColumns
+     * @param array<string> $conflictColumns Not used in MySQL (uses primary/unique key)
+     * @param array<string> $updateColumns
      * @return string
      */
     public function compileUpsert(string $table, array $insertColumns, array $conflictColumns = [], array $updateColumns = []): string
@@ -47,7 +47,7 @@ class MySqlGrammar extends Grammar
         }
         
         $updates = implode(', ', array_map(
-            fn($col) => $this->wrap($col) . ' = VALUES(' . $this->wrap($col) . ')',
+            fn (string $col): string => $this->wrap($col) . ' = VALUES(' . $this->wrap($col) . ')',
             $updateColumns
         ));
 
@@ -63,7 +63,7 @@ class MySqlGrammar extends Grammar
      */
     public function compileReplace(string $table, array $columns): string
     {
-        $columnList = implode(', ', array_map(fn($col) => $this->wrap($col), $columns));
+        $columnList = implode(', ', array_map(fn (string $col): string => $this->wrap($col), $columns));
         $placeholders = $this->parameterize($columns);
 
         return "REPLACE INTO {$this->wrapTable($table)} ({$columnList}) VALUES ({$placeholders})";
@@ -102,7 +102,7 @@ class MySqlGrammar extends Grammar
      */
     public function compileFullText(array $columns, string $mode = 'natural'): string
     {
-        $columnList = implode(', ', array_map(fn($col) => $this->wrap($col), $columns));
+        $columnList = implode(', ', array_map(fn (string $col): string => $this->wrap($col), $columns));
         
         $modeClause = match ($mode) {
             'boolean' => ' IN BOOLEAN MODE',

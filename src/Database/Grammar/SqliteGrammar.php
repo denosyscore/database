@@ -53,9 +53,9 @@ public function compileTruncateReset(string $table): array
      * SQLite 3.24+ supports ON CONFLICT.
      *
      * @param string $table
-     * @param array<string, mixed> $insertColumns
-     * @param array<string, mixed> $conflictColumns
-     * @param array<string, mixed> $updateColumns
+     * @param array<string> $insertColumns
+     * @param array<string> $conflictColumns
+     * @param array<string> $updateColumns
      * @return string
      */
     public function compileUpsert(string $table, array $insertColumns, array $conflictColumns = [], array $updateColumns = []): string
@@ -72,10 +72,10 @@ public function compileTruncateReset(string $table): array
             $updateColumns = $insertColumns;
         }
         
-        $conflict = implode(', ', array_map(fn($col) => $this->wrap($col), $conflictColumns));
+        $conflict = implode(', ', array_map(fn (string $col): string => $this->wrap($col), $conflictColumns));
         
         $updates = implode(', ', array_map(
-            fn($col) => $this->wrap($col) . ' = excluded.' . $this->wrap($col),
+            fn (string $col): string => $this->wrap($col) . ' = excluded.' . $this->wrap($col),
             $updateColumns
         ));
 
@@ -91,7 +91,7 @@ public function compileTruncateReset(string $table): array
      */
     public function compileReplace(string $table, array $columns): string
     {
-        $columnList = implode(', ', array_map(fn($col) => $this->wrap($col), $columns));
+        $columnList = implode(', ', array_map(fn (string $col): string => $this->wrap($col), $columns));
         $placeholders = $this->parameterize($columns);
 
         return "INSERT OR REPLACE INTO {$this->wrapTable($table)} ({$columnList}) VALUES ({$placeholders})";
@@ -106,7 +106,7 @@ public function compileTruncateReset(string $table): array
      */
     public function compileInsertIgnore(string $table, array $columns): string
     {
-        $columnList = implode(', ', array_map(fn($col) => $this->wrap($col), $columns));
+        $columnList = implode(', ', array_map(fn (string $col): string => $this->wrap($col), $columns));
         $placeholders = $this->parameterize($columns);
 
         return "INSERT OR IGNORE INTO {$this->wrapTable($table)} ({$columnList}) VALUES ({$placeholders})";
