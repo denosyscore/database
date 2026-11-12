@@ -7,7 +7,7 @@
     "php": "^8.2",
     "ext-pdo": "*",
     "doctrine/inflector": "^2.1",
-    "illuminate/collections": "^12.0"
+    "illuminate/collections": "^12.0 || ^13.0"
   },
   "require-dev": {
     "fakerphp/faker": "^1.24",

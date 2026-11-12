@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Accept `illuminate/collections` 13, matching the framework.
+
 ## 0.11.1 – 2026-11-12
 
 ### Fixed
