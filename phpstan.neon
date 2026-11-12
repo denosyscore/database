@@ -1,5 +1,9 @@
+includes:
+    - phpstan-baseline.neon
+
 parameters:
-    level: 6
+    level: max
     paths:
-        - tests/fixtures/ModelMetadataFixture.php
-        - tests/fixtures/ModelQueryTypesFixture.php
+        - src
+    # Fixed errors must be removed from the baseline, so it only shrinks.
+    reportUnmatchedIgnoredErrors: true

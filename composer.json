@@ -20,8 +20,9 @@
     }
   },
   "scripts": {
-    "analyse": "phpstan analyse --no-progress",
-    "test": "phpunit"
+    "analyse": "phpstan analyse --no-progress --memory-limit=1G",
+    "test": "phpunit",
+    "analyse:types": "phpstan analyse --no-progress --configuration=phpstan-types.neon"
   },
   "config": {
     "sort-packages": true
