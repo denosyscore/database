@@ -38,7 +38,7 @@ jobs:
         run: composer test
 
       - name: Static analysis
-        run: composer analyse
+        run: composer analyse:types
 
       - name: PHP syntax check
         run: find src tests -type f -name '*.php' -print0 | xargs -0 -n1 php -l
