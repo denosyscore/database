@@ -1,5 +1,7 @@
 # denosyscore/database
 
+> **Read-only split.** This package is developed in [denosyscore/framework](https://github.com/denosyscore/framework) under `packages/database`. Open issues and pull requests there.
+
 Database ORM, query builder, migrations, and seeding
 
 ## Installation
@@ -142,12 +144,6 @@ find src -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 composer test
 composer analyse
 
-## CI Workflows
-
-- CI: Composer validation, model metadata static analysis, PHP syntax lint,
-  and database regression tests on supported PHP versions for push and pull requests.
-- Release: GitHub release publication on semantic version tags.
-- Dependabot: weekly Composer dependency update checks.
 
 ## Releases
 

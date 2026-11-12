@@ -6,9 +6,9 @@
   "require": {
     "php": "^8.2",
     "ext-pdo": "*",
-    "denosyscore/contracts": "^0.2",
-    "denosyscore/container": "^0.2",
-    "denosyscore/support": "^0.1"
+    "denosyscore/contracts": "^0.10",
+    "denosyscore/container": "^0.10",
+    "denosyscore/support": "^0.10"
   },
   "require-dev": {
     "phpunit/phpunit": "^10.5",
@@ -26,5 +26,10 @@
   },
   "config": {
     "sort-packages": true
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-main": "0.10.x-dev"
+    }
   }
 }
