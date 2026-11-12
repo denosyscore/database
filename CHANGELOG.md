@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.16.0 – 2026-11-12
+
+- Adds the `migrate`, `migrate:rollback`, `migrate:status`, `migrate:fresh`
+  and `db:seed` commands (`Denosys\Database\Console`), moved from
+  `denosyscore/console`. Requires `denosyscore/console`,
+  `denosyscore/container` and `denosyscore/contracts`.
+
 ## 0.15.0 – 2026-11-12
 
 - Released with the framework's 0.15 line; no changes to this package.

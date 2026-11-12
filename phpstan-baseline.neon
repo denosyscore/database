@@ -223,6 +223,186 @@ parameters:
 			path: src/Database/Connection/ConnectionManager.php
 
 		-
+			message: '#^Parameter \#1 \$class of method Denosys\\Database\\Console\\DbSeedCommand\:\:getBaseClassName\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Console/DbSeedCommand.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Denosys\\Database\\Console\\DbSeedCommand\:\:resolveSeederClass\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Console/DbSeedCommand.php
+
+		-
+			message: '#^Parameter \#1 \$seederClass of method Denosys\\Database\\Console\\DbSeedCommand\:\:runSeeder\(\) expects class\-string\<Denosys\\Database\\Seeding\\SeederInterface\>, class\-string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Console/DbSeedCommand.php
+
+		-
+			message: '#^Parameter \#1 \$seederClass of method Denosys\\Database\\Console\\DbSeedCommand\:\:runSeeder\(\) expects class\-string\<Denosys\\Database\\Seeding\\SeederInterface\>, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Console/DbSeedCommand.php
+
+		-
+			message: '#^Binary operation "\*" between mixed and 1000 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Database/Console/MigrateCommand.php
+
+		-
+			message: '#^Cannot access property \$error on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Database/Console/MigrateCommand.php
+
+		-
+			message: '#^Cannot access property \$name on mixed\.$#'
+			identifier: property.nonObject
+			count: 3
+			path: src/Database/Console/MigrateCommand.php
+
+		-
+			message: '#^Cannot access property \$success on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Database/Console/MigrateCommand.php
+
+		-
+			message: '#^Cannot access property \$time on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Database/Console/MigrateCommand.php
+
+		-
+			message: '#^Parameter \#1 \$seederClass of method Denosys\\Database\\Seeding\\SeederRunner\:\:run\(\) expects class\-string\<Denosys\\Database\\Seeding\\SeederInterface\>, class\-string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Console/MigrateCommand.php
+
+		-
+			message: '#^Part \$record\-\>error \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Database/Console/MigrateCommand.php
+
+		-
+			message: '#^Part \$record\-\>name \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 3
+			path: src/Database/Console/MigrateCommand.php
+
+		-
+			message: '#^Binary operation "\*" between mixed and 1000 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Database/Console/MigrateFreshCommand.php
+
+		-
+			message: '#^Cannot access property \$error on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Database/Console/MigrateFreshCommand.php
+
+		-
+			message: '#^Cannot access property \$name on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: src/Database/Console/MigrateFreshCommand.php
+
+		-
+			message: '#^Cannot access property \$success on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Database/Console/MigrateFreshCommand.php
+
+		-
+			message: '#^Cannot access property \$time on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Database/Console/MigrateFreshCommand.php
+
+		-
+			message: '#^Parameter \#1 \$seederClass of method Denosys\\Database\\Seeding\\SeederRunner\:\:run\(\) expects class\-string\<Denosys\\Database\\Seeding\\SeederInterface\>, class\-string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Console/MigrateFreshCommand.php
+
+		-
+			message: '#^Part \$record\-\>error \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Database/Console/MigrateFreshCommand.php
+
+		-
+			message: '#^Part \$record\-\>name \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/Database/Console/MigrateFreshCommand.php
+
+		-
+			message: '#^Binary operation "\*" between mixed and 1000 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Database/Console/MigrateRollbackCommand.php
+
+		-
+			message: '#^Cannot access property \$error on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Database/Console/MigrateRollbackCommand.php
+
+		-
+			message: '#^Cannot access property \$name on mixed\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: src/Database/Console/MigrateRollbackCommand.php
+
+		-
+			message: '#^Cannot access property \$success on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Database/Console/MigrateRollbackCommand.php
+
+		-
+			message: '#^Cannot access property \$time on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: src/Database/Console/MigrateRollbackCommand.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/Database/Console/MigrateRollbackCommand.php
+
+		-
+			message: '#^Part \$record\-\>error \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Database/Console/MigrateRollbackCommand.php
+
+		-
+			message: '#^Part \$record\-\>name \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/Database/Console/MigrateRollbackCommand.php
+
+		-
+			message: '#^Parameter \#1 \$headers of method Denosys\\Console\\OutputInterface\:\:table\(\) expects array\<string, array\<string\>\|string\>, array\<int, string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Console/MigrateStatusCommand.php
+
+		-
+			message: '#^Parameter \#2 \$rows of method Denosys\\Console\\OutputInterface\:\:table\(\) expects array\<array\<string, mixed\>\>, list\<array\<int, int\|string\>\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Database/Console/MigrateStatusCommand.php
+
+		-
 			message: '#^Method Denosys\\Database\\Database\:\:select\(\) should return array\<int, object\> but returns array\<object\>\.$#'
 			identifier: return.type
 			count: 1
