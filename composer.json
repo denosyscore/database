@@ -6,13 +6,13 @@
   "require": {
     "php": "^8.2",
     "ext-pdo": "*",
-    "denosyscore/contracts": "^0.10",
-    "denosyscore/container": "^0.10",
-    "denosyscore/support": "^0.10"
+    "doctrine/inflector": "^2.1",
+    "illuminate/collections": "^12.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^10.5",
-    "phpstan/phpstan": "^2.2"
+    "fakerphp/faker": "^1.24",
+    "phpstan/phpstan": "^2.2",
+    "phpunit/phpunit": "^10.5"
   },
   "autoload": {
     "psr-4": {
@@ -31,5 +31,8 @@
     "branch-alias": {
       "dev-main": "0.10.x-dev"
     }
+  },
+  "suggest": {
+    "fakerphp/faker": "Required by model factories (Denosys\\Database\\Factory)"
   }
 }

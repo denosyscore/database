@@ -6,7 +6,7 @@ namespace Denosys\Database;
 
 use Denosys\Database\Pagination\LengthAwarePaginator;
 use Denosys\Database\Query\Builder;
-use Denosys\Support\Collection;
+use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 class ModelBuilder extends Builder
@@ -104,9 +104,9 @@ class ModelBuilder extends Builder
     /**
      * Execute the query as a "select" statement.
      *
-     * @return array<object>|\Denosys\Support\Collection<\Denosys\Database\Model>
+     * @return array<object>|\Illuminate\Support\Collection<int, \Denosys\Database\Model>
      */
-    public function get(): array|\Denosys\Support\Collection
+    public function get(): array|\Illuminate\Support\Collection
     {
         $results = parent::get();
 
@@ -135,7 +135,7 @@ class ModelBuilder extends Builder
             $models = $this->eagerLoadRelations($models);
         }
 
-        return new \Denosys\Support\Collection($models);
+        return new \Illuminate\Support\Collection($models);
     }
 
     /**

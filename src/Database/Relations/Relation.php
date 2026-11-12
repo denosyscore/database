@@ -6,7 +6,7 @@ namespace Denosys\Database\Relations;
 
 use Denosys\Database\Model;
 use Denosys\Database\ModelBuilder;
-use Denosys\Support\Collection;
+use Illuminate\Support\Collection;
 
 /**
  * @mixin ModelBuilder

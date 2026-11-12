@@ -10,9 +10,9 @@ Database ORM, query builder, migrations, and seeding
 composer require denosyscore/database
 ```
 
-This installs `denosyscore/support`, which provides the
-`Denosys\Support\Collection` returned by hydrated model queries and used by
-eager-loaded relations. Database consumers do not need to define that class.
+Hydrated model queries and eager-loaded relations return
+`Illuminate\Support\Collection` from `illuminate/collections`, which this
+package requires.
 
 ## Quick start
 
@@ -68,7 +68,7 @@ echo Book::query()->count(), "\n";              // 3
 
 `ModelBuilder::paginate(int $page = 1, int $perPage = 15)` returns a
 `Denosys\Database\Pagination\LengthAwarePaginator` containing a hydrated
-`Denosys\Support\Collection` in `items`. Its metadata includes `total`,
+`Illuminate\Support\Collection` in `items`. Its metadata includes `total`,
 `perPage`, `currentPage`, `lastPage`, `from`, `to`, `previousPage`, and
 `nextPage`. Relations forward `paginate()` to their model query, retaining
 relation constraints. Apply a stable `orderBy()` before paginating when order

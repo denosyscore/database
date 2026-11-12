@@ -8,7 +8,7 @@ use Denosys\Database\Model;
 use Denosys\Database\ModelBuilder;
 use Denosys\Database\Pagination\LengthAwarePaginator;
 use Denosys\Database\Relations\HasMany;
-use Denosys\Support\Collection;
+use Illuminate\Support\Collection;
 use PHPUnit\Framework\TestCase;
 
 final class ModelPaginationTest extends TestCase

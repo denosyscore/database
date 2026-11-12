@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Denosys\Database\Pagination;
 
-use Denosys\Support\Collection;
+use Illuminate\Support\Collection;
 use InvalidArgumentException;
 
 final readonly class LengthAwarePaginator

@@ -229,78 +229,6 @@ parameters:
 			path: src/Database/Database.php
 
 		-
-			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
-			identifier: foreach.nonIterable
-			count: 1
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
-			message: '#^Cannot access offset ''connections'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
-			message: '#^Cannot access offset ''default'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
-			message: '#^Cannot call method connection\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
-			message: '#^Cannot call method get\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 5
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
-			message: '#^Class Denosys\\Config\\ConfigurationInterface not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
-			message: '#^Parameter \#1 \$factory of class Denosys\\Database\\Connection\\ConnectionManager constructor expects Denosys\\Database\\Connection\\ConnectionFactory\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
-			message: '#^Parameter \#1 \$manager of static method Denosys\\Database\\Database\:\:setConnectionManager\(\) expects Denosys\\Database\\Connection\\ConnectionManager, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
-			message: '#^Parameter \#1 \$manager of static method Denosys\\Database\\Model\:\:setConnectionManager\(\) expects Denosys\\Database\\Connection\\ConnectionManager, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
-			message: '#^Parameter \#1 \$name of method Denosys\\Database\\Connection\\ConnectionManager\:\:addConnection\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
-			message: '#^Parameter \#1 \$name of method Denosys\\Database\\Connection\\ConnectionManager\:\:setDefaultConnection\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
-			message: '#^Parameter \#2 \$config of method Denosys\\Database\\Connection\\ConnectionManager\:\:addConnection\(\) expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/DatabaseServiceProvider.php
-
-		-
 			message: '#^Method Denosys\\Database\\Entity\:\:toJson\(\) should return string but returns string\|false\.$#'
 			identifier: return.type
 			count: 1
@@ -319,12 +247,6 @@ parameters:
 			path: src/Database/Exceptions/ModelNotFoundException.php
 
 		-
-			message: '#^Call to static method create\(\) on an unknown class Faker\\Factory\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Database/Factory/Factory.php
-
-		-
 			message: '#^Method Denosys\\Database\\Factory\\Factory\:\:resolveAttributes\(\) should return array\<string, mixed\> but returns array\<mixed\>\.$#'
 			identifier: return.type
 			count: 1
@@ -339,30 +261,6 @@ parameters:
 		-
 			message: '#^Parameter \#2 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
 			identifier: argument.type
-			count: 1
-			path: src/Database/Factory/Factory.php
-
-		-
-			message: '#^Parameter \$faker of method Denosys\\Database\\Factory\\Factory\:\:__construct\(\) has invalid type Faker\\Generator\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Database/Factory/Factory.php
-
-		-
-			message: '#^Parameter \$faker of method Denosys\\Database\\Factory\\Factory\:\:new\(\) has invalid type Faker\\Generator\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Database/Factory/Factory.php
-
-		-
-			message: '#^Property Denosys\\Database\\Factory\\Factory\:\:\$faker \(Faker\\Generator\) does not accept mixed\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Database/Factory/Factory.php
-
-		-
-			message: '#^Property Denosys\\Database\\Factory\\Factory\:\:\$faker has unknown class Faker\\Generator as its type\.$#'
-			identifier: class.notFound
 			count: 1
 			path: src/Database/Factory/Factory.php
 
@@ -577,60 +475,6 @@ parameters:
 			path: src/Database/Migration/MigrationResult.php
 
 		-
-			message: '#^Binary operation "\." between mixed and ''/database/migrations'' results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: src/Database/Migration/MigrationServiceProvider.php
-
-		-
-			message: '#^Cannot call method getDriverName\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Migration/MigrationServiceProvider.php
-
-		-
-			message: '#^Parameter \#1 \$connection of class Denosys\\Database\\Migration\\MigrationRepository constructor expects Denosys\\Database\\Connection\\Connection, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Migration/MigrationServiceProvider.php
-
-		-
-			message: '#^Parameter \#1 \$connection of class Denosys\\Database\\Migration\\Migrator constructor expects Denosys\\Database\\Connection\\Connection, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Migration/MigrationServiceProvider.php
-
-		-
-			message: '#^Parameter \#1 \$connection of class Denosys\\Database\\Schema\\SchemaBuilder constructor expects Denosys\\Database\\Connection\\Connection, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Migration/MigrationServiceProvider.php
-
-		-
-			message: '#^Parameter \#2 \$grammar of class Denosys\\Database\\Schema\\SchemaBuilder constructor expects Denosys\\Database\\Schema\\Grammar\\SchemaGrammarInterface, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Migration/MigrationServiceProvider.php
-
-		-
-			message: '#^Parameter \#2 \$schema of class Denosys\\Database\\Migration\\MigrationRepository constructor expects Denosys\\Database\\Schema\\SchemaBuilder, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Migration/MigrationServiceProvider.php
-
-		-
-			message: '#^Parameter \#2 \$schema of class Denosys\\Database\\Migration\\Migrator constructor expects Denosys\\Database\\Schema\\SchemaBuilder, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Migration/MigrationServiceProvider.php
-
-		-
-			message: '#^Parameter \#3 \$repository of class Denosys\\Database\\Migration\\Migrator constructor expects Denosys\\Database\\Migration\\MigrationRepository, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Migration/MigrationServiceProvider.php
-
-		-
 			message: '#^Argument of an invalid type list\<string\>\|false supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 1
@@ -697,18 +541,6 @@ parameters:
 			path: src/Database/Model.php
 
 		-
-			message: '#^Call to static method create\(\) on an unknown class Doctrine\\Inflector\\InflectorFactory\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Database/Model.php
-
-		-
-			message: '#^Cannot call method build\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Model.php
-
-		-
 			message: '#^Cannot call method connection\(\) on Denosys\\Database\\Connection\\ConnectionManager\|null\.$#'
 			identifier: method.nonObject
 			count: 1
@@ -727,19 +559,7 @@ parameters:
 			path: src/Database/Model.php
 
 		-
-			message: '#^Cannot call method pluralize\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Model.php
-
-		-
 			message: '#^Cannot call method setRelationName\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Model.php
-
-		-
-			message: '#^Cannot call method tableize\(\) on mixed\.$#'
 			identifier: method.nonObject
 			count: 1
 			path: src/Database/Model.php
@@ -776,12 +596,6 @@ parameters:
 
 		-
 			message: '#^Method Denosys\\Database\\Model\:\:getCasts\(\) should return array\<string, string\> but returns array\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Model.php
-
-		-
-			message: '#^Method Denosys\\Database\\Model\:\:inferTableName\(\) should return string but returns mixed\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Database/Model.php
@@ -835,7 +649,7 @@ parameters:
 			path: src/Database/Model.php
 
 		-
-			message: '#^Parameter \#2 \$array of function array_map expects array, array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\> given\.$#'
+			message: '#^Parameter \#2 \$array of function array_map expects array, array\<object\>\|Illuminate\\Support\\Collection\<int, Denosys\\Database\\Model\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Database/Model.php
@@ -883,13 +697,13 @@ parameters:
 			path: src/Database/ModelBuilder.php
 
 		-
-			message: '#^Cannot call method first\(\) on array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\>\.$#'
+			message: '#^Cannot call method first\(\) on array\<object\>\|Illuminate\\Support\\Collection\<int, Denosys\\Database\\Model\>\.$#'
 			identifier: method.nonObject
 			count: 1
 			path: src/Database/ModelBuilder.php
 
 		-
-			message: '#^Cannot call method isEmpty\(\) on array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\>\.$#'
+			message: '#^Cannot call method isEmpty\(\) on array\<object\>\|Illuminate\\Support\\Collection\<int, Denosys\\Database\\Model\>\.$#'
 			identifier: method.nonObject
 			count: 1
 			path: src/Database/ModelBuilder.php
@@ -901,7 +715,7 @@ parameters:
 			path: src/Database/ModelBuilder.php
 
 		-
-			message: '#^Method Denosys\\Database\\ModelBuilder\:\:get\(\) should return array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\> but returns mixed\.$#'
+			message: '#^Method Denosys\\Database\\ModelBuilder\:\:get\(\) should return array\<object\>\|Illuminate\\Support\\Collection\<int, Denosys\\Database\\Model\> but returns mixed\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Database/ModelBuilder.php
@@ -925,7 +739,7 @@ parameters:
 			path: src/Database/ModelBuilder.php
 
 		-
-			message: '#^Parameter \#2 \$results of method Denosys\\Database\\Relations\\Relation\:\:match\(\) expects Denosys\\Support\\Collection, array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\> given\.$#'
+			message: '#^Parameter \#2 \$results of method Denosys\\Database\\Relations\\Relation\:\:match\(\) expects Illuminate\\Support\\Collection, array\<object\>\|Illuminate\\Support\\Collection\<int, Denosys\\Database\\Model\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Database/ModelBuilder.php
@@ -937,7 +751,7 @@ parameters:
 			path: src/Database/ModelBuilder.php
 
 		-
-			message: '#^Method Denosys\\Database\\Pagination\\LengthAwarePaginator\:\:__construct\(\) has parameter \$items with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			message: '#^Method Denosys\\Database\\Pagination\\LengthAwarePaginator\:\:__construct\(\) has parameter \$items with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/Database/Pagination/LengthAwarePaginator.php
@@ -1165,7 +979,7 @@ parameters:
 			path: src/Database/Relations/BelongsTo.php
 
 		-
-			message: '#^Method Denosys\\Database\\Relations\\BelongsTo\:\:match\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			message: '#^Method Denosys\\Database\\Relations\\BelongsTo\:\:match\(\) has parameter \$results with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/Database/Relations/BelongsTo.php
@@ -1189,7 +1003,7 @@ parameters:
 			path: src/Database/Relations/BelongsToMany.php
 
 		-
-			message: '#^Method Denosys\\Database\\Relations\\BelongsToMany\:\:buildDictionary\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			message: '#^Method Denosys\\Database\\Relations\\BelongsToMany\:\:buildDictionary\(\) has parameter \$results with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/Database/Relations/BelongsToMany.php
@@ -1201,7 +1015,7 @@ parameters:
 			path: src/Database/Relations/BelongsToMany.php
 
 		-
-			message: '#^Method Denosys\\Database\\Relations\\BelongsToMany\:\:match\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			message: '#^Method Denosys\\Database\\Relations\\BelongsToMany\:\:match\(\) has parameter \$results with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/Database/Relations/BelongsToMany.php
@@ -1219,7 +1033,7 @@ parameters:
 			path: src/Database/Relations/HasMany.php
 
 		-
-			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:buildDictionary\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:buildDictionary\(\) has parameter \$results with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/Database/Relations/HasMany.php
@@ -1237,19 +1051,19 @@ parameters:
 			path: src/Database/Relations/HasMany.php
 
 		-
-			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:getResults\(\) return type with generic class Denosys\\Support\\Collection does not specify its types\: TValue$#'
+			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:getResults\(\) return type with generic class Illuminate\\Support\\Collection does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/Database/Relations/HasMany.php
 
 		-
-			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:getResults\(\) should return Denosys\\Support\\Collection but returns array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\>\.$#'
+			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:getResults\(\) should return Illuminate\\Support\\Collection but returns array\<object\>\|Illuminate\\Support\\Collection\<int, Denosys\\Database\\Model\>\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Database/Relations/HasMany.php
 
 		-
-			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:match\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			message: '#^Method Denosys\\Database\\Relations\\HasMany\:\:match\(\) has parameter \$results with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/Database/Relations/HasMany.php
@@ -1273,7 +1087,7 @@ parameters:
 			path: src/Database/Relations/HasOne.php
 
 		-
-			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:buildDictionary\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:buildDictionary\(\) has parameter \$results with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/Database/Relations/HasOne.php
@@ -1297,13 +1111,13 @@ parameters:
 			path: src/Database/Relations/HasOne.php
 
 		-
-			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:match\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:match\(\) has parameter \$results with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/Database/Relations/HasOne.php
 
 		-
-			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:matchOne\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			message: '#^Method Denosys\\Database\\Relations\\HasOne\:\:matchOne\(\) has parameter \$results with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/Database/Relations/HasOne.php
@@ -1321,7 +1135,7 @@ parameters:
 			path: src/Database/Relations/HasOne.php
 
 		-
-			message: '#^Method Denosys\\Database\\Relations\\Relation\:\:match\(\) has parameter \$results with generic class Denosys\\Support\\Collection but does not specify its types\: TValue$#'
+			message: '#^Method Denosys\\Database\\Relations\\Relation\:\:match\(\) has parameter \$results with generic class Illuminate\\Support\\Collection but does not specify its types\: TKey, TValue$#'
 			identifier: missingType.generics
 			count: 1
 			path: src/Database/Relations/Relation.php
@@ -1339,7 +1153,7 @@ parameters:
 			path: src/Database/Relations/Relation.php
 
 		-
-			message: '#^Parameter \#2 \$results of method Denosys\\Database\\Relations\\Relation\:\:match\(\) expects Denosys\\Support\\Collection, array\<object\>\|Denosys\\Support\\Collection\<Denosys\\Database\\Model\> given\.$#'
+			message: '#^Parameter \#2 \$results of method Denosys\\Database\\Relations\\Relation\:\:match\(\) expects Illuminate\\Support\\Collection, array\<object\>\|Illuminate\\Support\\Collection\<int, Denosys\\Database\\Model\> given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Database/Relations/Relation.php

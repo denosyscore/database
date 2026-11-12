@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Denosys\Database\Connection\ConnectionFactory;
 use Denosys\Database\Model;
 use Denosys\Database\ModelBuilder;
-use Denosys\Support\Collection;
+use Illuminate\Support\Collection;
 use PHPUnit\Framework\TestCase;
 
 final class ModelCollectionTest extends TestCase
