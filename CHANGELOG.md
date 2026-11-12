@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.12.0 – 2026-11-12
+
+- Released with the framework's 0.12 line; no changes to this package.
+
 ## Unreleased
 
 - Accept `illuminate/collections` 13, matching the framework.
