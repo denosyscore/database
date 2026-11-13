@@ -126,17 +126,26 @@ class Connection implements ConnectionInterface
      * {@inheritdoc}
      *
      * @param array<int|string, mixed> $bindings
-     * @return array<object>
+     * @return list<object>
      */
     public function select(string $query, array $bindings = []): array
     {
-        return $this->run($query, $bindings, function (string $query, array $bindings) {
+        $rows = $this->run($query, $bindings, function (string $query, array $bindings) {
             $statement = $this->prepared($query);
             $this->bindValues($statement, $bindings);
             $statement->execute();
 
             return $statement->fetchAll();
         });
+
+        $objects = [];
+        foreach (is_array($rows) ? $rows : [] as $row) {
+            if (is_object($row)) {
+                $objects[] = $row;
+            }
+        }
+
+        return $objects;
     }
 
     /**

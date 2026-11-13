@@ -5,5 +5,7 @@ parameters:
     level: max
     paths:
         - src
+        # Record fixtures use Persists, so the trait is analysed.
+        - tests/Record/fixtures.php
     # Fixed errors must be removed from the baseline, so it only shrinks.
     reportUnmatchedIgnoredErrors: true

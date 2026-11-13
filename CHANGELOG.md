@@ -1,5 +1,45 @@
 # Changelog
 
+## 0.21.0 – 2026-11-13
+
+Records replace models (findings F02, F29 and the pagination part of F08).
+
+### Added
+
+- `Record` and the `Persists` trait: a final class with typed public
+  properties is a record, with `query()`, `find()`, `findOrFail()`, `save()`,
+  `delete()`, `refresh()` and `exists()`. `#[Table]`, `#[Id]`, `#[Column]` and
+  `#[CastWith]` name tables, keys and columns and convert custom types.
+  Property types convert values: `int`, `float`, `string`, `bool`,
+  `DateTimeImmutable` in UTC and backed enums.
+- `save()` updates only changed columns and runs no query when nothing
+  changed; `createdAt` and `updatedAt` properties are filled in. A `NULL`
+  original no longer counts as a change.
+- `RecordQuery`, a typed, immutable query of records with explicit methods.
+- Relations (`HasMany`, `HasOne`, `BelongsTo`, `BelongsToMany`, built with
+  `Relations::*()`) that are strict: `get()` returns what `with()` loaded,
+  including an empty value for parents without related rows, and throws
+  `RelationNotLoaded` otherwise; `query()` always queries. Eager loading
+  supports constraints and nested relations, and pivot columns stay off the
+  related records (`pivot()`).
+- `Page`, `Ordering` and `Paginated`, with `paginate()` on records and on the
+  query builder.
+- `Records`, which holds the store records use (`use()`, `reset()`).
+
+### Removed (breaking)
+
+- `Model`, `ModelBuilder`, `Entity`, `Repository`, the `Database` facade, the
+  model relations, model factories (`Factory`, `HasFactory`),
+  `LengthAwarePaginator`, `MassAssignmentException`,
+  `LazyLoadingViolationException` and `ModelNotFoundException` (use
+  `RecordNotFound`). Model attribute magic is gone with them: reading a
+  property never runs a method.
+- The `illuminate/collections` and `doctrine/inflector` requirements.
+
+### Changed (breaking)
+
+- `Builder::get()` and `Connection::select()` return `list<object>`.
+
 ## 0.20.0 – 2026-11-13
 
 ### Added

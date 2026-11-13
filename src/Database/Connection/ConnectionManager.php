@@ -201,7 +201,7 @@ class ConnectionManager
      * Run a select statement against the database.
      *
      * @param array<int|string, mixed> $bindings
-     * @return array<array<string, mixed>>
+     * @return list<object>
      */
     public function select(string $query, array $bindings = [], ?string $connection = null): array
     {

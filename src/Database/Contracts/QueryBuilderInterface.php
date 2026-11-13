@@ -150,7 +150,8 @@ interface QueryBuilderInterface
     /**
      * Execute the query and get all results.
      */
-    public function get(): mixed;
+    /** @return list<object> */
+    public function get(): array;
 
     /**
      * Execute the query and get the first result.

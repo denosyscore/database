@@ -28,7 +28,7 @@ interface ConnectionInterface
      *
      * @param string $query
      * @param array<int|string, mixed> $bindings
-     * @return array<string, mixed> */
+     * @return list<object> */
     public function select(string $query, array $bindings = []): array;
 
     /**

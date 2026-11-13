@@ -1,5 +1,5 @@
 parameters:
-    level: 6
+    level: max
     paths:
-        - tests/fixtures/ModelMetadataFixture.php
-        - tests/fixtures/ModelQueryTypesFixture.php
+        - tests/Record/fixtures.php
+        - tests/fixtures/RecordTypesFixture.php

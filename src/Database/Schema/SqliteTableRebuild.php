@@ -450,7 +450,7 @@ final class SqliteTableRebuild
      */
     private function rows(string $sql, array $bindings = []): array
     {
-        return array_values(array_map(static fn (object $row): array => (array) $row, $this->connection->select($sql, $bindings)));
+        return array_map(static fn (object $row): array => (array) $row, $this->connection->select($sql, $bindings));
     }
 
     /**

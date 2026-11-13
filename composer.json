@@ -1,19 +1,16 @@
 {
   "name": "denosyscore/database",
-  "description": "Database ORM, query builder, migrations, and seeding",
+  "description": "Records, query builder, schema, migrations and seeding",
   "type": "library",
   "license": "MIT",
   "require": {
     "php": "^8.2",
     "ext-pdo": "*",
-    "denosyscore/console": "^0.20",
-    "denosyscore/container": "^0.20",
-    "denosyscore/contracts": "^0.20",
-    "doctrine/inflector": "^2.1",
-    "illuminate/collections": "^12.0 || ^13.0"
+    "denosyscore/console": "^0.21",
+    "denosyscore/container": "^0.21",
+    "denosyscore/contracts": "^0.21"
   },
   "require-dev": {
-    "fakerphp/faker": "^1.24",
     "phpstan/phpstan": "^2.2",
     "phpunit/phpunit": "^10.5"
   },
@@ -32,10 +29,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-main": "0.20.x-dev"
+      "dev-main": "0.21.x-dev"
     }
-  },
-  "suggest": {
-    "fakerphp/faker": "Required by model factories (Denosys\\Database\\Factory)"
   }
 }
