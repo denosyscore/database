@@ -30,6 +30,7 @@ final class MigrateCommandPreviewTest extends TestCase
 
         self::assertSame(0, $status);
         self::assertStringContainsString('Would run: 0001_create_widgets', $message);
+        self::assertStringContainsString('CREATE TABLE "widgets"', $message);
         self::assertStringContainsString('No changes made.', $message);
         self::assertFalse($schema->hasTable('schema_migrations'));
         self::assertFalse($schema->hasTable('widgets'));

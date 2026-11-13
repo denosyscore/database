@@ -170,14 +170,40 @@ final class User extends \Denosys\Database\Model
 }
 ```
 
-## Migration preview
+## Migrations
 
-`Migrator::pretend()->run()` lists pending migrations without creating the
-migration repository, applying schema changes, or recording history. The
-`MigrationResult` contains planned migration names, and `getPretendLog()`
-contains descriptive `Would up` entries; it does not contain compiled SQL.
-Pretend mode also keeps rollback, reset, and fresh operations read-only. Turn
-pretend mode off before the real operation.
+The migrator runs migration files in filename order. Give it one directory or
+several; a package adds its own with `addPath()`:
+
+```php
+$migrator = new Migrator($connection, $schema, new MigrationRepository($connection, $schema), [
+    __DIR__ . '/database/migrations',
+]);
+$migrator->addPath(__DIR__ . '/vendor/acme/billing/migrations');
+$migrator->run();
+```
+
+- **One run at a time.** `run()`, `rollback()` and `fresh()` hold a lock per
+  database: `GET_LOCK` on MySQL and MariaDB, an advisory lock on PostgreSQL,
+  and `flock()` on a file beside a SQLite database. A second run waits up to
+  the lock timeout (60 seconds by default, the constructor's `lockTimeout`)
+  and then throws `MigrationException`. Pending migrations are read once the
+  lock is held, so two deploys never run the same migration.
+- **A migration and its record commit together.** On SQLite and PostgreSQL,
+  whose DDL is transactional, a failure leaves neither the change nor its
+  record behind. MySQL and MariaDB commit DDL as it runs, so a migration that
+  fails part-way can leave its earlier statements applied; keep each MySQL
+  migration to one change.
+- **A migration that already ran is never run again**, so editing one does not
+  change the database. `run()` throws `MigrationException` when a recorded
+  checksum no longer matches its file. Restore the file and add a new
+  migration; if the edit does not change the schema (a comment, say),
+  `acceptChanges()` (`migrate --accept-changes`) records the new checksums.
+- **Preview.** `pretend()` runs nothing and records the SQL each migration
+  would issue in `getPretendLog()`, each migration introduced by a
+  `-- name` line. `migrate --pretend` prints it. Reads still run, so a
+  migration that inspects the schema sees the real database. Turn pretend
+  mode off before the real operation.
 
 ## Repository pagination
 

@@ -9,6 +9,7 @@ use Denosys\Console\CommandInterface;
 use Denosys\Console\InputInterface;
 use Denosys\Console\OutputInterface;
 use Denosys\Container\ContainerInterface;
+use Denosys\Database\Migration\MigrationException;
 use Denosys\Database\Migration\Migrator;
 use Denosys\Database\Seeding\SeederRunner;
 
@@ -64,7 +65,13 @@ HELP);
         $output->info('Dropping all tables...');
         $output->newLine();
 
-        $result = $this->migrator()->fresh();
+        try {
+            $result = $this->migrator()->fresh();
+        } catch (MigrationException $e) {
+            $output->error($e->getMessage());
+
+            return 1;
+        }
 
         if ($result->isEmpty()) {
             $output->comment('No migrations to run.');

@@ -1,5 +1,43 @@
 # Changelog
 
+## 0.18.0 – 2026-11-13
+
+### Changed (breaking)
+
+- `run()`, `rollback()` and `fresh()` hold a per-database lock
+  (`GET_LOCK` on MySQL and MariaDB, an advisory lock on PostgreSQL, `flock()`
+  on a file beside a SQLite database) and read pending migrations only once
+  it is held. Two concurrent runs no longer both execute a migration; the
+  second waits up to the `lockTimeout` (60 seconds) and then throws
+  `MigrationException`.
+- A migration and its record in `schema_migrations` commit in one
+  transaction, as do a rollback and the record's removal. On SQLite and
+  PostgreSQL a failure leaves neither behind. MySQL and MariaDB still commit
+  DDL implicitly.
+- `run()` throws `MigrationException` when a migration that already ran has
+  changed on disk. `acceptChanges()` (`migrate --accept-changes`) continues
+  and records the new checksums.
+- `MigrationInterface::dependsOn()` is removed; migrations run in filename
+  order. It matched classes with `instanceof`, which could not name the
+  anonymous classes migrations are, and had no cycle check.
+- `Migrator::getPath()` is replaced by `getPaths()`. `status()` no longer
+  creates the `schema_migrations` table.
+- `migrate:rollback` and `migrate:fresh` report a held lock as an error.
+
+### Added
+
+- The `Migrator` accepts several paths, and `addPath()` adds one, so a package
+  can ship its own migrations. A name that appears in two paths throws.
+- `pretend()` records the SQL each migration would issue; `migrate --pretend`
+  prints it. `Connection::pretend()` records writes instead of running them,
+  while reads still run.
+- `MigrationRepository::updateChecksum()`.
+
+### Fixed
+
+- `MigrationRepository` validates the rows it reads; `getChecksum()` returns
+  null instead of a non-string value.
+
 ## 0.17.0 – 2026-11-12
 
 ### Changed (breaking)

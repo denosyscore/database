@@ -6,17 +6,6 @@ namespace Denosys\Database\Migration;
 
 trait MigrationTrait
 {
-    /**
-     * Get migration dependencies.
-     * 
-     * Override to specify migrations that must run before this one.
-     * 
-     * @return array<string, mixed>
-     */
-    public function dependsOn(): array
-    {
-        return [];
-    }
 
     /**
      * Whether this migration should run within a transaction.

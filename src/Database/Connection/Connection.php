@@ -47,6 +47,12 @@ class Connection implements ConnectionInterface
      */
     protected bool $loggingQueries = false;
 
+    /** Whether writes are being recorded instead of run (see pretend()). */
+    protected bool $pretending = false;
+
+    /** @var list<string> */
+    protected array $pretended = [];
+
     /**
      * Create a new database connection instance.
      *
@@ -158,7 +164,7 @@ class Connection implements ConnectionInterface
             $statement->execute();
 
             return $this->pdo->lastInsertId();
-        });
+        }, pretendResult: '0');
     }
 
     /**
@@ -174,7 +180,7 @@ class Connection implements ConnectionInterface
             $statement->execute();
 
             return $statement->rowCount();
-        });
+        }, pretendResult: 0);
     }
 
     /**
@@ -190,7 +196,7 @@ class Connection implements ConnectionInterface
             $statement->execute();
 
             return $statement->rowCount();
-        });
+        }, pretendResult: 0);
     }
 
     /**
@@ -205,7 +211,7 @@ class Connection implements ConnectionInterface
             $this->bindValues($statement, $bindings);
 
             return $statement->execute();
-        });
+        }, pretendResult: true);
     }
 
     /**
@@ -215,7 +221,7 @@ class Connection implements ConnectionInterface
     {
         return $this->run($query, [], function ($query) {
             return $this->pdo->exec($query) !== false;
-        });
+        }, pretendResult: true);
     }
 
     /**
@@ -319,6 +325,34 @@ class Connection implements ConnectionInterface
     }
 
     /**
+     * Run $callback with writes recorded instead of executed, and return the
+     * recorded SQL. Reads still run, so code that inspects the schema sees
+     * the real database. Used to preview migrations.
+     *
+     * Everything issued through select(), selectOne() or cursor() is a read
+     * and runs: a write that returns rows (INSERT ... RETURNING, or a
+     * function with side effects) issued through them is executed, not
+     * recorded. Issue writes through insert(), update(), delete() or
+     * statement() so a preview records them.
+     *
+     * @return list<string>
+     */
+    public function pretend(Closure $callback): array
+    {
+        $previous = [$this->pretending, $this->pretended];
+        $this->pretending = true;
+        $this->pretended = [];
+
+        try {
+            $callback($this);
+
+            return $this->pretended;
+        } finally {
+            [$this->pretending, $this->pretended] = $previous;
+        }
+    }
+
+    /**
      * Get the current transaction level.
      */
     public function transactionLevel(): int
@@ -331,8 +365,17 @@ class Connection implements ConnectionInterface
      *
      * @param array<int|string, mixed> $bindings
      */
-    protected function run(string $query, array $bindings, Closure $callback): mixed
+    protected function run(string $query, array $bindings, Closure $callback, mixed $pretendResult = null): mixed
     {
+        // Reads still run while pretending, so introspection sees the real schema.
+        if ($this->pretending && $pretendResult !== null) {
+            $this->pretended[] = $bindings === []
+                ? $query
+                : $query . ' -- bindings: ' . json_encode(array_values($bindings), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+            return $pretendResult;
+        }
+
         $start = microtime(true);
 
         try {

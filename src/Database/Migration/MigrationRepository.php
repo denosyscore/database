@@ -58,10 +58,7 @@ class MigrationRepository
      * 
      * @return array<string, array{batch: int, checksum: string, executed_at: string}>
      */
-    /**
-     * @return array<string, mixed>
-     */
-public function getRan(): array
+    public function getRan(): array
     {
         $results = $this->connection->select(
             "SELECT migration, batch, checksum, executed_at FROM {$this->getTable()} ORDER BY batch, id"
@@ -70,10 +67,13 @@ public function getRan(): array
         $ran = [];
         foreach ($results as $row) {
             $row = (array) $row;
+            if (!is_string($row['migration'] ?? null) || !is_numeric($row['batch'] ?? null)) {
+                throw new \UnexpectedValueException('The migrations table holds a malformed row.');
+            }
             $ran[$row['migration']] = [
                 'batch' => (int) $row['batch'],
-                'checksum' => $row['checksum'],
-                'executed_at' => $row['executed_at'],
+                'checksum' => is_string($row['checksum'] ?? null) ? $row['checksum'] : '',
+                'executed_at' => is_scalar($row['executed_at'] ?? null) ? (string) $row['executed_at'] : '',
             ];
         }
 
@@ -103,7 +103,7 @@ public function getRan(): array
     /**
      * Get migrations from the last batch.
      * 
-     * @return string[]
+     * @return list<string>
      */
     public function getLastBatch(): array
     {
@@ -118,14 +118,14 @@ public function getRan(): array
             [$lastBatch]
         );
 
-        return array_map(fn($row) => ((array) $row)['migration'], $results);
+        return $this->names($results);
     }
 
     /**
      * Get migrations for a specific number of batches.
      * 
      * @param int $steps Number of batches to roll back
-     * @return string[]
+     * @return list<string>
      */
     public function getMigrationsForSteps(int $steps): array
     {
@@ -137,7 +137,7 @@ public function getRan(): array
             [$minBatch]
         );
 
-        return array_map(fn($row) => ((array) $row)['migration'], $results);
+        return $this->names($results);
     }
 
     /**
@@ -148,6 +148,17 @@ public function getRan(): array
         $this->connection->insert(
             "INSERT INTO {$this->getTable()} (migration, checksum, batch, executed_at) VALUES (?, ?, ?, ?)",
             [$migration, $checksum, $batch, gmdate('Y-m-d H:i:s')]
+        );
+    }
+
+    /**
+     * Record a new checksum for a migration that already ran.
+     */
+    public function updateChecksum(string $migration, string $checksum): void
+    {
+        $this->connection->update(
+            "UPDATE {$this->getTable()} SET checksum = ? WHERE migration = ?",
+            [$checksum, $migration]
         );
     }
 
@@ -172,7 +183,9 @@ public function getRan(): array
             [$migration]
         );
 
-        return $result ? ((array) $result)['checksum'] : null;
+        $checksum = $result !== null ? ((array) $result)['checksum'] ?? null : null;
+
+        return is_string($checksum) ? $checksum : null;
     }
 
     /**
@@ -189,6 +202,23 @@ public function getRan(): array
     public function dropRepository(): void
     {
         $this->schema->dropIfExists(self::TABLE);
+    }
+
+    /**
+     * @param array<object> $rows
+     * @return list<string>
+     */
+    private function names(array $rows): array
+    {
+        $names = [];
+        foreach ($rows as $row) {
+            $name = ((array) $row)['migration'] ?? null;
+            if (is_string($name)) {
+                $names[] = $name;
+            }
+        }
+
+        return $names;
     }
 
     /**

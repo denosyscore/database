@@ -10,6 +10,7 @@ use Denosys\Console\CommandInterface;
 use Denosys\Console\InputInterface;
 use Denosys\Console\OutputInterface;
 use Denosys\Container\ContainerInterface;
+use Denosys\Database\Migration\MigrationException;
 use Denosys\Database\Migration\Migrator;
 
 /**
@@ -52,7 +53,13 @@ class MigrateRollbackCommand implements CommandInterface
 
         $output->info("Rolling back {$steps} batch(es)...");
 
-        $result = $this->migrator()->rollback($steps);
+        try {
+            $result = $this->migrator()->rollback($steps);
+        } catch (MigrationException $e) {
+            $output->error($e->getMessage());
+
+            return 1;
+        }
 
         if ($result->isEmpty()) {
             $output->comment('Nothing to rollback.');

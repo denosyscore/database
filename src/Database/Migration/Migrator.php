@@ -9,99 +9,240 @@ use Denosys\Database\Schema\SchemaBuilder;
 use Throwable;
 
 /**
- * Orchestrates migration execution.
- * 
- * Runs migrations in order, tracks them in the repository,
- * and handles transactions and rollbacks.
+ * Runs migrations in filename order and records them in the repository.
+ *
+ * - One run at a time: run(), rollback() and fresh() hold a per-database
+ *   lock (see MigrationLock) and read the pending migrations only once the
+ *   lock is held, so two deploys cannot run the same migration.
+ * - A migration and its log row commit together. On SQLite and PostgreSQL,
+ *   whose DDL is transactional, a failure leaves neither behind. MySQL and
+ *   MariaDB commit DDL implicitly, so there a failure part-way through a
+ *   migration can leave the statements before it applied.
+ * - run() refuses to start when a migration that already ran has changed,
+ *   unless acceptChanges() is set, which records the new checksums.
+ * - pretend() runs nothing and records the SQL each migration would issue.
  */
 class Migrator
 {
-    /** @var array<string, MigrationInterface> */
+    /** @var array<string, array{checksum: string, migration: MigrationInterface}> */
     private array $migrations = [];
+
+    /** @var list<string> */
+    private array $paths;
 
     private bool $pretend = false;
 
-    /** @var array<int, string> */
+    private bool $acceptChanges = false;
+
+    /** @var list<string> */
     private array $pretendLog = [];
 
+    /**
+     * @param string|array<string> $paths Directories of migration files.
+     */
     public function __construct(
         private readonly Connection $connection,
         private readonly SchemaBuilder $schema,
         private readonly MigrationRepository $repository,
-        private readonly string $path,
-    ) {}
-
-    /**
-     * Run all pending migrations.
-     */
-    public function run(): MigrationResult
-    {
-        $this->pretendLog = [];
-        if (!$this->pretend) {
-            $this->ensureRepositoryExists();
-        }
-        
-        $result = new MigrationResult();
-        $pending = $this->getPendingMigrations();
-        
-        if (empty($pending)) {
-            return $result;
-        }
-
-        $batch = $this->pretend ? 0 : $this->repository->getNextBatchNumber();
-
-        foreach ($pending as $name => $migration) {
-            $startTime = microtime(true);
-            
-            try {
-                $this->runMigration($migration, 'up');
-                if (!$this->pretend) {
-                    $checksum = $this->getChecksum($name);
-                    $this->repository->log($name, $checksum, $batch);
-                }
-                $result->addMigration($name, microtime(true) - $startTime);
-            } catch (Throwable $e) {
-                $result->addFailedMigration($name, microtime(true) - $startTime, $e->getMessage());
-                break; // Stop on first error
-            }
-        }
-
-        return $result;
+        string|array $paths,
+        private readonly float $lockTimeout = 60.0,
+    ) {
+        $this->paths = is_string($paths) ? [$paths] : array_values($paths);
     }
 
     /**
-     * Rollback the last batch of migrations.
+     * Add a directory of migrations, for example a package's own.
      */
+    public function addPath(string $path): static
+    {
+        if (!in_array($path, $this->paths, true)) {
+            $this->paths[] = $path;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function getPaths(): array
+    {
+        return $this->paths;
+    }
+
+    /**
+     * Preview instead of running: record the SQL and change nothing.
+     */
+    public function pretend(bool $pretend = true): static
+    {
+        $this->pretend = $pretend;
+
+        return $this;
+    }
+
+    /**
+     * Let run() continue when migrations that already ran have changed, and
+     * record their new checksums.
+     */
+    public function acceptChanges(bool $accept = true): static
+    {
+        $this->acceptChanges = $accept;
+
+        return $this;
+    }
+
+    /**
+     * The SQL recorded by the last pretend run, each migration introduced by
+     * a "-- name" line.
+     *
+     * @return list<string>
+     */
+    public function getPretendLog(): array
+    {
+        return $this->pretendLog;
+    }
+
+    public function run(): MigrationResult
+    {
+        $this->pretendLog = [];
+
+        if ($this->pretend) {
+            return $this->apply($this->getPendingMigrations(), 0);
+        }
+
+        return $this->lock()->hold(function (): MigrationResult {
+            $this->repository->createRepository();
+            $this->guardChecksums();
+
+            return $this->apply($this->getPendingMigrations(), $this->repository->getNextBatchNumber());
+        });
+    }
+
     public function rollback(int $steps = 1): MigrationResult
     {
         $this->pretendLog = [];
-        if ($this->pretend && !$this->repository->repositoryExists()) {
-            return new MigrationResult();
+
+        if ($this->pretend) {
+            return $this->repository->repositoryExists()
+                ? $this->revert($this->repository->getMigrationsForSteps($steps))
+                : new MigrationResult();
         }
 
-        if (!$this->pretend) {
-            $this->ensureRepositoryExists();
+        return $this->lock()->hold(function () use ($steps): MigrationResult {
+            $this->repository->createRepository();
+
+            return $this->revert($this->repository->getMigrationsForSteps($steps));
+        });
+    }
+
+    public function reset(): MigrationResult
+    {
+        $this->pretendLog = [];
+
+        if ($this->pretend) {
+            return $this->repository->repositoryExists()
+                ? $this->revert($this->repository->getMigrationsForSteps($this->repository->getLastBatchNumber()))
+                : new MigrationResult();
         }
-        
-        $result = new MigrationResult();
-        $migrations = $this->repository->getMigrationsForSteps($steps);
-        
-        if (empty($migrations)) {
+
+        // The batches are read under the lock, so a batch another process adds
+        // while this one waits is reverted too. Every batch up to the last is
+        // included, so a gap in the numbering leaves nothing behind.
+        return $this->lock()->hold(function (): MigrationResult {
+            $this->repository->createRepository();
+
+            return $this->revert($this->repository->getMigrationsForSteps($this->repository->getLastBatchNumber()));
+        });
+    }
+
+    /**
+     * Drop every table in the connection's database, then run all migrations.
+     */
+    public function fresh(): MigrationResult
+    {
+        if ($this->pretend) {
+            $this->pretendLog = ['-- drop all tables', ...$this->connection->pretend(fn () => $this->schema->dropAllTables())];
+            $result = new MigrationResult();
+            foreach ($this->getAllMigrations() as $name => $migration) {
+                if (!$this->preview($result, $name, fn () => $migration->up($this->schema))) {
+                    break;
+                }
+            }
+
             return $result;
         }
 
-        foreach ($migrations as $name) {
-            $startTime = microtime(true);
-            
-            try {
-                $migration = $this->loadMigration($name);
-                $this->runMigration($migration, 'down');
-                if (!$this->pretend) {
-                    $this->repository->delete($name);
+        return $this->lock()->hold(function (): MigrationResult {
+            $this->schema->dropAllTables();
+            $this->repository->createRepository();
+
+            return $this->apply($this->getPendingMigrations(), $this->repository->getNextBatchNumber());
+        });
+    }
+
+    /**
+     * @return array<string, array{ran: bool, batch: int|null, checksum: string|null, checksum_valid: bool|null}>
+     */
+    public function status(): array
+    {
+        $ran = $this->repository->repositoryExists() ? $this->repository->getRan() : [];
+        $status = [];
+
+        foreach ($this->getMigrationFiles() as $name => $path) {
+            $record = $ran[$name] ?? null;
+            $status[$name] = [
+                'ran' => $record !== null,
+                'batch' => $record['batch'] ?? null,
+                'checksum' => $record['checksum'] ?? null,
+                'checksum_valid' => $record !== null ? $record['checksum'] === $this->getChecksum($path) : null,
+            ];
+        }
+
+        return $status;
+    }
+
+    /**
+     * @return array<string, MigrationInterface>
+     */
+    public function getPendingMigrations(): array
+    {
+        $ran = $this->repository->repositoryExists() ? $this->repository->getRan() : [];
+        $pending = [];
+        foreach ($this->getMigrationFiles() as $name => $path) {
+            if (!isset($ran[$name])) {
+                $pending[$name] = $this->loadMigration($name, $path);
+            }
+        }
+
+        return $pending;
+    }
+
+    /**
+     * @param array<string, MigrationInterface> $migrations
+     */
+    private function apply(array $migrations, int $batch): MigrationResult
+    {
+        $result = new MigrationResult();
+        $files = $this->getMigrationFiles();
+
+        foreach ($migrations as $name => $migration) {
+            $start = microtime(true);
+
+            if ($this->pretend) {
+                if (!$this->preview($result, $name, fn () => $migration->up($this->schema))) {
+                    break;
                 }
-                $result->addMigration($name, microtime(true) - $startTime);
+                continue;
+            }
+
+            try {
+                $this->transactionally($migration, function () use ($migration, $name, $files, $batch): void {
+                    $migration->up($this->schema);
+                    $this->repository->log($name, $this->getChecksum($files[$name]), $batch);
+                });
+                $result->addMigration($name, microtime(true) - $start);
             } catch (Throwable $e) {
-                $result->addFailedMigration($name, microtime(true) - $startTime, $e->getMessage());
+                $result->addFailedMigration($name, microtime(true) - $start, $e->getMessage());
                 break;
             }
         }
@@ -110,270 +251,166 @@ class Migrator
     }
 
     /**
-     * Reset all migrations.
+     * @param list<string> $names
      */
-    public function reset(): MigrationResult
+    private function revert(array $names): MigrationResult
     {
-        if (!$this->repository->repositoryExists()) {
-            return new MigrationResult();
-        }
+        $result = new MigrationResult();
+        $files = $this->getMigrationFiles();
 
-        $ran = $this->repository->getRan();
-        $steps = count(array_unique(array_column($ran, 'batch')));
-        return $this->rollback($steps);
-    }
+        foreach ($names as $name) {
+            $start = microtime(true);
 
-    /**
-     * Drop all tables and re-run all migrations.
-     */
-    public function fresh(): MigrationResult
-    {
-        if ($this->pretend) {
-            $this->pretendLog = ['Would drop all tables'];
-            $result = new MigrationResult();
-            foreach ($this->getAllMigrations() as $name => $migration) {
-                $this->runMigration($migration, 'up');
-                $result->addMigration($name, 0.0);
+            try {
+                if (!isset($files[$name])) {
+                    throw new \RuntimeException("Migration not found: {$name}");
+                }
+                $migration = $this->loadMigration($name, $files[$name]);
+
+                if ($this->pretend) {
+                    if (!$this->preview($result, $name, fn () => $migration->down($this->schema))) {
+                        break;
+                    }
+                    continue;
+                }
+
+                $this->transactionally($migration, function () use ($migration, $name): void {
+                    $migration->down($this->schema);
+                    $this->repository->delete($name);
+                });
+                $result->addMigration($name, microtime(true) - $start);
+            } catch (Throwable $e) {
+                $result->addFailedMigration($name, microtime(true) - $start, $e->getMessage());
+                break;
             }
-
-            return $result;
         }
 
-        $this->schema->dropAllTables();
-        return $this->run();
+        return $result;
     }
 
     /**
-     * Get migration status.
-     * 
-     * @return array<string, array{ran: bool, batch: int|null, checksum: string|null}>
+     * Record the SQL $work would issue. A migration that reads the schema
+     * may depend on earlier pending migrations, which a preview does not
+     * apply; the preview stops there and says so.
+     *
+     * @param callable(): void $work
      */
-    public function status(): array
+    private function preview(MigrationResult $result, string $name, callable $work): bool
     {
-        $this->ensureRepositoryExists();
-        
-        $all = $this->getMigrationFiles();
-        $ran = $this->repository->getRan();
-        $status = [];
+        try {
+            $this->pretendLog = [...$this->pretendLog, "-- {$name}", ...$this->connection->pretend(static fn () => $work())];
+            $result->addMigration($name, 0.0);
 
-        foreach ($all as $name => $path) {
-            $status[$name] = [
-                'ran' => isset($ran[$name]),
-                'batch' => $ran[$name]['batch'] ?? null,
-                'checksum' => $ran[$name]['checksum'] ?? null,
-                'checksum_valid' => isset($ran[$name]) 
-                    ? $ran[$name]['checksum'] === $this->getChecksum($name)
-                    : null,
-            ];
+            return true;
+        } catch (Throwable $e) {
+            $result->addFailedMigration($name, 0.0, 'Preview stopped: ' . $e->getMessage());
+
+            return false;
         }
-
-        return $status;
     }
 
     /**
-     * Get pending migrations.
-     * 
+     * @param callable(): void $work
+     */
+    private function transactionally(MigrationInterface $migration, callable $work): void
+    {
+        if ($migration->withinTransaction()) {
+            $this->connection->transaction(static fn () => $work());
+        } else {
+            $work();
+        }
+    }
+
+    /**
+     * Refuse to run when a migration that already ran has changed on disk.
+     */
+    private function guardChecksums(): void
+    {
+        $files = $this->getMigrationFiles();
+        $changed = [];
+
+        foreach ($this->repository->getRan() as $name => $record) {
+            if (!isset($files[$name])) {
+                continue;
+            }
+            $checksum = $this->getChecksum($files[$name]);
+            if ($record['checksum'] === $checksum) {
+                continue;
+            }
+            if ($this->acceptChanges) {
+                $this->repository->updateChecksum($name, $checksum);
+            } else {
+                $changed[] = $name;
+            }
+        }
+
+        if ($changed !== []) {
+            throw MigrationException::changed($changed);
+        }
+    }
+
+    /**
      * @return array<string, MigrationInterface>
      */
-    public function getPendingMigrations(): array
-    {
-        $all = $this->getMigrationFiles();
-        $ran = $this->repository->repositoryExists()
-            ? array_keys($this->repository->getRan())
-            : [];
-        
-        $pending = [];
-        foreach ($all as $name => $path) {
-            if (!in_array($name, $ran, true)) {
-                $pending[$name] = $this->loadMigration($name);
-            }
-        }
-
-        return $this->sortByDependencies($pending);
-    }
-
-    /** @return array<string, MigrationInterface> */
     private function getAllMigrations(): array
     {
         $migrations = [];
         foreach ($this->getMigrationFiles() as $name => $path) {
-            $migrations[$name] = $this->loadMigration($name);
+            $migrations[$name] = $this->loadMigration($name, $path);
         }
-
-        return $this->sortByDependencies($migrations);
-    }
-
-    /**
-     * Enable pretend mode (dry run).
-     */
-    public function pretend(bool $pretend = true): static
-    {
-        $this->pretend = $pretend;
-        return $this;
-    }
-
-    /**
-     * Get the pretend log (SQL statements that would be executed).
-     *
-     * @return array<int, string>
-     */
-    public function getPretendLog(): array
-    {
-        return $this->pretendLog;
-    }
-
-    /**
-     * Run a single migration.
-     */
-    private function runMigration(MigrationInterface $migration, string $method): void
-    {
-        if ($this->pretend) {
-            // In pretend mode, we'd need to capture SQL statements
-            // This would require query log integration
-            $this->pretendLog[] = "Would {$method}: " . get_class($migration);
-            return;
-        }
-
-        $useTransaction = $migration->withinTransaction() 
-            && !$this->connection->inTransaction();
-
-        if ($useTransaction) {
-            $this->connection->beginTransaction();
-        }
-
-        try {
-            $migration->$method($this->schema);
-            
-            // Only commit if we're still in a transaction
-            // (MySQL DDL statements cause implicit commit)
-            if ($useTransaction && $this->connection->inTransaction()) {
-                $this->connection->commit();
-            }
-        } catch (Throwable $e) {
-            // Only rollback if we're still in a transaction
-            // (MySQL DDL statements cause implicit commit, ending the transaction)
-            if ($useTransaction && $this->connection->inTransaction()) {
-                $this->connection->rollBack();
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Load a migration by name.
-     */
-    private function loadMigration(string $name): MigrationInterface
-    {
-        if (isset($this->migrations[$name])) {
-            return $this->migrations[$name];
-        }
-
-        $files = $this->getMigrationFiles();
-        
-        if (!isset($files[$name])) {
-            throw new \RuntimeException("Migration not found: {$name}");
-        }
-
-        $migration = require $files[$name];
-        
-        if (!$migration instanceof MigrationInterface) {
-            throw new \RuntimeException(
-                "Migration must implement MigrationInterface: {$name}"
-            );
-        }
-
-        $this->migrations[$name] = $migration;
-        return $migration;
-    }
-
-    /**
-     * Get all migration files.
-     * 
-     * @return array<string, string> name => path
-     */
-    private function getMigrationFiles(): array
-    {
-        if (!is_dir($this->path)) {
-            return [];
-        }
-
-        $files = glob($this->path . '/*.php');
-        $migrations = [];
-
-        foreach ($files as $file) {
-            $name = pathinfo($file, PATHINFO_FILENAME);
-            $migrations[$name] = $file;
-        }
-
-        // Sort by name (which includes timestamp prefix)
-        ksort($migrations);
 
         return $migrations;
     }
 
+    private function loadMigration(string $name, string $path): MigrationInterface
+    {
+        // Reload a file that changed since it was loaded, so the code that runs
+        // is the code whose checksum is recorded.
+        $checksum = $this->getChecksum($path);
+        if (($this->migrations[$name]['checksum'] ?? null) === $checksum) {
+            return $this->migrations[$name]['migration'];
+        }
+
+        $migration = require $path;
+        if (!$migration instanceof MigrationInterface) {
+            throw new \RuntimeException("Migration [{$name}] must return an instance of " . MigrationInterface::class . '.');
+        }
+
+        $this->migrations[$name] = ['checksum' => $checksum, 'migration' => $migration];
+
+        return $migration;
+    }
+
     /**
-     * Sort migrations by their dependencies.
+     * Every migration file across the paths, ordered by filename.
      *
-     * @param array<string, MigrationInterface> $migrations
-     * @return array<string, MigrationInterface>
+     * @return array<string, string> name => path
      */
-    private function sortByDependencies(array $migrations): array
+    private function getMigrationFiles(): array
     {
-        $sorted = [];
-        $resolved = [];
-        
-        $resolve = function (string $name, MigrationInterface $migration) use (&$resolve, &$sorted, &$resolved, $migrations): void {
-            if (in_array($name, $resolved, true)) {
-                return;
-            }
-            
-            foreach ($migration->dependsOn() as $dependency) {
-                // Find the migration file for this dependency class
-                foreach ($migrations as $depName => $depMigration) {
-                    if ($depMigration instanceof $dependency) {
-                        $resolve($depName, $depMigration);
-                    }
+        $migrations = [];
+        foreach ($this->paths as $path) {
+            foreach (glob(rtrim($path, '/') . '/*.php') ?: [] as $file) {
+                $name = pathinfo($file, PATHINFO_FILENAME);
+                if (isset($migrations[$name]) && $migrations[$name] !== $file) {
+                    throw MigrationException::duplicate($name, $migrations[$name], $file);
                 }
+                $migrations[$name] = $file;
             }
-            
-            $sorted[$name] = $migration;
-            $resolved[] = $name;
-        };
-
-        foreach ($migrations as $name => $migration) {
-            $resolve($name, $migration);
         }
 
-        return $sorted;
+        ksort($migrations, SORT_STRING);
+
+        return $migrations;
     }
 
-    /**
-     * Get checksum for a migration file.
-     */
-    private function getChecksum(string $name): string
+    private function getChecksum(string $path): string
     {
-        $files = $this->getMigrationFiles();
-        
-        if (!isset($files[$name])) {
-            return '';
-        }
-
-        return hash_file('sha256', $files[$name]);
+        return hash_file('sha256', $path) ?: '';
     }
 
-    /**
-     * Ensure the repository table exists.
-     */
-    private function ensureRepositoryExists(): void
+    private function lock(): MigrationLock
     {
-        $this->repository->createRepository();
-    }
-
-    /**
-     * Get the migration path.
-     */
-    public function getPath(): string
-    {
-        return $this->path;
+        return new MigrationLock($this->connection, $this->lockTimeout);
     }
 }

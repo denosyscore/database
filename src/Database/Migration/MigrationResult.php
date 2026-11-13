@@ -9,8 +9,7 @@ namespace Denosys\Database\Migration;
  */
 class MigrationResult
 {
-    /** @var MigrationRecord[] */
-    /** @var array<string, mixed> */
+    /** @var list<MigrationRecord> */
 
     private array $migrations = [];
     
@@ -43,12 +42,9 @@ class MigrationResult
     /**
      * Get all migration records.
      * 
-     * @return MigrationRecord[]
+     * @return list<MigrationRecord>
      */
-    /**
-     * @return array<string, mixed>
-     */
-public function getMigrations(): array
+    public function getMigrations(): array
     {
         return $this->migrations;
     }

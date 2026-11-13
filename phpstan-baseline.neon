@@ -247,32 +247,8 @@ parameters:
 			path: src/Database/Console/DbSeedCommand.php
 
 		-
-			message: '#^Binary operation "\*" between mixed and 1000 results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: src/Database/Console/MigrateCommand.php
-
-		-
-			message: '#^Cannot access property \$error on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: src/Database/Console/MigrateCommand.php
-
-		-
-			message: '#^Cannot access property \$name on mixed\.$#'
-			identifier: property.nonObject
-			count: 3
-			path: src/Database/Console/MigrateCommand.php
-
-		-
-			message: '#^Cannot access property \$success on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: src/Database/Console/MigrateCommand.php
-
-		-
-			message: '#^Cannot access property \$time on mixed\.$#'
-			identifier: property.nonObject
+			message: '#^Parameter \#1 \$seederClass of method Denosys\\Database\\Seeding\\SeederRunner\:\:run\(\) expects class\-string\<Denosys\\Database\\Seeding\\SeederInterface\>, class\-string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Database/Console/MigrateCommand.php
 
@@ -280,114 +256,12 @@ parameters:
 			message: '#^Parameter \#1 \$seederClass of method Denosys\\Database\\Seeding\\SeederRunner\:\:run\(\) expects class\-string\<Denosys\\Database\\Seeding\\SeederInterface\>, class\-string given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Database/Console/MigrateCommand.php
-
-		-
-			message: '#^Part \$record\-\>error \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: src/Database/Console/MigrateCommand.php
-
-		-
-			message: '#^Part \$record\-\>name \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 3
-			path: src/Database/Console/MigrateCommand.php
-
-		-
-			message: '#^Binary operation "\*" between mixed and 1000 results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
 			path: src/Database/Console/MigrateFreshCommand.php
-
-		-
-			message: '#^Cannot access property \$error on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: src/Database/Console/MigrateFreshCommand.php
-
-		-
-			message: '#^Cannot access property \$name on mixed\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: src/Database/Console/MigrateFreshCommand.php
-
-		-
-			message: '#^Cannot access property \$success on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: src/Database/Console/MigrateFreshCommand.php
-
-		-
-			message: '#^Cannot access property \$time on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: src/Database/Console/MigrateFreshCommand.php
-
-		-
-			message: '#^Parameter \#1 \$seederClass of method Denosys\\Database\\Seeding\\SeederRunner\:\:run\(\) expects class\-string\<Denosys\\Database\\Seeding\\SeederInterface\>, class\-string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Console/MigrateFreshCommand.php
-
-		-
-			message: '#^Part \$record\-\>error \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: src/Database/Console/MigrateFreshCommand.php
-
-		-
-			message: '#^Part \$record\-\>name \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 2
-			path: src/Database/Console/MigrateFreshCommand.php
-
-		-
-			message: '#^Binary operation "\*" between mixed and 1000 results in an error\.$#'
-			identifier: binaryOp.invalid
-			count: 1
-			path: src/Database/Console/MigrateRollbackCommand.php
-
-		-
-			message: '#^Cannot access property \$error on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: src/Database/Console/MigrateRollbackCommand.php
-
-		-
-			message: '#^Cannot access property \$name on mixed\.$#'
-			identifier: property.nonObject
-			count: 2
-			path: src/Database/Console/MigrateRollbackCommand.php
-
-		-
-			message: '#^Cannot access property \$success on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: src/Database/Console/MigrateRollbackCommand.php
-
-		-
-			message: '#^Cannot access property \$time on mixed\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: src/Database/Console/MigrateRollbackCommand.php
 
 		-
 			message: '#^Cannot cast mixed to int\.$#'
 			identifier: cast.int
 			count: 1
-			path: src/Database/Console/MigrateRollbackCommand.php
-
-		-
-			message: '#^Part \$record\-\>error \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
-			path: src/Database/Console/MigrateRollbackCommand.php
-
-		-
-			message: '#^Part \$record\-\>name \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 2
 			path: src/Database/Console/MigrateRollbackCommand.php
 
 		-
@@ -537,86 +411,8 @@ parameters:
 		-
 			message: '#^Cannot cast mixed to int\.$#'
 			identifier: cast.int
-			count: 2
-			path: src/Database/Migration/MigrationRepository.php
-
-		-
-			message: '#^Method Denosys\\Database\\Migration\\MigrationRepository\:\:getChecksum\(\) should return string\|null but returns mixed\.$#'
-			identifier: return.type
 			count: 1
 			path: src/Database/Migration/MigrationRepository.php
-
-		-
-			message: '#^Method Denosys\\Database\\Migration\\MigrationRepository\:\:getLastBatch\(\) should return array\<string\> but returns array\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Migration/MigrationRepository.php
-
-		-
-			message: '#^Method Denosys\\Database\\Migration\\MigrationRepository\:\:getMigrationsForSteps\(\) should return array\<string\> but returns array\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Migration/MigrationRepository.php
-
-		-
-			message: '#^Method Denosys\\Database\\Migration\\MigrationRepository\:\:getRan\(\) should return array\<string, mixed\> but returns array\<array\<string, mixed\>\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Migration/MigrationRepository.php
-
-		-
-			message: '#^Possibly invalid array key type mixed\.$#'
-			identifier: offsetAccess.invalidOffset
-			count: 1
-			path: src/Database/Migration/MigrationRepository.php
-
-		-
-			message: '#^Property Denosys\\Database\\Migration\\MigrationResult\:\:\$migrations \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 2
-			path: src/Database/Migration/MigrationResult.php
-
-		-
-			message: '#^Argument of an invalid type list\<string\>\|false supplied for foreach, only iterables are supported\.$#'
-			identifier: foreach.nonIterable
-			count: 1
-			path: src/Database/Migration/Migrator.php
-
-		-
-			message: '#^Cannot access offset ''batch'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Database/Migration/Migrator.php
-
-		-
-			message: '#^Cannot access offset ''checksum'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Database/Migration/Migrator.php
-
-		-
-			message: '#^Method Denosys\\Database\\Migration\\Migrator\:\:getChecksum\(\) should return string but returns string\|false\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Migration/Migrator.php
-
-		-
-			message: '#^Method Denosys\\Database\\Migration\\Migrator\:\:status\(\) should return array\<string, array\{ran\: bool, batch\: int\|null, checksum\: string\|null\}\> but returns array\<string, array\{ran\: bool, batch\: mixed, checksum\: mixed, checksum_valid\: bool\|null\}\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Migration/Migrator.php
-
-		-
-			message: '#^Parameter \#1 \$array of function array_unique expects an array of values castable to string, list given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Migration/Migrator.php
-
-		-
-			message: '#^Right side of && is always false\.$#'
-			identifier: booleanAnd.rightAlwaysFalse
-			count: 2
-			path: src/Database/Migration/Migrator.php
 
 		-
 			message: '#^Access to an undefined property object\:\:\$primaryKey\.$#'

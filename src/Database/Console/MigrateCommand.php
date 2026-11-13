@@ -10,6 +10,7 @@ use Denosys\Console\CommandInterface;
 use Denosys\Console\InputInterface;
 use Denosys\Console\OutputInterface;
 use Denosys\Container\ContainerInterface;
+use Denosys\Database\Migration\MigrationException;
 use Denosys\Database\Migration\Migrator;
 use Denosys\Database\Seeding\SeederRunner;
 
@@ -36,7 +37,8 @@ class MigrateCommand implements CommandInterface
     public function configure(): CommandDefinition
     {
         return (new CommandDefinition())
-            ->addOption('pretend', null, CommandDefinition::OPTION_NONE, 'List pending migrations without applying them')
+            ->addOption('pretend', null, CommandDefinition::OPTION_NONE, 'Show the SQL pending migrations would run, without running it')
+            ->addOption('accept-changes', null, CommandDefinition::OPTION_NONE, 'Run although migrations that already ran have changed, and record their new checksums')
             ->addOption('force', null, CommandDefinition::OPTION_NONE, 'Force in production')
             ->addOption('seed', null, CommandDefinition::OPTION_OPTIONAL, 'Run seeders after migration (optionally specify class)', false)
             ->setHelp(<<<HELP
@@ -46,7 +48,11 @@ Examples:
   php core migrate                    # Run migrations
   php core migrate --seed             # Run migrations then DatabaseSeeder
   php core migrate --seed=UserSeeder  # Run migrations then specific seeder
-  php core migrate --pretend          # List pending migrations without changes
+  php core migrate --pretend          # Show the SQL without running it
+
+Only one migrate runs at a time per database; a second run waits for the
+first. A migration that already ran is never run again, so migrate stops if
+one has changed since: restore it and add a new migration instead.
 HELP);
     }
 
@@ -71,12 +77,17 @@ HELP);
 
         $output->info($pretend ? 'Previewing pending migrations...' : 'Running migrations...');
 
-        $migrator = $this->migrator();
-        if ($pretend) {
-            $migrator->pretend();
-        }
+        $migrator = $this->migrator()
+            ->pretend((bool) $pretend)
+            ->acceptChanges((bool) $input->getOption('accept-changes'));
 
-        $result = $migrator->run();
+        try {
+            $result = $migrator->run();
+        } catch (MigrationException $e) {
+            $output->error($e->getMessage());
+
+            return 1;
+        }
 
         if ($result->isEmpty()) {
             $output->comment($pretend ? 'No pending migrations. No changes made.' : 'Nothing to migrate.');
@@ -85,6 +96,9 @@ HELP);
                 if ($record->success) {
                     if ($pretend) {
                         $output->writeln("<info>  Would run: {$record->name}</info>");
+                        foreach ($this->sqlFor($record->name, $migrator->getPretendLog()) as $sql) {
+                            $output->writeln("      {$sql}");
+                        }
                     } else {
                         $time = number_format($record->time * 1000, 2);
                         $output->writeln("<info>  ✓ {$record->name}</info> ({$time}ms)");
@@ -106,6 +120,11 @@ HELP);
                         $result->getTotalTime()
                     ));
                 }
+            } elseif ($pretend) {
+                $output->warning(
+                    'The preview stopped at a migration that could not run without the migrations before it. '
+                    . 'Nothing was changed. ' . $result->getError()
+                );
             } else {
                 $output->error('Migration failed: ' . $result->getError());
                 return 1;
@@ -182,5 +201,29 @@ HELP);
         $migrator = $this->container->get(Migrator::class);
 
         return $migrator;
+    }
+
+    /**
+     * The statements the pretend log records under "-- $name".
+     *
+     * @param list<string> $log
+     * @return list<string>
+     */
+    private function sqlFor(string $name, array $log): array
+    {
+        $start = array_search("-- {$name}", $log, true);
+        if ($start === false) {
+            return [];
+        }
+
+        $sql = [];
+        foreach (array_slice($log, $start + 1) as $line) {
+            if (str_starts_with($line, '-- ')) {
+                break;
+            }
+            $sql[] = $line;
+        }
+
+        return $sql;
     }
 }
