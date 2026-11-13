@@ -146,9 +146,9 @@ public function compileCreate(Blueprint $blueprint): array
             );
         }
         
-        // Drop indexes
+        // Drop indexes (an index lives in its table's schema)
         foreach ($blueprint->getDropIndexes() as $name) {
-            $statements[] = sprintf('DROP INDEX IF EXISTS %s', $this->wrapColumn($name));
+            $statements[] = sprintf('DROP INDEX IF EXISTS %s', $this->wrapIndex($blueprint->getTable(), $name));
         }
         
         // Drop columns
@@ -170,8 +170,12 @@ public function compileCreate(Blueprint $blueprint): array
             );
         }
         
-        // Add new columns
+        // Add new columns, or change existing ones
         foreach ($blueprint->getColumns() as $column) {
+            if ($column->isChange()) {
+                $statements = [...$statements, ...$this->compileChange($blueprint->getTable(), $column)];
+                continue;
+            }
             $statements[] = sprintf(
                 'ALTER TABLE %s ADD COLUMN %s',
                 $this->wrapTable($blueprint->getTable()),
@@ -220,11 +224,75 @@ public function compileCreate(Blueprint $blueprint): array
     }
 
     /**
+     * Change a column in place: type (converting existing values), then
+     * nullability and default.
+     *
+     * @return list<string>
+     */
+    protected function compileChange(string $table, Column $column): array
+    {
+        $alter = 'ALTER TABLE ' . $this->wrapTable($table) . ' ALTER COLUMN ' . $this->wrapColumn($column->getName());
+        // SERIAL names exist only for CREATE TABLE: an auto-incrementing column
+        // changes to its storage type and keeps its sequence default.
+        $type = match ($type = $this->getTypeDefinition($column)) {
+            'BIGSERIAL' => 'BIGINT',
+            'SERIAL' => 'INTEGER',
+            'SMALLSERIAL' => 'SMALLINT',
+            default => $type,
+        };
+
+        // A string target uses assignment conversion, which refuses a value too
+        // long for the new length; an explicit cast would truncate it.
+        $statements = [
+            preg_match('/^(VARCHAR|CHAR|TEXT)\b/', $type) === 1
+                ? sprintf('%s TYPE %s', $alter, $type)
+                : sprintf('%s TYPE %s USING %s::%s', $alter, $type, $this->wrapColumn($column->getName()), $type),
+            $alter . ($column->isNullable() ? ' DROP NOT NULL' : ' SET NOT NULL'),
+        ];
+        if ($column->hasDefaultValue()) {
+            $statements[] = $alter . ' SET DEFAULT ' . $this->compileDefaultValue($column->getDefault());
+        } elseif (!$column->isAutoIncrement()) {
+            $statements[] = $alter . ' DROP DEFAULT';
+        }
+
+        return $statements;
+    }
+
+    /**
+     * An index name, qualified with the schema of a qualified table.
+     */
+    protected function wrapIndex(string $table, string $name): string
+    {
+        return str_contains($table, '.')
+            ? $this->wrap(explode('.', $table, 2)[0]) . '.' . $this->wrap($name)
+            : $this->wrap($name);
+    }
+
+    /**
+     * The schema and table to inspect. An unqualified table is looked up in
+     * the connection's current schema (the first on its search path).
+     *
+     * @return array{string, string} SQL for the schema, and the escaped table name
+     */
+    protected function locate(string $table): array
+    {
+        if (str_contains($table, '.')) {
+            [$schema, $table] = explode('.', $table, 2);
+
+            return ["'" . $this->escapeString($schema) . "'", $this->escapeString($table)];
+        }
+
+        return ['current_schema()', $this->escapeString($table)];
+    }
+
+    /**
      * @inheritDoc
      */
     public function compileTableExists(string $table): string
     {
-        return "SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename = '{$this->escapeString($table)}'";
+        [$schema, $name] = $this->locate($table);
+
+        return "SELECT tablename FROM pg_tables WHERE schemaname = {$schema} AND tablename = '{$name}'";
     }
 
     /**
@@ -232,7 +300,7 @@ public function compileCreate(Blueprint $blueprint): array
      */
     public function compileGetAllTables(): string
     {
-        return "SELECT tablename as name FROM pg_tables WHERE schemaname = 'public'";
+        return 'SELECT tablename AS name FROM pg_tables WHERE schemaname = current_schema() ORDER BY tablename';
     }
 
     /**
@@ -240,8 +308,10 @@ public function compileCreate(Blueprint $blueprint): array
      */
     public function compileGetColumns(string $table): string
     {
-        return "SELECT column_name FROM information_schema.columns "
-             . "WHERE table_schema = 'public' AND table_name = '{$this->escapeString($table)}'";
+        [$schema, $name] = $this->locate($table);
+
+        return 'SELECT column_name FROM information_schema.columns '
+             . "WHERE table_schema = {$schema} AND table_name = '{$name}' ORDER BY ordinal_position";
     }
 
     /**
@@ -249,9 +319,10 @@ public function compileCreate(Blueprint $blueprint): array
      */
     public function compileGetColumnType(string $table, string $column): string
     {
-        return "SELECT data_type FROM information_schema.columns "
-             . "WHERE table_schema = 'public' "
-             . "AND table_name = '{$this->escapeString($table)}' "
+        [$schema, $name] = $this->locate($table);
+
+        return 'SELECT data_type FROM information_schema.columns '
+             . "WHERE table_schema = {$schema} AND table_name = '{$name}' "
              . "AND column_name = '{$this->escapeString($column)}'";
     }
 

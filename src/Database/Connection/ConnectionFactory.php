@@ -173,6 +173,14 @@ class ConnectionFactory
         $username = $config['username'] ?? 'postgres';
         $password = $config['password'] ?? '';
         $schema = $config['schema'] ?? 'public';
+        $schemas = is_array($schema) ? array_values($schema) : [$schema];
+        foreach ($schemas as $name) {
+            if (!is_string($name) || $name === '') {
+                throw new DatabaseException('The PostgreSQL schema must be a name or a list of names.');
+            }
+        }
+        // Each schema is quoted as an identifier: 'Tenant B' and 'tenant-c' are valid names.
+        $searchPath = implode(', ', array_map(static fn (string $name): string => '"' . str_replace('"', '""', $name) . '"', $schemas));
 
         $dsn = "pgsql:host={$host};port={$port};dbname={$database}";
 
@@ -186,7 +194,7 @@ class ConnectionFactory
             $pdo = new PDO($dsn, $username, $password, $options);
             
             // Set the search path (schema)
-            $pdo->exec("SET search_path TO {$schema}");
+            $pdo->exec("SET search_path TO {$searchPath}");
             
             // Set timezone if configured
             if (isset($config['timezone'])) {

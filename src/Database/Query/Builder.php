@@ -650,10 +650,19 @@ class Builder implements QueryBuilderInterface
     }
 
     /**
+     * Insert a row and return its key. On PostgreSQL this uses RETURNING, so
+     * it works whether or not the insert used a sequence.
+     *
      * @param array<string, mixed> $values
      */
     public function insertGetId(array $values, string $primaryKey = 'id'): int|string
     {
+        if ($values !== [] && $this->grammar instanceof \Denosys\Database\Grammar\PostgresGrammar) {
+            $sql = $this->grammar->compileInsertReturning($this->requireTable(), array_keys($values), [$primaryKey]);
+
+            return $this->connection->insert($sql, array_values($values));
+        }
+
         return $this->insert($values);
     }
 

@@ -42,18 +42,18 @@ class IndexDefinition
             IndexType::Spatial => 'sp',
         };
 
+        // A qualified table ('reporting.events') names its index by the table alone:
+        // the index lives in the table's schema.
+        $table = $table === null ? null : substr($table, (int) strrpos('.' . $table, '.'));
         $parts = $table === null || $table === '' ? $columns : [$table, ...$columns];
 
         return $prefix . '_' . implode('_', $parts);
     }
 
     /**
-
-     * @return array<string, mixed>
-
+     * @return array<string>
      */
-
-public function getColumns(): array
+    public function getColumns(): array
 
     {
         return $this->columns;

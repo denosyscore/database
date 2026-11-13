@@ -205,7 +205,7 @@ public function compileCreate(Blueprint $blueprint): array
      */
     public function compileGetColumnType(string $table, string $column): string
     {
-        return "SELECT DATA_TYPE, COLUMN_TYPE "
+        return "SELECT DATA_TYPE AS data_type, COLUMN_TYPE AS column_type "
              . "FROM INFORMATION_SCHEMA.COLUMNS "
              . "WHERE TABLE_SCHEMA = DATABASE() "
              . "AND TABLE_NAME = '{$this->escapeString($table)}' "

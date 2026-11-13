@@ -340,7 +340,8 @@ trait SchemaGrammarTrait
      */
     protected function wrapTable(string $table): string
     {
-        return $this->wrap($table);
+        // 'schema.table' (PostgreSQL) or 'database.table' (MySQL) quotes each part.
+        return implode('.', array_map(fn (string $part): string => $this->wrap($part), explode('.', $table, 2)));
     }
 
     /**

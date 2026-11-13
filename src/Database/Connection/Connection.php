@@ -130,7 +130,7 @@ class Connection implements ConnectionInterface
      */
     public function select(string $query, array $bindings = []): array
     {
-        return $this->run($query, $bindings, function ($query, $bindings) {
+        return $this->run($query, $bindings, function (string $query, array $bindings) {
             $statement = $this->prepared($query);
             $this->bindValues($statement, $bindings);
             $statement->execute();
@@ -158,13 +158,56 @@ class Connection implements ConnectionInterface
      */
     public function insert(string $query, array $bindings = []): int|string
     {
-        return $this->run($query, $bindings, function ($query, $bindings) {
+        return $this->run($query, $bindings, function (string $query, array $bindings) {
             $statement = $this->prepared($query);
             $this->bindValues($statement, $bindings);
             $statement->execute();
 
+            if ($this->getDriverName() === 'pgsql') {
+                if (preg_match('/\bRETURNING\b/i', $query) === 1) {
+                    $value = $statement->fetchColumn();
+
+                    return is_int($value) || is_string($value) ? $value : '0';
+                }
+
+                return $this->postgresLastInsertId();
+            }
+
             return $this->pdo->lastInsertId();
         }, pretendResult: '0');
+    }
+
+    /**
+     * PostgreSQL's lastInsertId() runs SELECT lastval(), which fails when the
+     * session has used no sequence, and a failed statement aborts the open
+     * transaction. Inside a transaction it runs under a savepoint, so a
+     * failure leaves the transaction usable and reports no key ('0').
+     *
+     * Like MySQL's LAST_INSERT_ID(), lastval() reports the session's last
+     * generated key, which belongs to an earlier insert when this one used no
+     * sequence. Builder::insertGetId() asks for the key with RETURNING instead.
+     */
+    private function postgresLastInsertId(): string
+    {
+        $savepoint = $this->transactions > 0;
+        if ($savepoint) {
+            $this->pdo->exec('SAVEPOINT denosys_last_insert_id');
+        }
+
+        try {
+            $id = $this->pdo->lastInsertId();
+        } catch (\PDOException) {
+            if ($savepoint) {
+                $this->pdo->exec('ROLLBACK TO SAVEPOINT denosys_last_insert_id');
+            }
+            $id = '0';
+        } finally {
+            if ($savepoint) {
+                $this->pdo->exec('RELEASE SAVEPOINT denosys_last_insert_id');
+            }
+        }
+
+        return $id === false ? '0' : $id;
     }
 
     /**
@@ -174,7 +217,7 @@ class Connection implements ConnectionInterface
      */
     public function update(string $query, array $bindings = []): int
     {
-        return $this->run($query, $bindings, function ($query, $bindings) {
+        return $this->run($query, $bindings, function (string $query, array $bindings) {
             $statement = $this->prepared($query);
             $this->bindValues($statement, $bindings);
             $statement->execute();
@@ -190,7 +233,7 @@ class Connection implements ConnectionInterface
      */
     public function delete(string $query, array $bindings = []): int
     {
-        return $this->run($query, $bindings, function ($query, $bindings) {
+        return $this->run($query, $bindings, function (string $query, array $bindings) {
             $statement = $this->prepared($query);
             $this->bindValues($statement, $bindings);
             $statement->execute();
@@ -206,7 +249,7 @@ class Connection implements ConnectionInterface
      */
     public function statement(string $query, array $bindings = []): bool
     {
-        return $this->run($query, $bindings, function ($query, $bindings) {
+        return $this->run($query, $bindings, function (string $query, array $bindings) {
             $statement = $this->prepared($query);
             $this->bindValues($statement, $bindings);
 
@@ -219,7 +262,7 @@ class Connection implements ConnectionInterface
      */
     public function unprepared(string $query): bool
     {
-        return $this->run($query, [], function ($query) {
+        return $this->run($query, [], function (string $query) {
             return $this->pdo->exec($query) !== false;
         }, pretendResult: true);
     }

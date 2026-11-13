@@ -170,6 +170,49 @@ final class User extends \Denosys\Database\Model
 }
 ```
 
+## Schema changes
+
+`SchemaBuilder::create()` and `table()` behave the same on every driver,
+within what each database can do:
+
+- **All or nothing where the database allows it.** On SQLite and PostgreSQL,
+  whose DDL is transactional, a `create()` or `table()` whose later statement
+  fails leaves no half-made table. MySQL and MariaDB commit each DDL
+  statement as it runs.
+- **Changing columns.** `->change()` modifies a column in place: `MODIFY
+  COLUMN` on MySQL, `ALTER COLUMN ... TYPE ... USING` plus nullability and
+  default on PostgreSQL. SQLite cannot alter a column, so the table is
+  rebuilt (below).
+- **SQLite rebuilds.** Changing a column, or adding or dropping a foreign key,
+  rebuilds the table the way SQLite documents: create the new table, copy
+  the rows, drop the old one, rename, recreate indexes, check foreign keys.
+  Rows, defaults, the primary key, indexes and foreign keys are kept. A
+  table with triggers, CHECK constraints or generated columns is refused
+  rather than rebuilt without them. Dropping a table that other tables
+  reference would fire their ON DELETE actions, so enforcement is paused for
+  the rebuild; SQLite can only do that outside a transaction, so inside one
+  (a migration, by default) a referenced table is refused with instructions
+  to return `false` from the migration's `withinTransaction()`.
+- **Order of operations.** An alter drops foreign keys, then indexes, then
+  columns, before adding, so `dropIndex(['email'])` with `dropColumn('email')`
+  works everywhere.
+
+### PostgreSQL schemas and qualified names
+
+A connection's `schema` is one name or a list, set as the search path with
+each name quoted:
+
+```php
+['driver' => 'pgsql', /* ... */, 'schema' => ['tenant_a', 'public']]
+```
+
+Introspection (`hasTable()`, `getColumns()`, `getTables()`, the migrations
+table) looks in the connection's current schema, the first on the path. A
+qualified name looks in another: `hasTable('reporting.events')`, and
+`table('reporting.events')` in queries quotes each part. `dropAllTables()`
+drops only the current schema's tables, in one statement and transaction.
+On MySQL a qualified name is `database.table`.
+
 ## Migrations
 
 The migrator runs migration files in filename order. Give it one directory or

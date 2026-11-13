@@ -170,7 +170,7 @@ abstract class Repository
      */
     public function create(array $data): int|string
     {
-        return $this->query()->insert($data);
+        return $this->query()->insertGetId($data, $this->primaryKey);
     }
 
     /**

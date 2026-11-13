@@ -117,7 +117,9 @@ class ForeignKeyBuilder
         }
 
         // Include source table in FK name for uniqueness across tables
-        $autoName = $this->name ?? "fk_{$this->blueprint->getTable()}_{$this->column}_{$this->referencesTable}_{$this->referencesColumn}";
+        $table = $this->blueprint->getTable();
+        $table = substr($table, (int) strrpos('.' . $table, '.'));
+        $autoName = $this->name ?? "fk_{$table}_{$this->column}_{$this->referencesTable}_{$this->referencesColumn}";
 
         $this->definition = new ForeignKeyDefinition(
             $this->column,

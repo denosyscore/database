@@ -6,6 +6,7 @@ namespace Denosys\Database\Schema\Grammar;
 
 use Denosys\Database\Schema\Blueprint;
 use Denosys\Database\Schema\Column;
+use Denosys\Database\Schema\ForeignKeyDefinition;
 use Denosys\Database\Schema\IndexDefinition;
 use Denosys\Database\Schema\IndexType;
 
@@ -138,10 +139,20 @@ public function compileCreate(Blueprint $blueprint): array
      */
     public function compileAlter(Blueprint $blueprint): array
     {
+        if (self::needsRebuild($blueprint)) {
+            throw new \LogicException(
+                'SQLite cannot change a column or add or drop a foreign key with ALTER TABLE; '
+                . 'SchemaBuilder::table() rebuilds the table for these changes.'
+            );
+        }
+
         $statements = [];
-        
-        // SQLite doesn't support DROP COLUMN before version 3.35.0
-        // We'll generate the statements anyway
+
+        // Indexes first: SQLite refuses to drop a column an index still uses.
+        foreach ($blueprint->getDropIndexes() as $name) {
+            $statements[] = sprintf('DROP INDEX IF EXISTS %s', $this->wrapColumn($name));
+        }
+
         foreach ($blueprint->getDropColumns() as $column) {
             $statements[] = sprintf(
                 'ALTER TABLE %s DROP COLUMN %s',
@@ -162,24 +173,11 @@ public function compileCreate(Blueprint $blueprint): array
         
         // Add new columns
         foreach ($blueprint->getColumns() as $column) {
-            // SQLite doesn't support MODIFY COLUMN
-            if ($column->isChange()) {
-                throw new \RuntimeException(
-                    'SQLite does not support modifying columns. ' .
-                    'Use table recreation or raw SQL instead.'
-                );
-            }
-            
             $statements[] = sprintf(
                 'ALTER TABLE %s ADD COLUMN %s',
                 $this->wrapTable($blueprint->getTable()),
                 $this->compileColumn($column)
             );
-        }
-        
-        // Drop indexes
-        foreach ($blueprint->getDropIndexes() as $name) {
-            $statements[] = sprintf('DROP INDEX IF EXISTS %s', $this->wrapColumn($name));
         }
         
         // Add indexes
@@ -206,6 +204,37 @@ public function compileCreate(Blueprint $blueprint): array
         }
         
         return $statements;
+    }
+
+    /**
+     * Whether $blueprint needs the table rebuilt: SQLite's ALTER TABLE cannot
+     * change a column or add or drop a foreign key.
+     */
+    public static function needsRebuild(Blueprint $blueprint): bool
+    {
+        foreach ($blueprint->getColumns() as $column) {
+            if ($column->isChange()) {
+                return true;
+            }
+        }
+
+        return $blueprint->getForeignKeys() !== [] || $blueprint->getDropForeignKeys() !== [];
+    }
+
+    /**
+     * The definition of one column, for a table rebuild.
+     */
+    public function columnDefinition(Column $column): string
+    {
+        return $this->compileColumn($column);
+    }
+
+    /**
+     * The definition of one foreign key, for a table rebuild.
+     */
+    public function foreignKeyDefinition(ForeignKeyDefinition $foreignKey): string
+    {
+        return $this->compileForeignKey($foreignKey);
     }
 
     /**

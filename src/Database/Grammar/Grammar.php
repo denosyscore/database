@@ -110,7 +110,8 @@ abstract class Grammar implements GrammarInterface
             return $this->wrapAliasedTable($table);
         }
 
-        return $this->wrapValue($table);
+        // 'schema.table' (PostgreSQL) or 'database.table' (MySQL) quotes each part.
+        return implode('.', array_map(fn (string $part): string => $this->wrapValue($part), explode('.', $table, 2)));
     }
 
     /**

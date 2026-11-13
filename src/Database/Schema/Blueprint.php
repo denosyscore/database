@@ -21,37 +21,25 @@ use Closure;
  */
 class Blueprint
 {
-    /** @var Column[] */
-    /** @var array<string, mixed> */
-
+    /** @var list<Column> */
     private array $columns = [];
     
-    /** @var IndexDefinition[] */
-    /** @var array<string, mixed> */
-
+    /** @var list<IndexDefinition> */
     private array $indexes = [];
     
-    /** @var ForeignKeyDefinition[] */
-    /** @var array<string, mixed> */
-
+    /** @var list<ForeignKeyDefinition> */
     private array $foreignKeys = [];
     
-    /** @var string[] */
-    /** @var array<string, mixed> */
-
+    /** @var list<string> */
     private array $dropColumns = [];
     
     /** @var array<string, string> */
-private array $renameColumns = [];
+    private array $renameColumns = [];
     
-    /** @var string[] */
-    /** @var array<string, mixed> */
-
+    /** @var list<string> */
     private array $dropIndexes = [];
     
-    /** @var string[] */
-    /** @var array<string, mixed> */
-
+    /** @var list<string> */
     private array $dropForeignKeys = [];
     
     private ?string $engine = null;
@@ -368,7 +356,7 @@ private array $renameColumns = [];
      */
     public function dropColumn(string ...$columns): static
     {
-        $this->dropColumns = array_merge($this->dropColumns, $columns);
+        $this->dropColumns = [...$this->dropColumns, ...array_values($columns)];
         return $this;
     }
 
@@ -478,28 +466,25 @@ private array $renameColumns = [];
         return $this->table;
     }
 
-    /** @return Column[] */
-    /**
-     * @return array<string, mixed>
-     */
-public function getColumns(): array
+    /** @return list<Column> */
+    public function getColumns(): array
     {
         return $this->columns;
     }
 
-    /** @return IndexDefinition[] */
+    /** @return list<IndexDefinition> */
     public function getIndexes(): array
     {
         return $this->indexes;
     }
 
-    /** @return ForeignKeyDefinition[] */
+    /** @return list<ForeignKeyDefinition> */
     public function getForeignKeys(): array
     {
         return $this->foreignKeys;
     }
 
-    /** @return string[] */
+    /** @return list<string> */
     public function getDropColumns(): array
     {
         return $this->dropColumns;
@@ -511,13 +496,13 @@ public function getColumns(): array
         return $this->renameColumns;
     }
 
-    /** @return string[] */
+    /** @return list<string> */
     public function getDropIndexes(): array
     {
         return $this->dropIndexes;
     }
 
-    /** @return string[] */
+    /** @return list<string> */
     public function getDropForeignKeys(): array
     {
         return $this->dropForeignKeys;

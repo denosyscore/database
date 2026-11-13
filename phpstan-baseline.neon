@@ -55,24 +55,6 @@ parameters:
 			path: src/Database/Connection/Connection.php
 
 		-
-			message: '#^Parameter \#1 \$query of method Denosys\\Database\\Connection\\Connection\:\:prepared\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 5
-			path: src/Database/Connection/Connection.php
-
-		-
-			message: '#^Parameter \#1 \$statement of method PDO\:\:exec\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Connection/Connection.php
-
-		-
-			message: '#^Parameter \#2 \$bindings of method Denosys\\Database\\Connection\\Connection\:\:bindValues\(\) expects array\<int\|string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 5
-			path: src/Database/Connection/Connection.php
-
-		-
 			message: '#^Method Denosys\\Database\\Connection\\ConnectionFactory\:\:getDefaultOptions\(\) should return array\<int, mixed\> but returns array\<mixed\>\.$#'
 			identifier: return.type
 			count: 1
@@ -196,12 +178,6 @@ parameters:
 			message: '#^Part \$port \(mixed\) of encapsed string cannot be cast to string\.$#'
 			identifier: encapsedStringPart.nonString
 			count: 2
-			path: src/Database/Connection/ConnectionFactory.php
-
-		-
-			message: '#^Part \$schema \(mixed\) of encapsed string cannot be cast to string\.$#'
-			identifier: encapsedStringPart.nonString
-			count: 1
 			path: src/Database/Connection/ConnectionFactory.php
 
 		-
@@ -907,72 +883,6 @@ parameters:
 			path: src/Database/Repository.php
 
 		-
-			message: '#^Method Denosys\\Database\\Schema\\Blueprint\:\:getDropColumns\(\) should return array\<string\> but returns array\<string, mixed\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Schema/Blueprint.php
-
-		-
-			message: '#^Method Denosys\\Database\\Schema\\Blueprint\:\:getDropForeignKeys\(\) should return array\<string\> but returns array\<string, mixed\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Schema/Blueprint.php
-
-		-
-			message: '#^Method Denosys\\Database\\Schema\\Blueprint\:\:getDropIndexes\(\) should return array\<string\> but returns array\<string, mixed\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Schema/Blueprint.php
-
-		-
-			message: '#^Method Denosys\\Database\\Schema\\Blueprint\:\:getForeignKeys\(\) should return array\<Denosys\\Database\\Schema\\ForeignKeyDefinition\> but returns array\<string, mixed\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Schema/Blueprint.php
-
-		-
-			message: '#^Method Denosys\\Database\\Schema\\Blueprint\:\:getIndexes\(\) should return array\<Denosys\\Database\\Schema\\IndexDefinition\> but returns array\<string, mixed\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Schema/Blueprint.php
-
-		-
-			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$columns \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Database/Schema/Blueprint.php
-
-		-
-			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$dropColumns \(array\<string, mixed\>\) does not accept array\<int\<0, max\>\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Database/Schema/Blueprint.php
-
-		-
-			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$dropForeignKeys \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Database/Schema/Blueprint.php
-
-		-
-			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$dropIndexes \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 2
-			path: src/Database/Schema/Blueprint.php
-
-		-
-			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$foreignKeys \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/Database/Schema/Blueprint.php
-
-		-
-			message: '#^Property Denosys\\Database\\Schema\\Blueprint\:\:\$indexes \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
-			identifier: assign.propertyType
-			count: 4
-			path: src/Database/Schema/Blueprint.php
-
-		-
 			message: '#^Property Denosys\\Database\\Schema\\Column\:\:\$enumValues \(array\<string, mixed\>\) does not accept array\<int\|string, mixed\>\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -985,111 +895,15 @@ parameters:
 			path: src/Database/Schema/ForeignKeyDefinition.php
 
 		-
-			message: '#^Cannot call method getAfter\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method getName\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 5
-			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method hasIndex\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method isChange\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method isPrimary\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method isUnique\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
-
-		-
 			message: '#^Method Denosys\\Database\\Schema\\Grammar\\MySqlSchemaGrammar\:\:compileCreate\(\) should return array\<string, mixed\> but returns array\<int, string\>\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
 
 		-
-			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:compileColumn\(\) expects Denosys\\Database\\Schema\\Column, mixed given\.$#'
-			identifier: argument.type
-			count: 3
-			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
-
-		-
-			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:wrapColumn\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 5
-			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
-
-		-
-			message: '#^Parameter \#3 \$columns of static method Denosys\\Database\\Schema\\IndexDefinition\:\:defaultName\(\) expects array\<string\>, array\<int, mixed\> given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Database/Schema/Grammar/MySqlSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method getName\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 5
-			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method hasIndex\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method isPrimary\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method isUnique\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
-
-		-
-			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:compileColumn\(\) expects Denosys\\Database\\Schema\\Column, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
-
-		-
-			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:wrapColumn\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 5
-			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
-
-		-
 			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:escapeString\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
-			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
-
-		-
-			message: '#^Parameter \#3 \$columns of static method Denosys\\Database\\Schema\\IndexDefinition\:\:defaultName\(\) expects array\<string\>, array\<int, mixed\> given\.$#'
-			identifier: argument.type
-			count: 2
 			path: src/Database/Schema/Grammar/PostgresSchemaGrammar.php
 
 		-
@@ -1099,82 +913,16 @@ parameters:
 			path: src/Database/Schema/Grammar/SchemaGrammar.php
 
 		-
-			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:wrapColumn\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Schema/Grammar/SchemaGrammar.php
-
-		-
 			message: '#^Parameter \#1 \$value of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:escapeString\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 2
 			path: src/Database/Schema/Grammar/SchemaGrammar.php
 
 		-
-			message: '#^Cannot call method getName\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 6
-			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method hasIndex\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method isAutoIncrement\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 2
-			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method isChange\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method isPrimary\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 3
-			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
-
-		-
-			message: '#^Cannot call method isUnique\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
-
-		-
 			message: '#^Method Denosys\\Database\\Schema\\Grammar\\SqliteSchemaGrammar\:\:compileCreate\(\) should return array\<string, mixed\> but returns list\<string\>\.$#'
 			identifier: return.type
 			count: 1
 			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
-
-		-
-			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SchemaGrammar\:\:wrapColumn\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 5
-			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
-
-		-
-			message: '#^Parameter \#1 \$column of method Denosys\\Database\\Schema\\Grammar\\SqliteSchemaGrammar\:\:compileColumn\(\) expects Denosys\\Database\\Schema\\Column, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
-
-		-
-			message: '#^Parameter \#3 \$columns of static method Denosys\\Database\\Schema\\IndexDefinition\:\:defaultName\(\) expects array\<string\>, array\<int, mixed\> given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Database/Schema/Grammar/SqliteSchemaGrammar.php
-
-		-
-			message: '#^Method Denosys\\Database\\Schema\\IndexDefinition\:\:getColumns\(\) should return array\<string, mixed\> but returns array\<string\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Schema/IndexDefinition.php
 
 		-
 			message: '#^Method Denosys\\Database\\Schema\\IndexDefinition\:\:getName\(\) should return string but returns string\|null\.$#'
@@ -1270,42 +1018,6 @@ parameters:
 			message: '#^Cannot cast mixed to string\.$#'
 			identifier: cast.string
 			count: 7
-			path: src/Database/Schema/SchemaBuilder.php
-
-		-
-			message: '#^Method Denosys\\Database\\Schema\\SchemaBuilder\:\:getColumnType\(\) should return string\|null but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Schema/SchemaBuilder.php
-
-		-
-			message: '#^Method Denosys\\Database\\Schema\\SchemaBuilder\:\:getColumns\(\) should return array\<string\> but returns array\<mixed\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Schema/SchemaBuilder.php
-
-		-
-			message: '#^Method Denosys\\Database\\Schema\\SchemaBuilder\:\:getTables\(\) should return array\<string, mixed\> but returns array\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Database/Schema/SchemaBuilder.php
-
-		-
-			message: '#^Parameter \#1 \$query of method Denosys\\Database\\Connection\\Connection\:\:statement\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Database/Schema/SchemaBuilder.php
-
-		-
-			message: '#^Parameter \#1 \$statements of method Denosys\\Database\\Schema\\SchemaBuilder\:\:executeStatements\(\) expects array\<string, mixed\>, array\<string\> given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Database/Schema/SchemaBuilder.php
-
-		-
-			message: '#^Parameter \#1 \$table of method Denosys\\Database\\Schema\\SchemaBuilder\:\:drop\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Database/Schema/SchemaBuilder.php
 
 		-

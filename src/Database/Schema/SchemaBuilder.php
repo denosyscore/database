@@ -8,6 +8,7 @@ use Closure;
 use Denosys\Database\Connection\Connection;
 use Denosys\Database\Exceptions\DatabaseException;
 use Denosys\Database\Schema\Grammar\SchemaGrammarInterface;
+use Denosys\Database\Schema\Grammar\SqliteSchemaGrammar;
 use LogicException;
 use PDOException;
 
@@ -37,9 +38,9 @@ class SchemaBuilder
     {
         $blueprint = new Blueprint($table);
         $callback($blueprint);
-        
-        $statements = $this->grammar->compileCreate($blueprint);
-        $this->executeStatements($statements);
+
+        // On SQLite and PostgreSQL, a failed index or key leaves no half-made table.
+        $this->atomically($this->grammar->compileCreate($blueprint));
     }
 
     /**
@@ -49,9 +50,14 @@ class SchemaBuilder
     {
         $blueprint = new Blueprint($table);
         $callback($blueprint);
-        
-        $statements = $this->grammar->compileAlter($blueprint);
-        $this->executeStatements($statements);
+
+        if ($this->grammar instanceof SqliteSchemaGrammar && SqliteSchemaGrammar::needsRebuild($blueprint)) {
+            (new SqliteTableRebuild($this->connection, $this->grammar))->apply($blueprint);
+
+            return;
+        }
+
+        $this->atomically($this->grammar->compileAlter($blueprint));
     }
 
     /**
@@ -84,18 +90,39 @@ class SchemaBuilder
     /**
      * Drop all tables in the database.
      */
+    /**
+     * Drop every table in the connection's database (PostgreSQL: in its
+     * current schema only, in one statement and transaction).
+     */
     public function dropAllTables(): void
     {
         $tables = $this->getTables();
-        
-        // Disable foreign key checks for clean drop
-        $this->connection->statement($this->grammar->compileDisableForeignKeyConstraints());
-        
-        foreach ($tables as $table) {
-            $this->drop($table);
+        if ($tables === []) {
+            return;
         }
-        
-        $this->connection->statement($this->grammar->compileEnableForeignKeyConstraints());
+
+        if ($this->connection->getDriverName() === 'pgsql') {
+            $row = $this->connection->selectOne('SELECT current_schema() AS name');
+            $schema = $row === null ? null : ((array) $row)['name'] ?? null;
+            if (!is_string($schema)) {
+                throw new LogicException('The connection has no current schema; check its search path.');
+            }
+            $quote = static fn (string $name): string => '"' . str_replace('"', '""', $name) . '"';
+            $this->connection->transaction(fn () => $this->connection->statement(
+                'DROP TABLE ' . implode(', ', array_map(static fn (string $table): string => $quote($schema) . '.' . $quote($table), $tables))
+            ));
+
+            return;
+        }
+
+        $this->connection->statement($this->grammar->compileDisableForeignKeyConstraints());
+        try {
+            foreach ($tables as $table) {
+                $this->drop($table);
+            }
+        } finally {
+            $this->connection->statement($this->grammar->compileEnableForeignKeyConstraints());
+        }
     }
 
     /**
@@ -170,8 +197,9 @@ WHERE table_relation.oid = to_regclass(?)
 ORDER BY index_relation.relname, key_column.ordinality
 SQL;
 
+        $quoted = implode('.', array_map(static fn (string $part): string => '"' . str_replace('"', '""', $part) . '"', explode('.', $table, 2)));
         $indexes = [];
-        foreach ($this->connection->select($sql, [$table]) as $row) {
+        foreach ($this->connection->select($sql, [$quoted]) as $row) {
             $name = (string) $row->name;
             if (!isset($indexes[$name])) {
                 $indexes[$name] = [
@@ -280,51 +308,78 @@ SQL;
     }
 
     /**
-     * Get all tables in the database.
-     * 
-     * @return string[]
+     * The tables in the connection's database (PostgreSQL: its current schema).
+     *
+     * @return list<string>
      */
-    /**
-     * @return array<string, mixed>
-     */
-public function getTables(): array
+    public function getTables(): array
     {
-        $sql = $this->grammar->compileGetAllTables();
-        $results = $this->connection->select($sql);
-        
-        return array_map(fn($row) => ((array) $row)['name'], $results);
+        return $this->firstColumn($this->connection->select($this->grammar->compileGetAllTables()), 'name');
     }
 
     /**
-     * Get all columns in a table.
-     * 
-     * @return string[]
+     * The column names of a table, in order.
+     *
+     * @return list<string>
      */
     public function getColumns(string $table): array
     {
-        $sql = $this->grammar->compileGetColumns($table);
-        $results = $this->connection->select($sql);
-        
-        return array_map(
-            fn($row) => ((array) $row)['column_name'] ?? ((array) $row)['Field'] ?? '',
-            $results
-        );
+        $rows = $this->connection->select($this->grammar->compileGetColumns($table));
+        $names = $this->firstColumn($rows, 'column_name');
+
+        return $names !== [] ? $names : $this->firstColumn($rows, 'field');
     }
 
     /**
-     * Get the column type for a column.
+     * The database type of a column, or null when it does not exist.
      */
     public function getColumnType(string $table, string $column): ?string
     {
-        $sql = $this->grammar->compileGetColumnType($table, $column);
-        $result = $this->connection->selectOne($sql);
-        
-        return $result ? ((array) $result)['data_type'] ?? ((array) $result)['Type'] ?? null : null;
+        $row = $this->connection->selectOne($this->grammar->compileGetColumnType($table, $column));
+        $type = $row === null ? null : array_change_key_case((array) $row)['data_type'] ?? null;
+
+        return is_string($type) ? $type : null;
+    }
+
+    /**
+     * The values of one column across rows, read case-insensitively.
+     *
+     * @param array<object> $rows
+     * @return list<string>
+     */
+    private function firstColumn(array $rows, string $key): array
+    {
+        $values = [];
+        foreach ($rows as $row) {
+            $value = array_change_key_case((array) $row)[$key] ?? null;
+            if (is_string($value)) {
+                $values[] = $value;
+            }
+        }
+
+        return $values;
+    }
+
+    /**
+     * Run $statements in one transaction where DDL is transactional.
+     *
+     * @param array<string> $statements
+     */
+    private function atomically(array $statements): void
+    {
+        if (in_array($this->connection->getDriverName(), ['sqlite', 'pgsql'], true) && count($statements) > 1) {
+            $this->connection->transaction(fn () => $this->executeStatements($statements));
+
+            return;
+        }
+
+        $this->executeStatements($statements);
     }
 
     /**
      * Execute multiple statements.
-      * @param array<string, mixed> $statements
+     *
+     * @param array<string> $statements
      */
     private function executeStatements(array $statements): void
     {

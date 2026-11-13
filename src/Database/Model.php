@@ -597,7 +597,7 @@ abstract class Model
     {
         $attributes = $this->getAttributes();
 
-        $id = $this->newQuery()->insert($attributes);
+        $id = $this->newQuery()->insertGetId($attributes, $this->primaryKey);
 
         if ($this->incrementing) {
             $this->setAttribute($this->primaryKey, $id);
