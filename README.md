@@ -148,7 +148,8 @@ final class User implements Record
 - **Saving writes what changed.** `save()` inserts a new record or updates
   only the changed columns of a loaded one; with no changes it runs no
   query. Properties left unset on insert take their column defaults, which
-  are read back. `createdAt` and `updatedAt` properties are filled in.
+  are read back. Date properties for the `created_at` and `updated_at`
+  columns (`$createdAt` or `$created_at`) are filled in.
 - **Rollbacks do not reset records.** After a transaction rolls back, the
   records it saved still look saved; load them again before retrying.
 - **No identity map.** Loading a row twice gives two objects. What the store

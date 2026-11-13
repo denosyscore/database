@@ -9,6 +9,7 @@ use Denosys\Database\Exceptions\RecordNotFound;
 use Denosys\Database\Record\RecordStore;
 use PHPUnit\Framework\TestCase;
 use RecordFixtures\Gadget;
+use RecordFixtures\Ledger;
 use RecordFixtures\Note;
 use RecordFixtures\Widget;
 
@@ -27,6 +28,8 @@ final class RecordStoreTest extends TestCase
         $this->db = $manager->connection();
         $this->db->statement("CREATE TABLE widgets (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, notes TEXT NULL, status TEXT NOT NULL DEFAULT 'new', extra TEXT NULL, created_at TEXT NULL, updated_at TEXT NULL)");
         $this->db->statement('CREATE TABLE gadgets (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL)');
+        $this->db->statement('CREATE TABLE mutable_stamps (id INTEGER PRIMARY KEY AUTOINCREMENT, memo TEXT NOT NULL, created_at TEXT NULL)');
+        $this->db->statement('CREATE TABLE ledgers (id INTEGER PRIMARY KEY AUTOINCREMENT, memo TEXT NOT NULL, created_at TEXT NULL, updated_at TEXT NULL)');
         $this->db->statement('CREATE TABLE notes (id INTEGER PRIMARY KEY AUTOINCREMENT, body TEXT NOT NULL, active INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)');
         $this->store = new RecordStore($manager);
     }
@@ -240,5 +243,32 @@ final class RecordStoreTest extends TestCase
 
         self::assertNull($this->store->find(Gadget::class, 1));
         self::assertSame('b', $this->store->findOrFail(Gadget::class, 2)->name);
+    }
+
+    public function testTimestampsAreFoundByColumnName(): void
+    {
+        $ledger = new Ledger();
+        $ledger->memo = 'a';
+        $this->store->save($ledger);
+
+        self::assertInstanceOf(DateTimeImmutable::class, $ledger->created_at);
+        self::assertInstanceOf(DateTimeImmutable::class, $ledger->updated_at);
+
+        $ledger->updated_at = new DateTimeImmutable('2000-01-01 00:00:00');
+        $this->store->save($ledger);
+        $ledger->memo = 'b';
+        $this->store->save($ledger);
+
+        self::assertGreaterThan(new DateTimeImmutable('2001-01-01'), $ledger->updated_at);
+    }
+
+    public function testATimestampPropertyThatCannotHoldTheStoresDateIsLeftAlone(): void
+    {
+        $stamp = new \RecordFixtures\MutableStamp();
+        $stamp->memo = 'a';
+
+        $this->store->save($stamp);
+
+        self::assertNull($stamp->created_at);
     }
 }

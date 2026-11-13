@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.21.1 – 2026-11-13
+
+### Fixed
+
+- Records fill their `created_at` and `updated_at` columns by column name, so
+  `$created_at` properties are filled as well as `$createdAt`. Only a `DateTimeImmutable` or
+  `DateTimeInterface` property without a cast is filled.
+
 ## 0.21.0 – 2026-11-13
 
 Records replace models (findings F02, F29 and the pagination part of F08).
