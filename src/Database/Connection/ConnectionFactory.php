@@ -19,6 +19,7 @@ class ConnectionFactory
      */
     protected array $grammars = [
         'mysql' => MySqlGrammar::class,
+        'mariadb' => MySqlGrammar::class,
         'pgsql' => PostgresGrammar::class,
         'sqlite' => SqliteGrammar::class,
     ];
@@ -41,14 +42,74 @@ class ConnectionFactory
     {
         $driver = $config['driver'] ?? 'mysql';
 
-        if (!isset($this->grammars[$driver])) {
-            throw new DatabaseException("Unsupported database driver: {$driver}");
+        if (!is_string($driver) || !isset($this->grammars[$driver])) {
+            throw new DatabaseException('Unsupported database driver: ' . (is_string($driver) ? $driver : get_debug_type($driver)));
         }
 
         $pdo = $this->createPdoConnection($driver, $config);
+        self::assertSupportedVersion($driver, $this->serverVersion($driver, $pdo));
         $grammar = $this->createGrammar($driver);
 
         return new Connection($pdo, $grammar, $config);
+    }
+
+    /**
+     * Refuse a server older than the oldest supported release: MySQL 8.4,
+     * MariaDB 10.11, PostgreSQL 15 or SQLite 3.35. The query and schema
+     * grammars rely on features those releases introduced.
+     *
+     * @param string $version VERSION() on MySQL and MariaDB, server_version_num
+     *                        on PostgreSQL, sqlite_version() on SQLite.
+     *
+     * @throws DatabaseException
+     */
+    public static function assertSupportedVersion(string $driver, string $version): void
+    {
+        if ($driver === 'pgsql') {
+            $number = (int) $version;
+            if ($number < 150000) {
+                throw new DatabaseException(sprintf('PostgreSQL %d.%d is not supported; DenoSys needs PostgreSQL 15 or newer.', intdiv($number, 10000), $number % 10000));
+            }
+
+            return;
+        }
+
+        if ($driver === 'sqlite') {
+            if (version_compare($version, '3.35.0', '<')) {
+                throw new DatabaseException("SQLite {$version} is not supported; DenoSys needs SQLite 3.35 or newer.");
+            }
+
+            return;
+        }
+
+        // MariaDB reports e.g. "10.11.9-MariaDB", "5.5.5-11.4.3-MariaDB" through older
+        // clients, or "10.11.13-MariaDB-0ubuntu0.24.04.1": the release precedes "-MariaDB".
+        if (stripos($version, 'mariadb') !== false) {
+            $release = preg_match('/(\d+\.\d+\.\d+)-MariaDB/i', $version, $match) === 1 ? $match[1] : $version;
+            if (version_compare($release, '10.11.0', '<')) {
+                throw new DatabaseException("MariaDB {$release} is not supported; DenoSys needs MariaDB 10.11 or newer.");
+            }
+
+            return;
+        }
+
+        $release = preg_match('/^\d+\.\d+\.\d+/', $version, $match) === 1 ? $match[0] : $version;
+        if (version_compare($release, '8.4.0', '<')) {
+            throw new DatabaseException("MySQL {$release} is not supported; DenoSys needs MySQL 8.4 or newer (or MariaDB 10.11).");
+        }
+    }
+
+    private function serverVersion(string $driver, PDO $pdo): string
+    {
+        $sql = match ($driver) {
+            'pgsql' => 'SHOW server_version_num',
+            'sqlite' => 'SELECT sqlite_version()',
+            default => 'SELECT VERSION()',
+        };
+        $statement = $pdo->query($sql);
+        $version = $statement === false ? false : $statement->fetchColumn();
+
+        return is_string($version) || is_int($version) ? (string) $version : '0';
     }
 
     /**
@@ -58,7 +119,7 @@ class ConnectionFactory
     protected function createPdoConnection(string $driver, array $config): PDO
     {
         return match ($driver) {
-            'mysql' => $this->createMySqlConnection($config),
+            'mysql', 'mariadb' => $this->createMySqlConnection($config),
             'pgsql' => $this->createPostgresConnection($config),
             'sqlite' => $this->createSqliteConnection($config),
             default => throw new DatabaseException("Unsupported driver: {$driver}"),

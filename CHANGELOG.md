@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.20.0 – 2026-11-13
+
+### Added
+
+- The `mariadb` driver name, using the MySQL grammars.
+- `ConnectionFactory::assertSupportedVersion(string $driver, string $version)`.
+
+### Changed (breaking)
+
+- Connecting checks the server version and throws `DatabaseException` below
+  the supported minimums: MySQL 8.4, MariaDB 10.11, PostgreSQL 15 and
+  SQLite 3.35.
+- An unknown driver throws `DatabaseException` instead of falling back to
+  MySQL.
+- Bindings: a `DateTimeInterface` is converted to UTC and written in the
+  grammar's date format; a backed enum binds its value; a `Stringable` binds
+  its string; a unit enum throws `InvalidArgumentException`.
+- `insert()` and `insertGetId()` return integer keys as `int` on every
+  driver. A PostgreSQL `RETURNING` key keeps its column type, so a text key
+  such as `'00123'` is returned as written.
+- The MariaDB version is read from the release before `-MariaDB`, so
+  distribution builds such as `10.11.13-MariaDB-0ubuntu0.24.04.1` connect.
+
 ## 0.19.0 – 2026-11-13
 
 ### Changed (breaking)

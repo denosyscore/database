@@ -163,17 +163,19 @@ class Connection implements ConnectionInterface
             $this->bindValues($statement, $bindings);
             $statement->execute();
 
-            if ($this->getDriverName() === 'pgsql') {
-                if (preg_match('/\bRETURNING\b/i', $query) === 1) {
-                    $value = $statement->fetchColumn();
+            if ($this->getDriverName() === 'pgsql' && preg_match('/\bRETURNING\b/i', $query) === 1) {
+                // The returned column keeps its type: PDO gives an integer key as an
+                // int and a text key, even '00123', as the string it is.
+                $id = $statement->fetchColumn();
 
-                    return is_int($value) || is_string($value) ? $value : '0';
-                }
-
-                return $this->postgresLastInsertId();
+                return is_int($id) || is_string($id) ? $id : '0';
             }
 
-            return $this->pdo->lastInsertId();
+            $id = $this->getDriverName() === 'pgsql' ? $this->postgresLastInsertId() : $this->pdo->lastInsertId();
+
+            // lastInsertId() reports a generated integer key as a string; return it
+            // as an integer on every driver, so save() and find() agree.
+            return is_string($id) && ctype_digit($id) && strlen($id) < 19 ? (int) $id : (is_string($id) ? $id : '0');
         }, pretendResult: '0');
     }
 
@@ -466,6 +468,7 @@ class Connection implements ConnectionInterface
     protected function bindValues(PDOStatement $statement, array $bindings): void
     {
         foreach (array_values($bindings) as $index => $value) {
+            $value = $this->bindable($value);
             $type = match (true) {
                 is_int($value) => PDO::PARAM_INT,
                 is_bool($value) => PDO::PARAM_BOOL,
@@ -475,6 +478,25 @@ class Connection implements ConnectionInterface
 
             $statement->bindValue($index + 1, $value, $type);
         }
+    }
+
+    /**
+     * The value PDO binds for $value: dates in UTC in the grammar's format,
+     * backed enums as their value, Stringable objects as text.
+     */
+    protected function bindable(mixed $value): mixed
+    {
+        return match (true) {
+            $value instanceof \DateTimeInterface => \DateTimeImmutable::createFromInterface($value)
+                ->setTimezone(new \DateTimeZone('UTC'))
+                ->format($this->grammar->getDateFormat()),
+            $value instanceof \BackedEnum => $value->value,
+            $value instanceof \UnitEnum => throw new \InvalidArgumentException(
+                'Cannot bind the enum case ' . $value::class . '::' . $value->name . '; only backed enums have a value.'
+            ),
+            $value instanceof \Stringable => (string) $value,
+            default => $value,
+        };
     }
 
     /**

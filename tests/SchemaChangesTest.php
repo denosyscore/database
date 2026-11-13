@@ -329,7 +329,7 @@ final class SchemaChangesTest extends TestCase
 
         $connection->transaction(function (Connection $connection): void {
             $first = $connection->table('change_rows')->insert(['name' => 'ada']);
-            self::assertSame('1', (string) $first, 'a sequence-backed insert reports its key');
+            self::assertSame(1, $first, 'a sequence-backed insert reports its key');
 
             // A fresh session has used no sequence: lastval() fails, and must not abort the transaction.
             $connection->table('change_children')->insert(['code' => 'a']);
@@ -338,9 +338,24 @@ final class SchemaChangesTest extends TestCase
 
         [$fresh] = $this->connect('pgsql', ['schema' => 'public']);
         $fresh->transaction(function (Connection $connection): void {
-            self::assertSame('0', (string) $connection->table('change_children')->insert(['code' => 'b']));
+            self::assertSame(0, $connection->table('change_children')->insert(['code' => 'b']));
             self::assertSame(2, $connection->table('change_children')->count(), 'the transaction was aborted');
         });
+    }
+
+    public function testPostgresReturnsATextKeyAsWrittenAndAnIntegerKeyAsAnInteger(): void
+    {
+        [$connection] = $this->connect('pgsql');
+        $connection->statement('DROP TABLE IF EXISTS change_codes');
+        $connection->statement('CREATE TABLE change_codes (code text PRIMARY KEY, name text)');
+        $connection->statement('DROP TABLE IF EXISTS change_numbers');
+        $connection->statement('CREATE TABLE change_numbers (id bigserial PRIMARY KEY, name text)');
+
+        self::assertSame('00123', $connection->table('change_codes')->insertGetId(['code' => '00123', 'name' => 'a'], 'code'));
+        self::assertSame(1, $connection->table('change_numbers')->insertGetId(['name' => 'a']));
+
+        $connection->statement('DROP TABLE change_codes');
+        $connection->statement('DROP TABLE change_numbers');
     }
 
     /**

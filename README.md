@@ -126,6 +126,30 @@ unchanged. Out-of-range pages clamp to the last page. An empty result reports
 page 1 of 1, `from` and `to` as 0, and an empty collection. Page and page size
 must be positive; request-level upper bounds remain the caller's policy.
 
+## Supported databases
+
+The `driver` is `mysql`, `mariadb`, `pgsql` or `sqlite`; any other name is
+refused. The server version is checked when the connection opens, and an
+older release fails with a clear message instead of later, obscure SQL
+errors:
+
+| Database | Oldest supported |
+|---|---|
+| MySQL | 8.4 LTS |
+| MariaDB | 10.11 LTS |
+| PostgreSQL | 15 |
+| SQLite | 3.35 |
+
+`mariadb` uses the MySQL grammars; a MariaDB server also works under
+`mysql`.
+
+Bound values may be dates, enums or `Stringable` objects. A
+`DateTimeInterface` is converted to UTC and written in the grammar's date
+format, a backed enum binds its value, and a `Stringable` its string; an
+enum without a backing value is refused. `insert()` and `insertGetId()`
+return integer keys as integers on every driver; a PostgreSQL text key is
+returned as written.
+
 ## PDO connection options
 
 Pass driver options under `options` in the connection configuration. Numeric
